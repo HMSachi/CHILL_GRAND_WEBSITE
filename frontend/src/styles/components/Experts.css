@@ -1,0 +1,87 @@
+.experts-section {
+    padding: 4rem 0;
+    background-color: var(--bg-light);
+}
+
+.experts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+}
+
+.expert-card {
+    text-align: center;
+    position: relative;
+}
+
+.expert-image-wrapper {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 0 0 200px 200px;
+    /* Try to match the unique shape if possible, or just rounded */
+    /* Actually the design has the image cut out. I'll use a simpler rounded shape for now */
+    border-radius: 20px;
+    margin-bottom: -50px;
+    position: relative;
+    z-index: 1;
+}
+
+.expert-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.expert-info {
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 50%;
+    /* Circle shape for info card */
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    padding-top: 60px;
+    /* Space for image overlap */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 2;
+    margin-top: -100px;
+    /* Pull up */
+}
+
+.expert-role {
+    color: var(--secondary-red);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.expert-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+.expert-socials {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.social-dot {
+    width: 15px;
+    height: 15px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+.signature-line {
+    font-family: cursive;
+    font-size: 1.2rem;
+    color: #888;
+}

@@ -1,0 +1,142 @@
+:root {
+  /* Brand Colors */
+  --primary-yellow: #FFD700; /* Adjust to match the gold/yellow in images */
+  --secondary-red: #E63946; /* Adjust to match the red in images */
+  --accent-orange: #FB8500;
+  
+  /* Background Colors */
+  --bg-dark: #121212;
+  --bg-card: #1E1E1E;
+  --bg-light: #FFFFFF;
+  
+  /* Text Colors */
+  --text-light: #FFFFFF;
+  --text-dark: #121212;
+  --text-gray: #B0B0B0;
+  
+  /* Typography */
+  --font-main: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-heading: 'Outfit', sans-serif; /* Assuming a modern heading font */
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 8rem;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-light); /* Default to light as per some sections, but hero is dark. We might need section specific backgrounds */
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-fast);
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-sm);
+}
+
+.section-padding {
+  padding: var(--spacing-lg) 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Button Styles */
+.btn {
+  padding: 12px 24px;
+  border-radius: 50px; /* Pill shape */
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  display: inline-block;
+}
+
+.btn-primary {
+  background-color: var(--primary-yellow);
+  color: var(--text-dark);
+}
+
+.btn-primary:hover {
+  background-color: #E6C200;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-red);
+  color: var(--text-light);
+}
+
+.btn-secondary:hover {
+  background-color: #C92A35;
+  transform: translateY(-2px);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-yellow);
+  border-radius: 5px;
+}
