@@ -1,0 +1,156 @@
+/* GLOBAL */
+.event-detail-page {
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+    color: #333;
+    padding-bottom: 4rem;
+}
+
+/* HERO */
+.detail-hero {
+    height: 50vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.detail-hero-overlay {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    display: flex;
+    align-items: flex-end;
+    padding: 0 10% 3rem;
+}
+
+.detail-hero-content {
+    color: #fff;
+}
+
+.detail-date {
+    background: #ff2b55;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.detail-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* CONTAINER */
+.detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.detail-section {
+    margin-bottom: 4rem;
+}
+
+.section-heading {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #000;
+    border-left: 5px solid #ff2b55;
+    padding-left: 15px;
+}
+
+.detail-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+/* GALLERY GRID */
+.detail-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* MENU GRID */
+.detail-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.menu-item-card {
+    text-align: center;
+}
+
+.menu-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1rem;
+    border: 3px solid #f4c400;
+}
+
+.menu-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* BACK BUTTON */
+.back-link-wrapper {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 25px;
+    border: 2px solid #333;
+    color: #333;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #333;
+    color: #fff;
+}
+
+/* NOT FOUND */
+.event-not-found {
+    text-align: center;
+    padding: 5rem;
+}

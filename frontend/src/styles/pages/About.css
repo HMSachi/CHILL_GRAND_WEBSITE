@@ -1,0 +1,383 @@
+/* GLOBAL ABOUT PAGE STYLES */
+.about-page {
+    background-color: #fff;
+    /* Light background base */
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    margin-top: 3rem;
+    overflow-x: hidden;
+}
+
+.section-subtitle {
+    color: #f4c400;
+    /* Gold/Yellow */
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    color: #000;
+}
+
+.section-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.btn-read-more {
+    background: #e67e22;
+    /* Orange/Bronze */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* INTRO & TEAM SECTIONS (Split Layouts) */
+.about-section {
+    display: flex;
+    align-items: center;
+    padding: 4rem 10%;
+    gap: 4rem;
+    background-color: #fff;
+}
+
+.about-content-left,
+.about-content-right {
+    flex: 1;
+}
+
+.about-image-right,
+.about-image-left {
+    flex: 1;
+}
+
+.about-image-right img,
+.about-image-left img {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* WHY CHOOSE US */
+.why-choose-us {
+    padding: 4rem 10%;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.center-title {
+    text-align: center;
+}
+
+.center-desc {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+}
+
+.features-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 3rem;
+}
+
+.feature-item {
+    text-align: center;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.feature-item h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+}
+
+/* WORKING HOURS */
+.working-hours-section {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 500px;
+}
+
+.working-hours-overlay {
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+}
+
+.working-hours-content {
+    max-width: 500px;
+    color: #fff;
+    /* Keep text white on overlay */
+}
+
+.buttons-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-book-table {
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-contact {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 12px 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.working-hours-card {
+    background: #fff;
+    padding: 3rem;
+    width: 350px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #ddd;
+    color: #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.working-hours-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+/* TESTIMONIALS */
+.testimonials-section {
+    padding: 4rem 10%;
+    background-color: #fff;
+    text-align: center;
+}
+
+.testimonials-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.testimonial-card {
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.quote-icon {
+    font-size: 3rem;
+    color: #e67e22;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.review-text {
+    color: #555;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.review-stars {
+    color: #f4c400;
+    margin-bottom: 1rem;
+}
+
+.reviewer-name {
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+    color: #000;
+}
+
+.reviewer-role {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: #f4c400;
+}
+
+/* QR SECTION */
+.qr-section {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+}
+
+.qr-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.qr-small-card {
+    background: #fff;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.small-qr-img {
+    width: 40px;
+    height: 40px;
+}
+
+.qr-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+}
+
+.qr-card-right {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.qr-card-title {
+    color: #000;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.qr-code-large {
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    border: 1px solid #eee;
+}
+
+.qr-code-large img {
+    width: 150px;
+    height: 150px;
+}
+
+.qr-instruction {
+    color: #e67e22;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.btn-get-start {
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+
+    .about-section,
+    .working-hours-overlay,
+    .qr-overlay {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .features-grid,
+    .testimonials-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .working-hours-card,
+    .qr-card-right {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .qr-title {
+        font-size: 2.5rem;
+    }
+}
