@@ -30,8 +30,8 @@ const Navbar = () => {
 
         {/* Links */}
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
-          <a href="#home" className="nav-link">Home</a>
-          <a href="#menu" className="nav-link">Menu</a>
+          <a href="/" className="nav-link">Home</a>
+          <a href="/menu" className="nav-link">Menu</a>
           <a href="#events" className="nav-link">Plan Your Event</a>
           <a href="#booking" className="nav-link">Table Booking</a>
           <a href="#about" className="nav-link">About Us</a>
