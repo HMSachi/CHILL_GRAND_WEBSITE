@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/pages/PlanEvent.css';
 import heroBg from '../../assets/bar.jpg';
-import EventHero from './EventHero'; // Assuming EventHero is defined in a separate file or below
+
 
 // This component is likely where the h1 tag would be rendered.
 // Since the original document only provided imports and an export,
