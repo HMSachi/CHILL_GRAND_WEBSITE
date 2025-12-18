@@ -1,0 +1,212 @@
+/* PAGE CONTAINER */
+.table-booking-page {
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+}
+
+/* HERO SECTION */
+.booking-hero {
+    height: 80vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.hero-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    /* Dark overlay */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.btn-book {
+    background: #ff2b55;
+    /* Red */
+    color: #fff;
+    border: 2px solid #ff2b55;
+    padding: 12px 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-book:hover {
+    background: transparent;
+    color: #ff2b55;
+}
+
+.btn-menu {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 12px 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-menu:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* STEPS SECTION */
+.booking-steps-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    /* Page background */
+}
+
+.booking-steps-box {
+    background-color: #ff2b55;
+    background-image: url("../../assets/pattern.png");
+    background-repeat: repeat;
+    background-size: 200px;
+    background-blend-mode: soft-light;
+
+    border-radius: 30px;
+    padding: 4rem;
+    max-width: 1200px;
+    width: 100%;
+    box-shadow: 0 15px 40px rgba(255, 43, 85, 0.2);
+    color: #fff;
+}
+
+.steps-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+}
+
+/* Left Content */
+.steps-content {
+    flex: 1;
+}
+
+.steps-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.steps-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+.steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.step-icon-wrapper {
+    background: #f4c400;
+    /* Yellow */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #000;
+    flex-shrink: 0;
+}
+
+.step-icon {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #000;
+}
+
+.step-text h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.step-text p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+/* Right Image */
+.steps-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.steps-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .steps-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .step-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .booking-steps-box {
+        padding: 2rem;
+    }
+}

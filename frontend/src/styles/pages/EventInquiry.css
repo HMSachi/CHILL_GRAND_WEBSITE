@@ -1,0 +1,229 @@
+/* GLOBAL */
+.inquiry-page {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    padding-bottom: 4rem;
+}
+
+/* HERO */
+.inquiry-hero {
+    height: 40vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.inquiry-hero-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 0 20px;
+}
+
+.inquiry-hero-overlay h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.inquiry-hero-overlay p {
+    font-size: 1.2rem;
+    max-width: 600px;
+}
+
+/* CONTAINER */
+.inquiry-container {
+    max-width: 800px;
+    margin: -50px auto 0;
+    position: relative;
+    z-index: 10;
+    padding: 0 20px;
+}
+
+.inquiry-form {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* SECTIONS */
+.form-section {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 2rem;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #ff2b55;
+    border-left: 4px solid #f4c400;
+    padding-left: 10px;
+}
+
+/* FORM GRID */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #ff2b55;
+    outline: none;
+}
+
+/* GUEST INPUTS */
+.guest-inputs {
+    display: flex;
+    gap: 2rem;
+}
+
+.guest-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.guest-input-group span {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* RADIO & CHECKBOX */
+.radio-group {
+    display: flex;
+    gap: 2rem;
+}
+
+.radio-label,
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.services-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.service-item {
+    background: #fdfdfd;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.service-details {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ACTIONS */
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.btn-submit-inquiry {
+    background: #ff2b55;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    flex: 1;
+}
+
+.btn-submit-inquiry:hover {
+    background: #d41b40;
+}
+
+.btn-cancel {
+    color: #666;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+.btn-cancel:hover {
+    color: #333;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .inquiry-hero-overlay h1 {
+        font-size: 2rem;
+    }
+
+    .inquiry-form {
+        padding: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-submit-inquiry {
+        width: 100%;
+    }
+}

@@ -80,15 +80,26 @@
 }
 
 .icon {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     background-color: #e0e0e0;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 0.7rem;
-    color: #888;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    overflow: hidden;
+}
+
+.icon:hover {
+    transform: translateY(-3px);
+    background-color: var(--primary-yellow);
+}
+
+.icon img {
+    width: 60%;
+    height: auto;
+    object-fit: contain;
 }
 
 .newsletter-form {
