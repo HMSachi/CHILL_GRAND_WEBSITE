@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/components/Navbar.css';
 import logo from '../../assets/logo.png';
 
@@ -30,16 +31,16 @@ const Navbar = () => {
 
         {/* Links */}
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
-          <a href="#home" className="nav-link">Home</a>
+          <Link to="/" className="nav-link">Home</Link>
           <a href="#menu" className="nav-link">Menu</a>
-          <a href="#events" className="nav-link">Plan Your Event</a>
-          <a href="#booking" className="nav-link">Table Booking</a>
-          <a href="#about" className="nav-link">About Us</a>
+          <Link to="/plan-event" className="nav-link">Plan Your Event</Link>
+          <Link to="/table-booking" className="nav-link">Table Booking</Link>
+          <Link to="/about" className="nav-link">About Us</Link>
         </div>
 
         {/* Actions */}
         <div className="navbar-actions">
-          <button className="btn-primary">Contact Us</button>
+          <Link to="/contact" className="btn-primary">Contact Us</Link>
 
           <div
             className="mobile-menu-toggle"

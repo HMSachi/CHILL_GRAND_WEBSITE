@@ -4,19 +4,19 @@ import '../../styles/components/Experts.css';
 const Experts = () => {
     const experts = [
         {
-            name: 'Thomas Walim',
+            name: 'Himanga Rathnayaka',
             role: 'Dessert specialist',
             image: 'https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
             id: 1
         },
         {
-            name: 'James Jhonson',
+            name: 'Alwis Karunanayaka',
             role: 'Chef Master',
             image: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
             id: 2
         },
         {
-            name: 'Room Minal',
+            name: 'Medis De Silva',
             role: 'Dessert specialist',
             image: 'https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
             id: 3

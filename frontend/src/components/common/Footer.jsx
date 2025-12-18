@@ -1,6 +1,9 @@
 import React from 'react';
 import '../../styles/components/Footer.css';
 import logo from '../../assets/logo.png';
+import instagramIcon from '../../assets/inster.png';
+import facebookIcon from '../../assets/facebook.png';
+import tiktokIcon from '../../assets/ticktock.png';
 
 const Footer = () => {
     return (
@@ -40,9 +43,9 @@ const Footer = () => {
                 <div className="footer-newsletter">
                     <div className="social-icons">
                         <span>Follow us</span>
-                        <div className="icon">FB</div>
-                        <div className="icon">IG</div>
-                        <div className="icon">WA</div>
+                        <a href="#" className="icon"><img src={instagramIcon} alt="Instagram" /></a>
+                        <a href="#" className="icon"><img src={facebookIcon} alt="Facebook" /></a>
+                        <a href="#" className="icon"><img src={tiktokIcon} alt="TikTok" /></a>
                     </div>
 
                     <h4>Newsletter</h4>
