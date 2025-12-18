@@ -22,17 +22,19 @@ const Navbar = () => {
 
         {/* Logo */}
         <div className="navbar-logo">
-          <img
-            src={logo}
-            alt="Chill Grand Logo"
-            className="logo-img"
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Chill Grand Logo"
+              className="logo-img"
+            />
+          </Link>
         </div>
 
         {/* Links */}
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
           <Link to="/" className="nav-link">Home</Link>
-          <a href="#menu" className="nav-link">Menu</a>
+          <Link to="/menu" className="nav-link">Menu</Link>
           <Link to="/plan-event" className="nav-link">Plan Your Event</Link>
           <Link to="/table-booking" className="nav-link">Table Booking</Link>
           <Link to="/about" className="nav-link">About Us</Link>

@@ -6,7 +6,7 @@
     z-index: 1000;
 
     /* REAL HEIGHT CONTROL */
-    height: 80px;
+    height: 96px;
     /* ⬅️ Navbar height */
     padding: 0 0;
 
@@ -21,7 +21,7 @@
 }
 
 .navbar.scrolled {
-    height: 65px;
+    height: 80px;
     /* Smaller on scroll */
     background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -42,14 +42,14 @@
 
 /* CONTROLLED LOGO SIZE */
 .logo-img {
-    height: 70px;
+    height: 80px;
     /* ⬅️ Big logo but fits navbar */
     width: auto;
     transition: 0.3s ease;
 }
 
 .navbar.scrolled .logo-img {
-    height: 55px;
+    height: 68px;
 }
 
 .navbar-links {
@@ -150,3 +150,10 @@
         display: flex;
     }
 }
+
+/* Remove global gap under navbar */
+:root { --navbar-height: 96px; }
+.app > main { padding-top: 0; }
+
+/* If any elements add margin-top, reset for hero section */
+.menu-page { padding-top: 0 !important; }
