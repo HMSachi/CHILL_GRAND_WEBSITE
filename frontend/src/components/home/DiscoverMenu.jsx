@@ -125,7 +125,7 @@ const DiscoverMenu = () => {
     }, [menuItems.length]);
 
     return (
-        <section className="discover-menu">
+        <section className="discover-menu" id="menu">
             <div className="container">
                 <h2 className="section-title">Discover Menu</h2>
                 <div className="underline"></div>

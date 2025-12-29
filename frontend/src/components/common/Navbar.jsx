@@ -31,19 +31,19 @@ const Navbar = () => {
 
         {/* Links */}
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
-          <Link to="/" className="nav-link">Home</Link>
-          <a href="#menu" className="nav-link">Menu</a>
-          <Link to="/plan-event" className="nav-link">Plan Your Event</Link>
-          <Link to="/table-booking" className="nav-link">Table Booking</Link>
-          <Link to="/about" className="nav-link">About Us</Link>
+          <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+          <a href="#menu" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Menu</a>
+          <Link to="/plan-event" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Plan Your Event</Link>
+          <Link to="/table-booking" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Table Booking</Link>
+          <Link to="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
         </div>
 
         {/* Actions */}
         <div className="navbar-actions">
-          <Link to="/contact" className="btn-primary">Contact Us</Link>
+          <Link to="/contact" className="btn-primary" onClick={() => setMobileMenuOpen(false)}>Contact Us</Link>
 
           <div
-            className="mobile-menu-toggle"
+            className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <span className="bar"></span>

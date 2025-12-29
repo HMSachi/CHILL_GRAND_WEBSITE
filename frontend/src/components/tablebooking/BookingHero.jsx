@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/pages/TableBooking.css';
 import heroBg from '../../assets/restaurants.jpg';
 
@@ -9,8 +10,8 @@ const BookingHero = () => {
                 <p className="hero-subtitle">Reserve table using 360° View</p>
                 <h1 className="hero-title">RESERVE YOUR TABLE</h1>
                 <div className="hero-buttons">
-                    <button className="btn-book">BOOK A TABLE</button>
-                    <button className="btn-menu">OPEN MENU</button>
+                    <Link to="/table-booking" className="btn-book">BOOK A TABLE</Link>
+                    <a href="/#menu" className="btn-menu">OPEN MENU</a>
                 </div>
             </div>
         </div>

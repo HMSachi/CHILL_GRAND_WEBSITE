@@ -1,0 +1,199 @@
+.landing-qr-section {
+    padding: 120px 20px;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    position: relative;
+}
+
+.qr-section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.qr-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.qr-text-area {
+    animation: slideInLeft 1s ease forwards;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-80px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.qr-section-title {
+    font-size: 3rem;
+    color: #1a1a2e;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.qr-section-description {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+}
+
+.qr-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.qr-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.2rem;
+    color: #333;
+    padding: 15px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.qr-feature-item:hover {
+    background: rgba(255, 43, 85, 0.05);
+    transform: translateX(10px);
+}
+
+.qr-feature-icon {
+    color: #ff2b55;
+    font-size: 1.8rem;
+    transition: transform 0.3s ease;
+}
+
+.qr-feature-item:hover .qr-feature-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.qr-code-area {
+    display: flex;
+    justify-content: center;
+    animation: slideInRight 1s ease forwards;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(80px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.qr-display-card {
+    position: relative;
+    background: white;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.qr-display-card:hover {
+    transform: translateY(-15px) rotate(2deg);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+}
+
+.qr-card-glow-effect {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, #FFD700, #ff2b55, #FFD700, #ff2b55);
+    border-radius: 30px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.qr-display-card:hover .qr-card-glow-effect {
+    opacity: 0.8;
+}
+
+.qr-code-image {
+    width: 280px;
+    height: 280px;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    transition: transform 0.5s ease;
+    animation: rotateIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0.3);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0) scale(1);
+    }
+}
+
+.qr-display-card:hover .qr-code-image {
+    transform: scale(1.05);
+}
+
+.qr-code-label {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .qr-content-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .qr-section-title {
+        font-size: 2rem;
+    }
+
+    .qr-section-description {
+        font-size: 1rem;
+    }
+
+    .qr-code-image {
+        width: 200px;
+        height: 200px;
+    }
+}

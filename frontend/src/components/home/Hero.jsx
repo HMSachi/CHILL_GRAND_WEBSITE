@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/components/Hero.css';
 import bar from '../../assets/bar.jpg';
 import bar2 from '../../assets/bar2.jpg';
@@ -39,7 +40,8 @@ const Hero = () => {
                 </p>
 
                 <div className="hero-buttons">
-                    <button className="btn-hero-menu">See Our Menus</button>
+                    <a href="#menu" className="btn-hero-menu">See Our Menus</a>
+                    <Link to="/table-booking" className="btn-hero-menu" style={{ marginLeft: '1rem', backgroundColor: 'transparent', border: '2px solid #fff' }}>Book A Table</Link>
                 </div>
             </div>
         </section>

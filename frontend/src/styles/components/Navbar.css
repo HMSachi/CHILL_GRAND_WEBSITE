@@ -148,5 +148,20 @@
 
     .mobile-menu-toggle {
         display: flex;
+        z-index: 1001;
+        /* Ensure it's above the menu */
+    }
+
+    /* Cross Mark Animation */
+    .mobile-menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .mobile-menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
     }
 }

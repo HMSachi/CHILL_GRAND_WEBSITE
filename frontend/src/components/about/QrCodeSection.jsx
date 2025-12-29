@@ -1,9 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/About.css';
 import qrBg from '../../assets/restaurants.jpg'; // Placeholder
 import qrCode from '../../assets/logo.png'; // Placeholder for QR code
 
 const QrCodeSection = () => {
+    const navigate = useNavigate();
+
+    const handleGetStarted = () => {
+        navigate('/landing');
+    };
+
     return (
         <div className="qr-section" style={{ backgroundImage: `url(${qrBg})` }}>
             <div className="qr-overlay">
@@ -23,7 +30,7 @@ const QrCodeSection = () => {
                         <img src={qrCode} alt="Scan QR Code" />
                     </div>
                     <p className="qr-instruction">Scan the QR code and order food.<br />Enjoy your meal!</p>
-                    <button className="btn-get-start">Get Start</button>
+                    <button className="btn-get-start" onClick={handleGetStarted}>Get Start</button>
                 </div>
             </div>
         </div>
