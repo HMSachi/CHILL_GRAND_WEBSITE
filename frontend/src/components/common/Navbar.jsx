@@ -22,11 +22,13 @@ const Navbar = () => {
 
         {/* Logo */}
         <div className="navbar-logo">
-          <img
-            src={logo}
-            alt="Chill Grand Logo"
-            className="logo-img"
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Chill Grand Logo"
+              className="logo-img"
+            />
+          </Link>
         </div>
 
         {/* Links */}
