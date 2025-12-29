@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/pages/About.css';
 import chefImage from '../../assets/private_dining.jpg'; // Placeholder
 
@@ -11,7 +12,7 @@ const AboutIntro = () => {
                 <p className="section-description">
                     Chill Grand Restaurant is a modern, high-quality dining destination built on a simple idea – great food starts with passion. Our chefs bring years of experience in creating authentic, freshly cooked meals that blend tradition with creativity. From sourcing the finest ingredients to preparing every dish with precision, we make sure your dining experience is unforgettable.
                 </p>
-                <button className="btn-read-more">READ MORE</button>
+                <Link to="/contact" className="btn-read-more">Contact Us</Link>
             </div>
             <div className="about-image-right">
                 <img src={chefImage} alt="Chef Plating" />

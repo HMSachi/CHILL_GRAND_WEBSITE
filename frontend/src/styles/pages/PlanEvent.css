@@ -40,7 +40,7 @@
 
 /* HERO SECTION */
 .event-hero {
-    height: 70vh;
+    height: 80vh;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -71,10 +71,11 @@
 }
 
 .event-hero-title {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 800;
     color: var(--white);
     margin-bottom: 1rem;
+    margin-top: 2rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
