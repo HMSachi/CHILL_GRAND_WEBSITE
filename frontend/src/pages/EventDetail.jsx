@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../styles/pages/EventDetail.css';
 
@@ -10,57 +10,54 @@ import food1 from '../assets/food.jpg';
 import food2 from '../assets/dessert.jpg';
 import food3 from '../assets/cocktail.jpg';
 
+// Mock Data (simulating backend)
+const eventsData = [
+    {
+        id: 1,
+        title: 'Corporate Gala 2024',
+        date: 'Dec 15, 2024',
+        coverImg: event1,
+        description: 'A wonderful night of networking and fine dining. The event featured a keynote speech by industry leaders, followed by a gourmet dinner and live jazz performance.',
+        gallery: [event1, event2, event3, event1],
+        menu: [
+            { name: 'Grilled Salmon', img: food1 },
+            { name: 'Chocolate Lava Cake', img: food2 },
+            { name: 'Signature Cocktail', img: food3 },
+        ]
+    },
+    {
+        id: 2,
+        title: 'Smith Wedding',
+        date: 'Nov 20, 2024',
+        coverImg: event2,
+        description: 'Celebrating love with a magical reception. The venue was decorated with white roses and fairy lights, creating a romantic atmosphere for the newlyweds and their guests.',
+        gallery: [event2, event3, event1, event2],
+        menu: [
+            { name: 'Roast Chicken', img: food1 },
+            { name: 'Wedding Cake', img: food2 },
+            { name: 'Champagne', img: food3 },
+        ]
+    },
+    {
+        id: 3,
+        title: 'Tech Meetup',
+        date: 'Oct 05, 2024',
+        coverImg: event3,
+        description: 'Innovative discussions over great food. Tech enthusiasts gathered to discuss the latest trends in AI and web development, accompanied by a casual buffet.',
+        gallery: [event3, event1, event2, event3],
+        menu: [
+            { name: 'Mini Burgers', img: food1 },
+            { name: 'Fruit Tart', img: food2 },
+            { name: 'Craft Beer', img: food3 },
+        ]
+    },
+];
+
 const EventDetail = () => {
     const { id } = useParams();
-    const [event, setEvent] = useState(null);
 
-    // Mock Data (simulating backend)
-    const eventsData = [
-        {
-            id: 1,
-            title: 'Corporate Gala 2024',
-            date: 'Dec 15, 2024',
-            coverImg: event1,
-            description: 'A wonderful night of networking and fine dining. The event featured a keynote speech by industry leaders, followed by a gourmet dinner and live jazz performance.',
-            gallery: [event1, event2, event3, event1],
-            menu: [
-                { name: 'Grilled Salmon', img: food1 },
-                { name: 'Chocolate Lava Cake', img: food2 },
-                { name: 'Signature Cocktail', img: food3 },
-            ]
-        },
-        {
-            id: 2,
-            title: 'Smith Wedding',
-            date: 'Nov 20, 2024',
-            coverImg: event2,
-            description: 'Celebrating love with a magical reception. The venue was decorated with white roses and fairy lights, creating a romantic atmosphere for the newlyweds and their guests.',
-            gallery: [event2, event3, event1, event2],
-            menu: [
-                { name: 'Roast Chicken', img: food1 },
-                { name: 'Wedding Cake', img: food2 },
-                { name: 'Champagne', img: food3 },
-            ]
-        },
-        {
-            id: 3,
-            title: 'Tech Meetup',
-            date: 'Oct 05, 2024',
-            coverImg: event3,
-            description: 'Innovative discussions over great food. Tech enthusiasts gathered to discuss the latest trends in AI and web development, accompanied by a casual buffet.',
-            gallery: [event3, event1, event2, event3],
-            menu: [
-                { name: 'Mini Burgers', img: food1 },
-                { name: 'Fruit Tart', img: food2 },
-                { name: 'Craft Beer', img: food3 },
-            ]
-        },
-    ];
-
-    useEffect(() => {
-        // Simulate fetching data
-        const foundEvent = eventsData.find(e => e.id === parseInt(id));
-        setEvent(foundEvent);
+    const event = React.useMemo(() => {
+        return eventsData.find(e => e.id === parseInt(id));
     }, [id]);
 
     if (!event) {
