@@ -24,7 +24,11 @@ const CategoriesPage = () => {
 
             <div className="categories-grid">
                 {categories.map((category) => (
-                    <div key={category.id} className="category-card">
+                    <div
+                        key={category.id}
+                        className="category-card"
+                        onClick={() => navigate(`/menu/${category.id}`)}
+                    >
                         <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
                             <img
                                 src={category.image}

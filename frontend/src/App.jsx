@@ -11,6 +11,7 @@ import EventDetail from './pages/EventDetail';
 import EventInquiry from './pages/EventInquiry';
 import LandingPage from './QRweb/LandingPage';
 import CategoriesPage from './QRweb/CategoriesPage';
+import MenuItemsPage from './QRweb/MenuItemsPage';
 import './styles/global.css';
 import './App.css';
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/menu/:categoryId" element={<MenuItemsPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/table-booking" element={<TableBooking />} />
           <Route path="/about" element={<About />} />
