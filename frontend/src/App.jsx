@@ -9,7 +9,7 @@ import About from './pages/About';
 import PlanEvent from './pages/PlanEvent';
 import EventDetail from './pages/EventDetail';
 import EventInquiry from './pages/EventInquiry';
-import LandingPage from './pages/LandingPage';
+import LandingPage from './QRweb/LandingPage';
 import './styles/global.css';
 import './App.css';
 
@@ -20,13 +20,14 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/table-booking" element={<TableBooking />} />
           <Route path="/about" element={<About />} />
           <Route path="/plan-event" element={<PlanEvent />} />
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/event-inquiry" element={<EventInquiry />} />
-          <Route path="/landing" element={<LandingPage />} />
+
         </Routes>
       </main>
       <Footer />
