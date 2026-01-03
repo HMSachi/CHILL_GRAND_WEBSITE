@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaQrcode } from 'react-icons/fa';
 import '../../styles/components/landing/LandingCTA.css';
 
 const LandingCTA = () => {
+    const navigate = useNavigate();
+
     return (
         <section className="landing-cta-section">
             <div className="cta-section-content">
@@ -10,7 +13,7 @@ const LandingCTA = () => {
                 <p className="cta-section-description">
                     Join thousands of satisfied diners who trust Chill Grand
                 </p>
-                <button className="cta-action-btn">
+                <button className="cta-action-btn" onClick={() => navigate('/categories')}>
                     <FaQrcode className="cta-btn-icon" />
                     View Categories Now
                 </button>
