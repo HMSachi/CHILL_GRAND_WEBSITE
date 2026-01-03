@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../../styles/components/landing/FullScreenSlider.css';
-import logo from '../../assets/logo.png';
-import barImage from '../../assets/bar.jpg';
-import bgImage from '../../assets/bg.jpg';
-import backImage from '../../assets/back.jpg';
-import restaurantImage from '../../assets/restaurants.jpg';
-import dessertImage from '../../assets/dessert.jpg';
+import logo from '../../../assets/logo.png';
+import barImage from '../../../assets/bar.jpg';
+import bgImage from '../../../assets/bg.jpg';
+import backImage from '../../../assets/back.jpg';
+import restaurantImage from '../../../assets/restaurants.jpg';
+import dessertImage from '../../../assets/dessert.jpg';
 
 const FullScreenSlider = () => {
     const [currentSlide, setCurrentSlide] = useState(0);

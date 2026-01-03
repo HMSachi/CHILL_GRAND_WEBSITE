@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUtensils, FaClock, FaStar } from 'react-icons/fa';
 import '../../styles/components/landing/LandingQrSection.css';
-import logo from '../../assets/logo.png';
+import logo from '../../../assets/logo.png';
 
 const LandingQrSection = () => {
     return (
