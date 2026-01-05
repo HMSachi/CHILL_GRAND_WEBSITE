@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackButton from './components/BackButton';
+import TrendingSection from './components/TrendingSection';
 import { categories } from './dummy/categoriesData';
 import './styles/CategoriesPage.css';
 
@@ -14,9 +15,9 @@ const CategoriesPage = () => {
 
     return (
         <div className="categories-page">
+            <TrendingSection />
             <div className="categories-header">
                 <div className="header-top">
-                    <BackButton to="/landing" />
                     <h1 className="categories-title">Our Menu Categories</h1>
                 </div>
                 <p className="categories-subtitle">Explore our wide range of delicious offerings</p>
