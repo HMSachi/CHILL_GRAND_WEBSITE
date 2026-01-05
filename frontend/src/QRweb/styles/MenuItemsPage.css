@@ -2,7 +2,7 @@
     min-height: 100vh;
     background: #0f172a;
     color: #f8fafc;
-    padding: 100px 1rem 2rem;
+    padding: 160px 1rem 2rem;
     font-family: 'Inter', sans-serif;
 }
 
@@ -201,7 +201,7 @@
 
 @media (max-width: 768px) {
     .menu-items-page {
-        padding-top: 80px;
+        padding-top: 120px;
     }
 
     .category-name {

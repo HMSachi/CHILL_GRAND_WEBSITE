@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingBag, FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
 import BackButton from './components/BackButton';
+import FloatingCart from './components/FloatingCart';
 import { useOrder } from './OrderContext';
 import './styles/MyOrdersPage.css';
 
@@ -66,6 +67,7 @@ const MyOrdersPage = () => {
                     </div>
                 )}
             </div>
+            <FloatingCart />
         </div>
     );
 };

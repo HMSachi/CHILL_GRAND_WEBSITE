@@ -19,14 +19,11 @@
     padding: 0.5rem;
     padding-bottom: 1.5rem;
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE and Edge */
 }
 
 .trending-scroll-container::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Opera */
 }
 
 .trending-card {
@@ -64,35 +61,49 @@
 
 .trending-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    bottom: 15px;
+    left: 15px;
     background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
     color: #0f172a;
-    padding: 0.25rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 1.5rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
-.trending-info {
-    padding: 1rem;
+.trending-add-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: #fbbf24;
+    border: none;
+    border-radius: 50%;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    z-index: 3;
 }
 
-.trending-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #f8fafc;
-    margin-bottom: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.trending-card:hover .trending-add-btn {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.trending-price {
-    color: #fbbf24;
-    font-weight: 700;
-    font-size: 0.9rem;
+.trending-add-btn:hover {
+    background: white;
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
@@ -106,5 +117,12 @@
 
     .trending-title {
         font-size: 1.25rem;
+    }
+
+    .trending-add-btn {
+        opacity: 1;
+        transform: none;
+        width: 32px;
+        height: 32px;
     }
 }

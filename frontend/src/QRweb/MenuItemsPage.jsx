@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import BackButton from './components/BackButton';
+import FloatingCart from './components/FloatingCart';
 import { useOrder } from './OrderContext';
 import { menuItems } from './dummy/menuItemsData';
 import { categories } from './dummy/categoriesData';
@@ -89,6 +90,7 @@ const MenuItemsPage = () => {
                     </div>
                 )}
             </div>
+            <FloatingCart />
         </div>
     );
 };
