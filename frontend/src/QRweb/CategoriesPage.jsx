@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import BackButton from './components/BackButton';
 import { categories } from './dummy/categoriesData';
 import './styles/CategoriesPage.css';
 
@@ -15,10 +15,10 @@ const CategoriesPage = () => {
     return (
         <div className="categories-page">
             <div className="categories-header">
-                <button className="back-btn" onClick={() => navigate('/landing')}>
-                    <FaArrowLeft />
-                </button>
-                <h1 className="categories-title">Our Menu Categories</h1>
+                <div className="header-top">
+                    <BackButton to="/landing" />
+                    <h1 className="categories-title">Our Menu Categories</h1>
+                </div>
                 <p className="categories-subtitle">Explore our wide range of delicious offerings</p>
             </div>
 
