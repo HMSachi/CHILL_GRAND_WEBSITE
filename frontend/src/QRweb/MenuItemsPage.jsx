@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
+import { useOrder } from './OrderContext';
 import { menuItems } from './dummy/menuItemsData';
 import { categories } from './dummy/categoriesData';
 import './styles/MenuItemsPage.css';
@@ -8,6 +9,7 @@ import './styles/MenuItemsPage.css';
 const MenuItemsPage = () => {
     const { categoryId } = useParams();
     const navigate = useNavigate();
+    const { addToOrder } = useOrder();
     const [searchTerm, setSearchTerm] = useState('');
     const [loadedImages, setLoadedImages] = useState({});
 
@@ -19,6 +21,11 @@ const MenuItemsPage = () => {
 
     const handleImageLoad = (id) => {
         setLoadedImages(prev => ({ ...prev, [id]: true }));
+    };
+
+    const handleAddToOrder = (item) => {
+        addToOrder(item);
+        navigate('/my-orders');
     };
 
     if (!category) {
@@ -68,7 +75,12 @@ const MenuItemsPage = () => {
                                     <span className="item-price">{item.price}</span>
                                 </div>
                                 <p className="item-description">{item.description}</p>
-                                <button className="add-to-cart-btn">Add to Order</button>
+                                <button
+                                    className="add-to-cart-btn"
+                                    onClick={() => handleAddToOrder(item)}
+                                >
+                                    Add to Order
+                                </button>
                             </div>
                         </div>
                     ))
