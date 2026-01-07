@@ -15,6 +15,7 @@ const CategoriesPage = () => {
     const [loadedImages, setLoadedImages] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || null);
 
     useEffect(() => {
         if (searchTerm.trim() === '') {
@@ -31,6 +32,10 @@ const CategoriesPage = () => {
     const handleImageLoad = (id) => {
         setLoadedImages(prev => ({ ...prev, [id]: true }));
     };
+
+    const categoryItems = selectedCategory
+        ? menuItems.filter(item => item.categoryId === selectedCategory)
+        : [];
 
     return (
         <div className="categories-page">
@@ -83,26 +88,63 @@ const CategoriesPage = () => {
                     </div>
                 </div>
             ) : (
-                <div className="categories-grid">
-                    {categories.map((category) => (
-                        <div
-                            key={category.id}
-                            className="category-card"
-                            onClick={() => navigate(`/menu/${category.id}`)}
-                        >
-                            <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
-                                <img
-                                    src={category.image}
-                                    alt={category.name}
-                                    className="category-image"
-                                    loading="lazy"
-                                    onLoad={() => handleImageLoad(category.id)}
-                                />
+                <>
+                    <div className="categories-grid">
+                        {categories.map((category) => (
+                            <div
+                                key={category.id}
+                                className={`category-card ${selectedCategory === category.id ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(category.id)}
+                            >
+                                <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
+                                    <img
+                                        src={category.image}
+                                        alt={category.name}
+                                        className="category-image"
+                                        loading="lazy"
+                                        onLoad={() => handleImageLoad(category.id)}
+                                    />
+                                </div>
+                                <h3 className="category-name">{category.name}</h3>
                             </div>
-                            <h3 className="category-name">{category.name}</h3>
+                        ))}
+                    </div>
+
+                    {selectedCategory && (
+                        <div className="category-items-section">
+                            <h2 className="section-title">
+                                {categories.find(c => c.id === selectedCategory)?.name}
+                            </h2>
+                            <div className="items-grid">
+                                {categoryItems.map(item => (
+                                    <div key={item.id} className="menu-item-card">
+                                        <div className={`item-image-wrapper ${loadedImages[item.id] ? 'loaded' : 'loading'}`}>
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="item-image"
+                                                onLoad={() => handleImageLoad(item.id)}
+                                            />
+                                        </div>
+                                        <div className="item-info">
+                                            <div className="item-header">
+                                                <h3 className="item-name">{item.name}</h3>
+                                                <span className="item-price">{item.price}</span>
+                                            </div>
+                                            <p className="item-description">{item.description}</p>
+                                            <button
+                                                className="add-to-cart-btn"
+                                                onClick={() => addToOrder(item)}
+                                            >
+                                                Add to Order
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    ))}
-                </div>
+                    )}
+                </>
             )}
 
             <FloatingCart />

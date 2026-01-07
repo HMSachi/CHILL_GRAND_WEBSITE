@@ -213,6 +213,35 @@
     transform: scale(1.05);
 }
 
+.categories-page .category-card.active .category-image-wrapper {
+    border-color: #fbbf24;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+    transform: scale(1.1);
+}
+
+.categories-page .category-card.active .category-name {
+    color: #fbbf24;
+    text-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+    transform: scale(1.1);
+}
+
+.categories-page .category-items-section {
+    margin-top: 3rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 768px) {
     .categories-page {
         padding-top: 130px;
