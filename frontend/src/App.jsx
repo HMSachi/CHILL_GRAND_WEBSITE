@@ -1,6 +1,7 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
+import QRNavbar from './QRweb/components/QRNavbar';
 import Footer from './components/common/Footer';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
@@ -17,9 +18,14 @@ import './styles/global.css';
 import './App.css';
 
 function App() {
+  const location = useLocation();
+  const isQRweb = ['/landing', '/categories', '/menu', '/my-orders'].some(path =>
+    location.pathname.startsWith(path)
+  );
+
   return (
     <div className="app">
-      <Navbar />
+      {isQRweb ? <QRNavbar /> : <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

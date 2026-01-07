@@ -11,24 +11,24 @@ import saladImg from '../../assets/salad.jpg';
 
 export const menuItems = [
     // Starters (Category ID: 1)
-    { id: 101, categoryId: 1, name: 'Crispy Spring Rolls', price: 'Rs. 850', description: 'Vegetable spring rolls served with sweet chili sauce.', image: startersImg },
+    { id: 101, categoryId: 1, name: 'Crispy Spring Rolls', price: 'Rs. 850', description: 'Vegetable spring rolls served with sweet chili sauce.', image: startersImg, trending: true },
     { id: 102, categoryId: 1, name: 'Garlic Bread', price: 'Rs. 650', description: 'Toasted bread with garlic butter and herbs.', image: startersImg },
-    { id: 103, categoryId: 1, name: 'Chicken Wings', price: 'Rs. 1200', description: 'Spicy buffalo wings with blue cheese dip.', image: startersImg },
+    { id: 103, categoryId: 1, name: 'Chicken Wings', price: 'Rs. 1200', description: 'Spicy buffalo wings with blue cheese dip.', image: startersImg, trending: true },
 
     // Main Course (Category ID: 2)
-    { id: 201, categoryId: 2, name: 'Mixed Fried Rice', price: 'Rs. 1850', description: 'Classic fried rice with chicken, shrimp, and vegetables.', image: riceImg },
+    { id: 201, categoryId: 2, name: 'Mixed Fried Rice', price: 'Rs. 1850', description: 'Classic fried rice with chicken, shrimp, and vegetables.', image: riceImg, trending: true },
     { id: 202, categoryId: 2, name: 'Vegetable Curry', price: 'Rs. 1450', description: 'Assorted vegetables cooked in traditional Sri Lankan spices.', image: riceImg },
 
     // Seafood (Category ID: 3)
-    { id: 301, categoryId: 3, name: 'Grilled Lobster', price: 'Rs. 4500', description: 'Fresh lobster grilled with lemon butter sauce.', image: seafoodImg },
+    { id: 301, categoryId: 3, name: 'Grilled Lobster', price: 'Rs. 4500', description: 'Fresh lobster grilled with lemon butter sauce.', image: seafoodImg, trending: true },
     { id: 302, categoryId: 3, name: 'Fish and Chips', price: 'Rs. 1950', description: 'Crispy battered fish served with fries and tartar sauce.', image: seafoodImg },
 
     // Chicken (Category ID: 4)
-    { id: 401, categoryId: 4, name: 'Devilled Chicken', price: 'Rs. 1650', description: 'Spicy chicken stir-fry with onions and peppers.', image: chickenImg },
+    { id: 401, categoryId: 4, name: 'Devilled Chicken', price: 'Rs. 1650', description: 'Spicy chicken stir-fry with onions and peppers.', image: chickenImg, trending: true },
     { id: 402, categoryId: 4, name: 'Roast Chicken', price: 'Rs. 2200', description: 'Half chicken roasted with herbs and gravy.', image: chickenImg },
 
     // Beef (Category ID: 5)
-    { id: 501, categoryId: 5, name: 'Beef Steak', price: 'Rs. 3200', description: 'Tender beef steak served with mashed potatoes.', image: beefImg },
+    { id: 501, categoryId: 5, name: 'Beef Steak', price: 'Rs. 3200', description: 'Tender beef steak served with mashed potatoes.', image: beefImg, trending: true },
     { id: 502, categoryId: 5, name: 'Beef Burger', price: 'Rs. 1850', description: 'Juicy beef patty with cheese and caramelized onions.', image: beefImg },
 
     // Pork (Category ID: 6)
@@ -36,7 +36,7 @@ export const menuItems = [
     { id: 602, categoryId: 6, name: 'Devilled Pork', price: 'Rs. 1750', description: 'Spicy pork stir-fry with traditional spices.', image: porkImg },
 
     // Desserts (Category ID: 7)
-    { id: 701, categoryId: 7, name: 'Chocolate Lava Cake', price: 'Rs. 950', description: 'Warm chocolate cake with a gooey center.', image: dessertImg },
+    { id: 701, categoryId: 7, name: 'Chocolate Lava Cake', price: 'Rs. 950', description: 'Warm chocolate cake with a gooey center.', image: dessertImg, trending: true },
     { id: 702, categoryId: 7, name: 'Fruit Salad', price: 'Rs. 750', description: 'Fresh seasonal fruit salad with honey.', image: dessertImg },
 
     // Cocktails (Category ID: 8)

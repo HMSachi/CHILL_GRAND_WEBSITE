@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
+import BackButton from './components/BackButton';
+import FloatingCart from './components/FloatingCart';
 import { useOrder } from './OrderContext';
 import { menuItems } from './dummy/menuItemsData';
 import { categories } from './dummy/categoriesData';
@@ -41,9 +43,7 @@ const MenuItemsPage = () => {
         <div className="menu-items-page">
             <div className="menu-items-header">
                 <div className="header-top">
-                    <button className="back-btn" onClick={() => navigate('/categories')}>
-                        <FaArrowLeft />
-                    </button>
+                    <BackButton to="/categories" />
                     <h1 className="category-name">{category.name}</h1>
                 </div>
                 <div className="search-bar">
@@ -90,6 +90,7 @@ const MenuItemsPage = () => {
                     </div>
                 )}
             </div>
+            <FloatingCart />
         </div>
     );
 };

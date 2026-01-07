@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaShoppingBag, FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
+import { FaShoppingBag, FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
+import BackButton from './components/BackButton';
+import FloatingCart from './components/FloatingCart';
 import { useOrder } from './OrderContext';
 import './styles/MyOrdersPage.css';
 
@@ -12,9 +14,7 @@ const MyOrdersPage = () => {
         <div className="my-orders-page">
             <div className="my-orders-header">
                 <div className="header-top">
-                    <button className="back-btn" onClick={() => navigate('/categories')}>
-                        <FaArrowLeft />
-                    </button>
+                    <BackButton to="/categories" />
                     <h1 className="page-title">My Orders</h1>
                 </div>
             </div>
@@ -67,6 +67,7 @@ const MyOrdersPage = () => {
                     </div>
                 )}
             </div>
+            <FloatingCart />
         </div>
     );
 };
