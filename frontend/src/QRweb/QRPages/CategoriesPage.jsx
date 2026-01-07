@@ -14,8 +14,8 @@ const CategoriesPage = () => {
     const { addToOrder } = useOrder();
     const [loadedImages, setLoadedImages] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState(null);
     const [filteredItems, setFilteredItems] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || null);
 
     useEffect(() => {
         if (searchTerm.trim() === '') {
@@ -33,14 +33,12 @@ const CategoriesPage = () => {
         setLoadedImages(prev => ({ ...prev, [id]: true }));
     };
 
-    const handleCategoryClick = (catId) => {
-        navigate(`/menu/${catId}`);
-    };
+    const categoryItems = selectedCategory
+        ? menuItems.filter(item => item.categoryId === selectedCategory)
+        : [];
 
     return (
         <div className="categories-page">
-
-
             <div className="smart-menu-controls">
                 <div className="search-container">
                     <FaSearch className="search-icon" />
@@ -51,24 +49,6 @@ const CategoriesPage = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="smart-search-input"
                     />
-                </div>
-
-                <div className="category-chips">
-                    <button
-                        className={`chip ${!selectedCategory ? 'active' : ''}`}
-                        onClick={() => setSelectedCategory(null)}
-                    >
-                        All
-                    </button>
-                    {categories.map(cat => (
-                        <button
-                            key={cat.id}
-                            className={`chip ${selectedCategory === cat.id ? 'active' : ''}`}
-                            onClick={() => handleCategoryClick(cat.id)}
-                        >
-                            {cat.name}
-                        </button>
-                    ))}
                 </div>
             </div>
 
@@ -109,17 +89,12 @@ const CategoriesPage = () => {
                 </div>
             ) : (
                 <>
-                    <div className="categories-header">
-                        <h1 className="categories-title">Our Menu Categories</h1>
-                        <p className="categories-subtitle">Explore our wide range of delicious offerings</p>
-                    </div>
-
                     <div className="categories-grid">
                         {categories.map((category) => (
                             <div
                                 key={category.id}
-                                className="category-card"
-                                onClick={() => navigate(`/menu/${category.id}`)}
+                                className={`category-card ${selectedCategory === category.id ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(category.id)}
                             >
                                 <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
                                     <img
@@ -129,17 +104,46 @@ const CategoriesPage = () => {
                                         loading="lazy"
                                         onLoad={() => handleImageLoad(category.id)}
                                     />
-                                    <div className="category-overlay">
-                                        <span className="item-count">{category.count} Items</span>
-                                    </div>
                                 </div>
-                                <div className="category-info">
-                                    <h3 className="category-name">{category.name}</h3>
-                                    <button className="view-items-btn">View Items</button>
-                                </div>
+                                <h3 className="category-name">{category.name}</h3>
                             </div>
                         ))}
                     </div>
+
+                    {selectedCategory && (
+                        <div className="category-items-section">
+                            <h2 className="section-title">
+                                {categories.find(c => c.id === selectedCategory)?.name}
+                            </h2>
+                            <div className="items-grid">
+                                {categoryItems.map(item => (
+                                    <div key={item.id} className="menu-item-card">
+                                        <div className={`item-image-wrapper ${loadedImages[item.id] ? 'loaded' : 'loading'}`}>
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="item-image"
+                                                onLoad={() => handleImageLoad(item.id)}
+                                            />
+                                        </div>
+                                        <div className="item-info">
+                                            <div className="item-header">
+                                                <h3 className="item-name">{item.name}</h3>
+                                                <span className="item-price">{item.price}</span>
+                                            </div>
+                                            <p className="item-description">{item.description}</p>
+                                            <button
+                                                className="add-to-cart-btn"
+                                                onClick={() => addToOrder(item)}
+                                            >
+                                                Add to Order
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </>
             )}
 
