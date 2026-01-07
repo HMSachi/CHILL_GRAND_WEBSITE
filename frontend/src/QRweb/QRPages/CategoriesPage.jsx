@@ -14,7 +14,6 @@ const CategoriesPage = () => {
     const { addToOrder } = useOrder();
     const [loadedImages, setLoadedImages] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState(null);
     const [filteredItems, setFilteredItems] = useState([]);
 
     useEffect(() => {
@@ -33,14 +32,8 @@ const CategoriesPage = () => {
         setLoadedImages(prev => ({ ...prev, [id]: true }));
     };
 
-    const handleCategoryClick = (catId) => {
-        navigate(`/menu/${catId}`);
-    };
-
     return (
         <div className="categories-page">
-
-
             <div className="smart-menu-controls">
                 <div className="search-container">
                     <FaSearch className="search-icon" />
@@ -51,24 +44,6 @@ const CategoriesPage = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="smart-search-input"
                     />
-                </div>
-
-                <div className="category-chips">
-                    <button
-                        className={`chip ${!selectedCategory ? 'active' : ''}`}
-                        onClick={() => setSelectedCategory(null)}
-                    >
-                        All
-                    </button>
-                    {categories.map(cat => (
-                        <button
-                            key={cat.id}
-                            className={`chip ${selectedCategory === cat.id ? 'active' : ''}`}
-                            onClick={() => handleCategoryClick(cat.id)}
-                        >
-                            {cat.name}
-                        </button>
-                    ))}
                 </div>
             </div>
 
@@ -108,39 +83,26 @@ const CategoriesPage = () => {
                     </div>
                 </div>
             ) : (
-                <>
-                    <div className="categories-header">
-                        <h1 className="categories-title">Our Menu Categories</h1>
-                        <p className="categories-subtitle">Explore our wide range of delicious offerings</p>
-                    </div>
-
-                    <div className="categories-grid">
-                        {categories.map((category) => (
-                            <div
-                                key={category.id}
-                                className="category-card"
-                                onClick={() => navigate(`/menu/${category.id}`)}
-                            >
-                                <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
-                                    <img
-                                        src={category.image}
-                                        alt={category.name}
-                                        className="category-image"
-                                        loading="lazy"
-                                        onLoad={() => handleImageLoad(category.id)}
-                                    />
-                                    <div className="category-overlay">
-                                        <span className="item-count">{category.count} Items</span>
-                                    </div>
-                                </div>
-                                <div className="category-info">
-                                    <h3 className="category-name">{category.name}</h3>
-                                    <button className="view-items-btn">View Items</button>
-                                </div>
+                <div className="categories-grid">
+                    {categories.map((category) => (
+                        <div
+                            key={category.id}
+                            className="category-card"
+                            onClick={() => navigate(`/menu/${category.id}`)}
+                        >
+                            <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
+                                <img
+                                    src={category.image}
+                                    alt={category.name}
+                                    className="category-image"
+                                    loading="lazy"
+                                    onLoad={() => handleImageLoad(category.id)}
+                                />
                             </div>
-                        ))}
-                    </div>
-                </>
+                            <h3 className="category-name">{category.name}</h3>
+                        </div>
+                    ))}
+                </div>
             )}
 
             <FloatingCart />
