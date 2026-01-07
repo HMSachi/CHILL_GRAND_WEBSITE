@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 
 import App from './App.jsx'
-import { OrderProvider } from './QRweb/OrderContext'
+import { OrderProvider } from './QRweb/QRPages/OrderContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,9 +1,9 @@
 import React from 'react';
-import FullScreenSlider from './components/landing/FullScreenSlider';
-import LandingQrSection from './components/landing/LandingQrSection';
+import FullScreenSlider from '../components/landing/FullScreenSlider';
+import LandingQrSection from '../components/landing/LandingQrSection';
 
-import LandingCTA from './components/landing/LandingCTA';
-import './styles/LandingPage.css';
+import LandingCTA from '../components/landing/LandingCTA';
+import '../styles/LandingPage.css';
 
 const LandingPage = () => {
     return (

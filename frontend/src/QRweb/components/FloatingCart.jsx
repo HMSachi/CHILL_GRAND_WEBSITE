@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingBag } from 'react-icons/fa';
-import { useOrder } from '../OrderContext';
+import { useOrder } from '../QRPages/OrderContext';
 import '../styles/FloatingCart.css';
 
 const FloatingCart = () => {
