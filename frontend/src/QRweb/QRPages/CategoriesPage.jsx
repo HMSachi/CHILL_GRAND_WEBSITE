@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-import BackButton from './components/BackButton';
-import TrendingSection from './components/TrendingSection';
-import FloatingCart from './components/FloatingCart';
-import { categories } from './dummy/categoriesData';
-import { menuItems } from './dummy/menuItemsData';
+import BackButton from '../components/BackButton';
+
+import FloatingCart from '../components/FloatingCart';
+import { categories } from '../dummy/categoriesData';
+import { menuItems } from '../dummy/menuItemsData';
 import { useOrder } from './OrderContext';
-import './styles/CategoriesPage.css';
+import '../styles/CategoriesPage.css';
 
 const CategoriesPage = () => {
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ const CategoriesPage = () => {
 
     return (
         <div className="categories-page">
-            <TrendingSection />
+
 
             <div className="smart-menu-controls">
                 <div className="search-container">

@@ -10,10 +10,10 @@ import About from './pages/About';
 import PlanEvent from './pages/PlanEvent';
 import EventDetail from './pages/EventDetail';
 import EventInquiry from './pages/EventInquiry';
-import LandingPage from './QRweb/LandingPage';
-import CategoriesPage from './QRweb/CategoriesPage';
-import MenuItemsPage from './QRweb/MenuItemsPage';
-import MyOrdersPage from './QRweb/MyOrdersPage';
+import LandingPage from './QRweb/QRPages/LandingPage';
+import CategoriesPage from './QRweb/QRPages/CategoriesPage';
+import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
+import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
 import './styles/global.css';
 import './App.css';
 

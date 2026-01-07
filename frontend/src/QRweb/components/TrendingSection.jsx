@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
-import { useOrder } from '../OrderContext';
+import { useOrder } from '../QRPages/OrderContext';
 import { menuItems } from '../dummy/menuItemsData';
 import '../styles/TrendingSection.css';
 
