@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import BackButton from '../components/BackButton';
 import FloatingCart from '../components/FloatingCart';
+import OrderSidebar from '../components/OrderSidebar';
 import { useOrder } from './OrderContext';
 import { menuItems } from '../dummy/menuItemsData';
 import { categories } from '../dummy/categoriesData';
@@ -14,6 +15,7 @@ const MenuItemsPage = () => {
     const { addToOrder } = useOrder();
     const [searchTerm, setSearchTerm] = useState('');
     const [loadedImages, setLoadedImages] = useState({});
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const category = categories.find(c => c.id === parseInt(categoryId));
     const filteredItems = menuItems.filter(item =>
@@ -27,7 +29,7 @@ const MenuItemsPage = () => {
 
     const handleAddToOrder = (item) => {
         addToOrder(item);
-        navigate('/my-orders');
+        setIsSidebarOpen(true);
     };
 
     if (!category) {
@@ -40,7 +42,7 @@ const MenuItemsPage = () => {
     }
 
     return (
-        <div className="menu-items-page">
+        <div className={`menu-items-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="menu-items-header">
                 <div className="header-top">
                     <BackButton to="/categories" />
@@ -90,7 +92,8 @@ const MenuItemsPage = () => {
                     </div>
                 )}
             </div>
-            <FloatingCart />
+            {!isSidebarOpen && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
+            <OrderSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         </div>
     );
 };

@@ -2,6 +2,13 @@
     padding: 160px 0 100px;
     min-height: 100vh;
     background: #0f172a;
+    transition: padding-right 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+    .categories-page.sidebar-open {
+        padding-right: 350px;
+    }
 }
 
 .categories-page .smart-menu-controls {
@@ -256,13 +263,44 @@
 
 @media (max-width: 768px) {
     .categories-page {
-        padding-top: 130px;
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+
+    .categories-page.sidebar-open {
+        padding-right: 180px;
+    }
+
+    .categories-page .categories-grid {
+        justify-content: flex-start;
+        padding: 1rem;
+        gap: 1.5rem;
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    .categories-page .category-card {
+        min-width: 70px;
+    }
+
+    .categories-page .category-image-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+
+    .categories-page .section-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
     }
 
     .categories-page .items-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 0.75rem;
         padding: 0 0.75rem;
+    }
+
+    .categories-page.sidebar-open .items-grid {
+        grid-template-columns: 1fr;
     }
 
     .categories-page .menu-item-card {
@@ -270,7 +308,7 @@
     }
 
     .categories-page .item-image-wrapper {
-        height: 120px;
+        height: 110px;
     }
 
     .categories-page .item-info {
@@ -278,7 +316,8 @@
     }
 
     .categories-page .item-name {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
     }
 
     .categories-page .item-price {
@@ -286,13 +325,15 @@
     }
 
     .categories-page .item-description {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         margin-bottom: 0.75rem;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
     }
 
     .categories-page .add-to-cart-btn {
-        padding: 0.6rem;
+        padding: 0.5rem;
         font-size: 0.75rem;
-        border-radius: 0.6rem;
+        border-radius: 0.5rem;
     }
 }
