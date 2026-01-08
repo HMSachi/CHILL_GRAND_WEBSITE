@@ -4,6 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import BackButton from '../components/BackButton';
 
 import FloatingCart from '../components/FloatingCart';
+import OrderSidebar from '../components/OrderSidebar';
 import { categories } from '../dummy/categoriesData';
 import { menuItems } from '../dummy/menuItemsData';
 import { useOrder } from './OrderContext';
@@ -16,6 +17,7 @@ const CategoriesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         if (searchTerm.trim() === '') {
@@ -33,12 +35,17 @@ const CategoriesPage = () => {
         setLoadedImages(prev => ({ ...prev, [id]: true }));
     };
 
+    const handleAddToOrder = (item) => {
+        addToOrder(item);
+        setIsSidebarOpen(true);
+    };
+
     const categoryItems = selectedCategory
         ? menuItems.filter(item => item.categoryId === selectedCategory)
         : [];
 
     return (
-        <div className="categories-page">
+        <div className={`categories-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="smart-menu-controls">
                 <div className="search-container">
                     <FaSearch className="search-icon" />
@@ -75,7 +82,7 @@ const CategoriesPage = () => {
                                         <p className="item-description">{item.description}</p>
                                         <button
                                             className="add-to-cart-btn"
-                                            onClick={() => addToOrder(item)}
+                                            onClick={() => handleAddToOrder(item)}
                                         >
                                             Add to Order
                                         </button>
@@ -134,7 +141,7 @@ const CategoriesPage = () => {
                                             <p className="item-description">{item.description}</p>
                                             <button
                                                 className="add-to-cart-btn"
-                                                onClick={() => addToOrder(item)}
+                                                onClick={() => handleAddToOrder(item)}
                                             >
                                                 Add to Order
                                             </button>
@@ -147,7 +154,8 @@ const CategoriesPage = () => {
                 </>
             )}
 
-            <FloatingCart />
+            {!isSidebarOpen && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
+            <OrderSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         </div>
     );
 };

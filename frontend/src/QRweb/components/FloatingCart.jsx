@@ -4,7 +4,7 @@ import { FaShoppingBag } from 'react-icons/fa';
 import { useOrder } from '../QRPages/OrderContext';
 import '../styles/FloatingCart.css';
 
-const FloatingCart = () => {
+const FloatingCart = ({ onClick }) => {
     const navigate = useNavigate();
     const { orderItems } = useOrder();
 
@@ -13,7 +13,7 @@ const FloatingCart = () => {
     if (itemCount === 0) return null;
 
     return (
-        <div className="floating-cart" onClick={() => navigate('/my-orders')}>
+        <div className="floating-cart" onClick={onClick || (() => navigate('/my-orders'))}>
             <div className="cart-content">
                 <FaShoppingBag className="cart-icon" />
                 <span className="cart-count">{itemCount}</span>
