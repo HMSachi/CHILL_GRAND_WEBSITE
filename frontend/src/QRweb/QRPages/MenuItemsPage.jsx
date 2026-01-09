@@ -7,6 +7,7 @@ import OrderSidebar from '../components/OrderSidebar';
 import { useOrder } from './OrderContext';
 import { menuItems } from '../dummy/menuItemsData';
 import { categories } from '../dummy/categoriesData';
+import QRFooter from '../components/QRFooter';
 import '../styles/MenuItemsPage.css';
 
 const MenuItemsPage = () => {
@@ -94,6 +95,7 @@ const MenuItemsPage = () => {
             </div>
             {!isSidebarOpen && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
             <OrderSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            <QRFooter />
         </div>
     );
 };

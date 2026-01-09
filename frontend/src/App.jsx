@@ -42,7 +42,7 @@ function App() {
 
         </Routes>
       </main>
-      <Footer />
+      {!isQRweb && <Footer />}
     </div>
   );
 }
