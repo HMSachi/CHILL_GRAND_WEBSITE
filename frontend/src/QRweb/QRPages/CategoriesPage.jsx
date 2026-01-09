@@ -8,6 +8,7 @@ import OrderSidebar from '../components/OrderSidebar';
 import { categories } from '../dummy/categoriesData';
 import { menuItems } from '../dummy/menuItemsData';
 import { useOrder } from './OrderContext';
+import QRFooter from '../components/QRFooter';
 import '../styles/CategoriesPage.css';
 
 const CategoriesPage = () => {
@@ -156,6 +157,7 @@ const CategoriesPage = () => {
 
             {!isSidebarOpen && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
             <OrderSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            <QRFooter />
         </div>
     );
 };
