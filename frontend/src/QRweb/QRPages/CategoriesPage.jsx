@@ -5,8 +5,6 @@ import BackButton from '../components/BackButton';
 
 import FloatingCart from '../components/FloatingCart';
 import OrderSidebar from '../components/OrderSidebar';
-import { categories } from '../dummy/categoriesData';
-import { menuItems } from '../dummy/menuItemsData';
 import { useOrder } from './OrderContext';
 import QRFooter from '../components/QRFooter';
 import '../styles/CategoriesPage.css';
@@ -17,8 +15,31 @@ const CategoriesPage = () => {
     const [loadedImages, setLoadedImages] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || null);
+    const [categories, setCategories] = useState([]);
+    const [menuItems, setMenuItems] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const API_BASE_URL = 'http://localhost:5000/api';
+
+    useEffect(() => {
+        // Fetch categories
+        fetch(`${API_BASE_URL}/menu/categories`)
+            .then(res => res.json())
+            .then(data => {
+                setCategories(data);
+                if (data.length > 0) {
+                    setSelectedCategory(data[0].id);
+                }
+            })
+            .catch(err => console.error('Error fetching categories:', err));
+
+        // Fetch live menu for search and display
+        fetch(`${API_BASE_URL}/menu/live`)
+            .then(res => res.json())
+            .then(data => setMenuItems(data))
+            .catch(err => console.error('Error fetching live menu:', err));
+    }, []);
 
     useEffect(() => {
         if (searchTerm.trim() === '') {
@@ -26,11 +47,11 @@ const CategoriesPage = () => {
         } else {
             const results = menuItems.filter(item =>
                 item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.description.toLowerCase().includes(searchTerm.toLowerCase())
+                (item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase()))
             );
             setFilteredItems(results);
         }
-    }, [searchTerm]);
+    }, [searchTerm, menuItems]);
 
     const handleImageLoad = (id) => {
         setLoadedImages(prev => ({ ...prev, [id]: true }));
@@ -41,8 +62,10 @@ const CategoriesPage = () => {
         setIsSidebarOpen(true);
     };
 
-    const categoryItems = selectedCategory
-        ? menuItems.filter(item => item.categoryId === selectedCategory)
+    const selectedCategoryName = categories.find(c => c.id === selectedCategory)?.name;
+
+    const categoryItems = selectedCategoryName
+        ? menuItems.filter(item => item.category === selectedCategoryName)
         : [];
 
     return (
@@ -69,7 +92,7 @@ const CategoriesPage = () => {
                                 <div key={item.id} className="menu-item-card">
                                     <div className={`item-image-wrapper ${loadedImages[item.id] ? 'loaded' : 'loading'}`}>
                                         <img
-                                            src={item.image}
+                                            src={item.image || 'https://placehold.co/300x200?text=No+Image'}
                                             alt={item.name}
                                             className="item-image"
                                             onLoad={() => handleImageLoad(item.id)}
@@ -78,7 +101,7 @@ const CategoriesPage = () => {
                                     <div className="item-info">
                                         <div className="item-header">
                                             <h3 className="item-name">{item.name}</h3>
-                                            <span className="item-price">{item.price}</span>
+                                            <span className="item-price">Rs. {item.price}</span>
                                         </div>
                                         <p className="item-description">{item.description}</p>
                                         <button
@@ -106,7 +129,7 @@ const CategoriesPage = () => {
                             >
                                 <div className={`category-image-wrapper ${!loadedImages[category.id] ? 'loading' : 'loaded'}`}>
                                     <img
-                                        src={category.image}
+                                        src={category.image || 'https://placehold.co/100x100?text=Category'}
                                         alt={category.name}
                                         className="category-image"
                                         loading="lazy"
@@ -128,7 +151,7 @@ const CategoriesPage = () => {
                                     <div key={item.id} className="menu-item-card">
                                         <div className={`item-image-wrapper ${loadedImages[item.id] ? 'loaded' : 'loading'}`}>
                                             <img
-                                                src={item.image}
+                                                src={item.image || 'https://placehold.co/300x200?text=No+Image'}
                                                 alt={item.name}
                                                 className="item-image"
                                                 onLoad={() => handleImageLoad(item.id)}
@@ -137,7 +160,7 @@ const CategoriesPage = () => {
                                         <div className="item-info">
                                             <div className="item-header">
                                                 <h3 className="item-name">{item.name}</h3>
-                                                <span className="item-price">{item.price}</span>
+                                                <span className="item-price">Rs. {item.price}</span>
                                             </div>
                                             <p className="item-description">{item.description}</p>
                                             <button
