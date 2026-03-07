@@ -27,9 +27,10 @@ const CategoriesPage = () => {
         fetch(`${API_BASE_URL}/menu/categories`)
             .then(res => res.json())
             .then(data => {
-                setCategories(data);
-                if (data.length > 0) {
-                    setSelectedCategory(data[0].id);
+                const dataArray = Array.isArray(data) ? data : [];
+                setCategories(dataArray);
+                if (dataArray.length > 0) {
+                    setSelectedCategory(dataArray[0].id);
                 }
             })
             .catch(err => console.error('Error fetching categories:', err));
@@ -37,7 +38,10 @@ const CategoriesPage = () => {
         // Fetch live menu for search and display
         fetch(`${API_BASE_URL}/menu/live`)
             .then(res => res.json())
-            .then(data => setMenuItems(data))
+            .then(data => {
+                const dataArray = Array.isArray(data) ? data : [];
+                setMenuItems(dataArray);
+            })
             .catch(err => console.error('Error fetching live menu:', err));
     }, []);
 

@@ -78,7 +78,7 @@ const Menu = () => {
             </div>
 
 
-            <form className="menu-hero-newsletter" onSubmit={(e)=>e.preventDefault()}>
+            <form className="menu-hero-newsletter" onSubmit={(e) => e.preventDefault()}>
               <input type="email" placeholder="Your email address" aria-label="Email" />
               <button type="submit" className="btn-secondary">Subscribe</button>
             </form>
@@ -137,19 +137,19 @@ const Menu = () => {
               <div className="how-steps">
                 <div className="how-step">
                   <span className="how-num">1</span>
-                  <div className="how-icon" aria-hidden><img src={qrPng} alt="QR Code" style={{width:56,height:56,objectFit:'contain'}} /></div>
+                  <div className="how-icon" aria-hidden><img src={qrPng} alt="QR Code" style={{ width: 56, height: 56, objectFit: 'contain' }} /></div>
                   <h3 className="how-step-title">Explore Menu Using QR</h3>
                   <p className="how-step-text">View the full menu right on your phone in seconds.</p>
                 </div>
                 <div className="how-step">
                   <span className="how-num">2</span>
-                  <div className="how-icon" aria-hidden><img src={dishPng} alt="Dish" style={{width:56,height:56,objectFit:'contain'}} /></div>
+                  <div className="how-icon" aria-hidden><img src={dishPng} alt="Dish" style={{ width: 56, height: 56, objectFit: 'contain' }} /></div>
                   <h3 className="how-step-title">Choose a Dish</h3>
                   <p className="how-step-text">Find your favorites and discover new specials.</p>
                 </div>
                 <div className="how-step">
                   <span className="how-num">3</span>
-                  <div className="how-icon" aria-hidden><img src={orderPng} alt="Order" style={{width:56,height:56,objectFit:'contain'}} /></div>
+                  <div className="how-icon" aria-hidden><img src={orderPng} alt="Order" style={{ width: 56, height: 56, objectFit: 'contain' }} /></div>
                   <h3 className="how-step-title">Place Order</h3>
                   <p className="how-step-text">Order in one tap and we’ll prepare it fresh.</p>
                 </div>

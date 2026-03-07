@@ -25,7 +25,8 @@ const MenuItemsPage = () => {
         fetch(`${API_BASE_URL}/menu/categories`)
             .then(res => res.json())
             .then(categories => {
-                const currentCategory = categories.find(c => c.id === categoryId); // UUID match
+                const catsArray = Array.isArray(categories) ? categories : [];
+                const currentCategory = catsArray.find(c => c.id === categoryId); // UUID match
                 if (currentCategory) {
                     setCategoryName(currentCategory.name);
                 }
@@ -36,7 +37,8 @@ const MenuItemsPage = () => {
         fetch(`${API_BASE_URL}/menu/live`)
             .then(res => res.json())
             .then(data => {
-                setItems(data);
+                const itemsArray = Array.isArray(data) ? data : [];
+                setItems(itemsArray);
             })
             .catch(err => console.error('Error fetching menu items:', err));
     }, [categoryId]);
