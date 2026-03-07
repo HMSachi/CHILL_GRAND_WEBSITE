@@ -46,7 +46,10 @@ export const OrderProvider = ({ children }) => {
 
     const getTotalPrice = () => {
         return orderItems.reduce((total, item) => {
-            const price = parseInt(item.price.replace('Rs. ', ''));
+            let price = item.price;
+            if (typeof price === 'string') {
+                price = parseInt(price.replace('Rs. ', ''));
+            }
             return total + (price * item.quantity);
         }, 0);
     };

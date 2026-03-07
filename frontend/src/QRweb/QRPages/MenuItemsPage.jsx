@@ -5,8 +5,6 @@ import BackButton from '../components/BackButton';
 import FloatingCart from '../components/FloatingCart';
 import OrderSidebar from '../components/OrderSidebar';
 import { useOrder } from './OrderContext';
-import { menuItems } from '../dummy/menuItemsData';
-import { categories } from '../dummy/categoriesData';
 import QRFooter from '../components/QRFooter';
 import '../styles/MenuItemsPage.css';
 
@@ -17,10 +15,37 @@ const MenuItemsPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loadedImages, setLoadedImages] = useState({});
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [items, setItems] = useState([]);
+    const [categoryName, setCategoryName] = useState('Menu');
 
-    const category = categories.find(c => c.id === parseInt(categoryId));
-    const filteredItems = menuItems.filter(item =>
-        item.categoryId === parseInt(categoryId) &&
+    const API_BASE_URL = 'http://localhost:5000/api';
+
+    useEffect(() => {
+        // 1. Fetch Categories to find the name for this ID
+        fetch(`${API_BASE_URL}/menu/categories`)
+            .then(res => res.json())
+            .then(categories => {
+                const catsArray = Array.isArray(categories) ? categories : [];
+                const currentCategory = catsArray.find(c => c.id === categoryId); // UUID match
+                if (currentCategory) {
+                    setCategoryName(currentCategory.name);
+                }
+            })
+            .catch(err => console.error('Error fetching categories:', err));
+
+        // 2. Fetch ALL live menu items (Backend returns all)
+        fetch(`${API_BASE_URL}/menu/live`)
+            .then(res => res.json())
+            .then(data => {
+                const itemsArray = Array.isArray(data) ? data : [];
+                setItems(itemsArray);
+            })
+            .catch(err => console.error('Error fetching menu items:', err));
+    }, [categoryId]);
+
+    // 3. Filter client-side by Category Name
+    const filteredItems = items.filter(item =>
+        item.category === categoryName &&
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -33,21 +58,12 @@ const MenuItemsPage = () => {
         setIsSidebarOpen(true);
     };
 
-    if (!category) {
-        return (
-            <div className="menu-items-error">
-                <h2>Category not found</h2>
-                <button onClick={() => navigate('/categories')}>Back to Categories</button>
-            </div>
-        );
-    }
-
     return (
         <div className={`menu-items-page ${isSidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="menu-items-header">
                 <div className="header-top">
                     <BackButton to="/categories" />
-                    <h1 className="category-name">{category.name}</h1>
+                    <h1 className="category-name">{categoryName}</h1>
                 </div>
                 <div className="search-bar">
                     <FaSearch className="search-icon" />
@@ -66,7 +82,7 @@ const MenuItemsPage = () => {
                         <div key={item.id} className="menu-item-card">
                             <div className={`item-image-wrapper ${loadedImages[item.id] ? 'loaded' : 'loading'}`}>
                                 <img
-                                    src={item.image}
+                                    src={item.image || 'https://placehold.co/300x200?text=No+Image'}
                                     alt={item.name}
                                     className="item-image"
                                     onLoad={() => handleImageLoad(item.id)}
@@ -75,7 +91,7 @@ const MenuItemsPage = () => {
                             <div className="item-info">
                                 <div className="item-header">
                                     <h3 className="item-name">{item.name}</h3>
-                                    <span className="item-price">{item.price}</span>
+                                    <span className="item-price">Rs. {item.price}</span>
                                 </div>
                                 <p className="item-description">{item.description}</p>
                                 <button
