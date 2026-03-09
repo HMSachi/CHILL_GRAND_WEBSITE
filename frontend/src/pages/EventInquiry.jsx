@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaChild, FaMoneyBillWave, FaPen } from 'react-icons/fa';
 import '../styles/pages/EventInquiry.css';
-import heroBg from '../assets/bar.jpg'; // Reuse existing asset for header
+import heroBg from '../assets/bar.jpg';
 
 const EventInquiry = () => {
     const [formData, setFormData] = useState({
@@ -43,8 +44,7 @@ const EventInquiry = () => {
         <div className="inquiry-page">
             <div className="inquiry-hero" style={{ backgroundImage: `url(${heroBg})` }}>
                 <div className="inquiry-hero-overlay">
-                    <h1>Plan Your Dream Event</h1>
-                    <p>Tell us your vision, and we'll make it happen.</p>
+                    <h1>Plan Your <span>Dream Event</span></h1>
                 </div>
             </div>
 
@@ -57,15 +57,24 @@ const EventInquiry = () => {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label>Full Name</label>
-                                <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe" />
+                                <div className="input-wrapper">
+                                    <FaUser className="input-icon" />
+                                    <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe" />
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label>Email Address</label>
-                                <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com" />
+                                <div className="input-wrapper">
+                                    <FaEnvelope className="input-icon" />
+                                    <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com" />
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label>Phone Number</label>
-                                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+1 234 567 890" />
+                                <div className="input-wrapper">
+                                    <FaPhone className="input-icon" />
+                                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+1 234 567 890" />
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -76,23 +85,31 @@ const EventInquiry = () => {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label>Event Type</label>
-                                <select name="eventType" value={formData.eventType} onChange={handleChange} required>
-                                    <option value="">Select Type</option>
-                                    <option value="Birthday">Birthday Party</option>
-                                    <option value="Anniversary">Anniversary</option>
-                                    <option value="Wedding">Wedding</option>
-                                    <option value="Corporate">Corporate Event</option>
-                                    <option value="Gathering">Social Gathering</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                                <div className="input-wrapper">
+                                    <select name="eventType" value={formData.eventType} onChange={handleChange} required>
+                                        <option value="">Select Type</option>
+                                        <option value="Birthday">Birthday Party</option>
+                                        <option value="Anniversary">Anniversary</option>
+                                        <option value="Wedding">Wedding</option>
+                                        <option value="Corporate">Corporate Event</option>
+                                        <option value="Gathering">Social Gathering</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label>Date</label>
-                                <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+                                <div className="input-wrapper">
+                                    <FaCalendarAlt className="input-icon" />
+                                    <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label>Preferred Time</label>
-                                <input type="time" name="time" value={formData.time} onChange={handleChange} required />
+                                <div className="input-wrapper">
+                                    <FaClock className="input-icon" />
+                                    <input type="time" name="time" value={formData.time} onChange={handleChange} required />
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -105,11 +122,17 @@ const EventInquiry = () => {
                             <div className="guest-inputs">
                                 <div className="guest-input-group">
                                     <span>Adults</span>
-                                    <input type="number" name="adults" value={formData.adults} onChange={handleChange} required min="0" placeholder="0" />
+                                    <div className="input-wrapper">
+                                        <FaUsers className="input-icon" />
+                                        <input type="number" name="adults" value={formData.adults} onChange={handleChange} required min="0" placeholder="0" />
+                                    </div>
                                 </div>
                                 <div className="guest-input-group">
                                     <span>Children</span>
-                                    <input type="number" name="children" value={formData.children} onChange={handleChange} min="0" placeholder="0" />
+                                    <div className="input-wrapper">
+                                        <FaChild className="input-icon" />
+                                        <input type="number" name="children" value={formData.children} onChange={handleChange} min="0" placeholder="0" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -187,11 +210,17 @@ const EventInquiry = () => {
                         <h2 className="section-title">Budget & Additional Notes</h2>
                         <div className="form-group">
                             <label>Estimated Budget</label>
-                            <input type="text" name="budget" value={formData.budget} onChange={handleChange} placeholder="e.g. $5000" />
+                            <div className="input-wrapper">
+                                <FaMoneyBillWave className="input-icon" />
+                                <input type="text" name="budget" value={formData.budget} onChange={handleChange} placeholder="e.g. $5000" />
+                            </div>
                         </div>
                         <div className="form-group">
                             <label>Additional Notes</label>
-                            <textarea name="notes" value={formData.notes} onChange={handleChange} rows="4" placeholder="Any special requests or questions?" />
+                            <div className="input-wrapper">
+                                <FaPen className="input-icon" />
+                                <textarea name="notes" value={formData.notes} onChange={handleChange} rows="4" placeholder="Any special requests or questions?" />
+                            </div>
                         </div>
                     </section>
 

@@ -5,26 +5,23 @@
     width: 100%;
     z-index: 1000;
 
-    /* REAL HEIGHT CONTROL */
-    height: 96px;
-    /* ⬅️ Navbar height */
+    /* HEIGHT CONTROL */
+    height: 90px;
     padding: 0 0;
 
-    background: rgba(255, 255, 255, 0.9);
-    /* ⬅️ Small opacity */
-    backdrop-filter: blur(6px);
-    /* Glass effect */
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .navbar.scrolled {
-    height: 80px;
-    /* Smaller on scroll */
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    height: 75px;
+    background: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
 }
 
 .navbar-container {
@@ -32,6 +29,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 /* LOGO */
@@ -40,30 +40,35 @@
     align-items: center;
 }
 
-/* CONTROLLED LOGO SIZE */
 .logo-img {
-    height: 80px;
-    /* ⬅️ Big logo but fits navbar */
+    height: 70px;
     width: auto;
-    transition: 0.3s ease;
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.2));
 }
 
 .navbar.scrolled .logo-img {
-    height: 68px;
+    height: 55px;
 }
 
 .navbar-links {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 .nav-link {
-    color: black;
-    font-weight: 600;
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 0.95rem;
     position: relative;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-yellow);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .nav-link::after {
@@ -71,9 +76,9 @@
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: -4px;
+    bottom: -6px;
     left: 0;
-    background-color: var(--primary-yellow);
+    background: linear-gradient(to right, var(--primary-yellow), transparent);
     transition: width 0.3s ease;
 }
 
@@ -84,24 +89,28 @@
 .navbar-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .btn-primary {
-    background-color: var(--primary-yellow);
-    color: black;
-    font-weight: 700;
-    padding: 10px 24px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary-yellow) 0%, #e6c200 100%);
+    color: #000;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #e6c200;
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    background: #fff;
 }
 
 .mobile-menu-toggle {
@@ -114,7 +123,7 @@
 .bar {
     width: 24px;
     height: 3px;
-    background-color: black;
+    background-color: var(--primary-yellow);
     transition: 0.3s;
 }
 
@@ -134,12 +143,12 @@
         right: -100%;
         height: 100vh;
         width: 70%;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(0, 0, 0, 0.98);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        transition: 0.3s ease;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
     .navbar-links.active {
@@ -167,8 +176,15 @@
 }
 
 /* Remove global gap under navbar */
-:root { --navbar-height: 96px; }
-.app > main { padding-top: 0; }
+:root {
+    --navbar-height: 96px;
+}
+
+.app>main {
+    padding-top: 0;
+}
 
 /* If any elements add margin-top, reset for hero section */
-.menu-page { padding-top: 0 !important; }
+.menu-page {
+    padding-top: 0 !important;
+}

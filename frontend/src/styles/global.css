@@ -1,35 +1,39 @@
 :root {
   /* Brand Colors */
-  --primary-yellow: #FFD700; /* Adjust to match the gold/yellow in images */
-  --secondary-red: #E63946; /* Adjust to match the red in images */
-  --accent-orange: #FB8500;
-  
+  --primary-yellow: #FFD700;
+  /* Rich Golden Yellow */
+  --secondary-red: #D00000;
+  /* Deep Red */
+  --accent-black: #000000;
+  /* Pure Black */
+
   /* Background Colors */
-  --bg-dark: #121212;
-  --bg-card: #1E1E1E;
-  --bg-light: #FFFFFF;
-  
+  --bg-dark: #000000;
+  --bg-card: #1A1A1A;
+  --bg-light: #F5F5F5;
+
   /* Text Colors */
   --text-light: #FFFFFF;
   --text-dark: #121212;
-  --text-gray: #B0B0B0;
-  
+  --text-gray: #CCCCCC;
+  --text-yellow: var(--primary-yellow);
+
   /* Typography */
   --font-main: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --font-heading: 'Outfit', sans-serif; /* Assuming a modern heading font */
-  
+  --font-heading: 'Outfit', sans-serif;
+
   /* Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 2rem;
   --spacing-lg: 4rem;
   --spacing-xl: 8rem;
-  
+
   /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
-  
+
   /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
@@ -43,13 +47,19 @@
 
 body {
   font-family: var(--font-main);
-  background-color: var(--bg-light); /* Default to light as per some sections, but hero is dark. We might need section specific backgrounds */
-  color: var(--text-dark);
+  background-color: var(--bg-dark);
+  /* Premium Black Background */
+  color: var(--text-light);
   line-height: 1.6;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   line-height: 1.2;
   font-weight: 700;
@@ -100,7 +110,8 @@ button {
 /* Button Styles */
 .btn {
   padding: 12px 24px;
-  border-radius: 50px; /* Pill shape */
+  border-radius: 50px;
+  /* Pill shape */
   font-weight: 600;
   font-size: 1rem;
   transition: var(--transition-normal);

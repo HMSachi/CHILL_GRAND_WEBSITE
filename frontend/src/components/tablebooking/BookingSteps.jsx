@@ -10,7 +10,7 @@ const BookingSteps = () => {
                     {/* Left Content */}
                     <div className="steps-content">
                         <h2 className="steps-title">
-                            How Table<br />Booking using<br />360° view
+                            How Table<br />Booking using<br /><span>360° view</span>
                         </h2>
                         <p className="steps-label">EASY ORDER IN 3 STEPS</p>
 

@@ -1,10 +1,6 @@
-/* =========================
-   SERVICE CARDS SECTION
-========================= */
-
 .service-cards-section {
-    padding: 4rem 0;
-    background-color: var(--bg-light);
+    padding: 6rem 0;
+    background-color: var(--bg-dark);
 }
 
 .service-cards-grid {
@@ -49,9 +45,10 @@
     position: absolute;
     inset: 14px;
     border-radius: 16px;
-    border: 3px solid var(--primary-yellow);
+    border: 2px solid rgba(255, 215, 0, 0.3);
     z-index: 2;
     pointer-events: none;
+    transition: border-color 0.3s ease;
 }
 
 /* =========================
@@ -81,34 +78,36 @@
     transform: translateX(-50%);
     z-index: 3;
 
-    background-color: var(--primary-yellow);
+    background: linear-gradient(to right, var(--primary-yellow), #ffd700);
     color: #000;
     font-weight: 800;
-    font-size: 1rem;
-    padding: 10px 0;
-    width: 80%;
+    font-size: 0.95rem;
+    padding: 12px 0;
+    width: 85%;
     text-align: center;
     border-radius: 40px;
     text-transform: uppercase;
     letter-spacing: 1px;
 
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 /* =========================
    HOVER (TONED DOWN)
 ========================= */
 
-.service-card:hover {
-    transform: translateY(-5px);
-    /* Reduced from -8px */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    /* Softer shadow */
+.service-card:hover .service-card-inner::before {
+    border-color: var(--primary-yellow);
 }
 
 .service-card:hover .service-card-image {
-    transform: scale(1.03);
-    /* Reduced from 1.06 */
+    transform: scale(1.05);
+}
+
+.service-card:hover .service-card-title {
+    background: white;
+    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.3);
 }
 
 /* =========================

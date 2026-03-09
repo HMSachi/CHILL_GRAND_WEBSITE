@@ -50,15 +50,14 @@ const Contact = () => {
       <SectionHeader title="Contact Us" />
 
       <div className="contact-content">
-        <p className="support-text">SUPPORT</p>
-        <h2 className="contact-title">Contact With CHILL GRAND</h2>
+
 
         <div className="contact-card-wrapper">
           {/* LEFT FORM CARD */}
           <div className="contact-form-card">
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Name</label>
+
                 <input
                   type="text"
                   name="name"
@@ -107,8 +106,8 @@ const Contact = () => {
           </div>
 
           {/* CENTER IMAGE */}
-          <div className="contact-image">
-            <img src={glass} alt="Delicious Food" />
+          <div className="contact-image" data-aos="zoom-in" data-aos-delay="200">
+            <img src={glass} alt="Delicious Glass" />
           </div>
 
           {/* RIGHT INFO CARD */}
