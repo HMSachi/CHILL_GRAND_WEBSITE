@@ -7,25 +7,43 @@ import imgDining from '../../assets/private_dining.jpg';
 const ServiceCards = () => {
     const services = [
         {
-            title: 'Gourmet Dining',
-            image: imgRestaurant,
+            id: 1,
+            title: 'VIP Karaoke',
+            image: imgDining, // Placeholder
         },
         {
-            title: 'Vibrant Pub',
-            image: imgCocktail,
+            id: 2,
+            title: 'Function Hall',
+            image: imgRestaurant, // Placeholder
         },
         {
-            title: 'Private Lounges',
-            image: imgDining,
+            id: 3,
+            title: 'Karaoke Pub',
+            image: imgCocktail, // Placeholder
+        },
+        {
+            id: 4,
+            title: 'BYOB Facilities',
+            image: imgDining, // Placeholder
+        },
+        {
+            id: 5,
+            title: 'Take Away & Dining',
+            image: imgRestaurant, // Placeholder
         }
     ];
 
     return (
         <section className="service-cards-section">
             <div className="container">
+                <div className="section-header-warehouse">
+                    <div className="header-accent">Main Parts</div>
+                    <h2 className="header-title">OUR CORE FEATURES</h2>
+                </div>
+
                 <div className="service-cards-grid">
-                    {services.map((service, index) => (
-                        <div className="service-card" key={index}>
+                    {services.map((service) => (
+                        <div className="service-card" key={service.id}>
                             <div className="service-card-inner">
                                 <img
                                     src={service.image}

@@ -27,21 +27,21 @@ const Hero = () => {
                 />
             ))}
 
-            <div className="hero-overlay"></div>
+            <div className="container hero-content-warehouse">
+                <div className="hero-welcome fade-up">Welcome to</div>
+                <h1 className="hero-title fade-up-delay-1">CHILL GRAND</h1>
+                <div className="hero-tagline fade-up-delay-2">RESTAURANT & PUB</div>
 
-            <div className="container hero-content">
-                <h1>
-                    Your Premium <span>Restaurant & <br /> Vibrant Pub</span> Destination
-                </h1>
+                <div className="hero-buttons-warehouse fade-up-delay-3">
+                    <a href="#menu" className="btn-warehouse">EXPLORE MENU</a>
+                    <a href="#booking" className="btn-warehouse outline">BOOK A TABLE</a>
+                </div>
+            </div>
 
-                <p className="hero-subtitle">
-                    Experience the perfect fusion of gourmet dining and a lively bar atmosphere. <br />
-                    Where great food meets even better vibes at Chill Grand.
-                </p>
-
-                <div className="hero-buttons">
-                    <a href="#menu" className="btn-hero-menu">Explore Menu</a>
-                    <Link to="/table-booking" className="btn-hero-secondary">Book Your Table</Link>
+            <div className="hero-scroll-warehouse">
+                <div className="scroll-arrow">
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
         </section>

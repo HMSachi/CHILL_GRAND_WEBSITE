@@ -1,0 +1,65 @@
+.events-page {
+    padding: 120px 0 80px;
+    background-color: #000;
+    min-height: 100vh;
+    color: #fff;
+}
+
+.events-page .page-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.events-page .page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #ffcc00;
+    margin-bottom: 15px;
+}
+
+.events-page .page-description {
+    color: #ccc;
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.events-filter {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.filter-btn {
+    padding: 10px 30px;
+    background: transparent;
+    border: 2px solid #333;
+    color: #fff;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    border-color: #ffcc00;
+    color: #ffcc00;
+}
+
+.all-events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+@media (max-width: 768px) {
+    .events-page .page-title {
+        font-size: 2.5rem;
+    }
+
+    .all-events-grid {
+        grid-template-columns: 1fr;
+    }
+}

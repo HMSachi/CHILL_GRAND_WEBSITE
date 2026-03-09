@@ -127,8 +127,10 @@ const DiscoverMenu = () => {
     return (
         <section className="discover-menu" id="menu">
             <div className="container">
-                <h2 className="section-title">Discover Menu</h2>
-                <div className="underline"></div>
+                <div className="section-header-warehouse">
+                    <div className="header-accent">Our Selection</div>
+                    <h2 className="header-title">DISCOVER MENU</h2>
+                </div>
 
                 <div className="menu-scroll-container" ref={scrollRef}>
                     {infiniteItems.map((item, index) => (
