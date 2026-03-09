@@ -7,48 +7,92 @@
 
 /* HERO SECTION */
 .booking-hero {
-    height: 70vh;
+    height: 40vh;
+    min-height: 350px;
     background-size: cover;
     background-position: center;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    color: var(--text-light);
 }
 
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.8) 100%);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+}
+
+.hero-centered-content {
+    text-align: center;
 }
 
 .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     color: var(--primary-yellow);
     font-weight: 700;
 }
 
 .hero-title {
-    font-size: 4rem;
-    font-weight: 800;
-    margin-bottom: 2.5rem;
+    font-size: 3.2rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
 }
 
 .hero-buttons {
     display: flex;
+    justify-content: center;
     gap: 1.5rem;
+}
+
+/* STEPS SECTION */
+.booking-steps-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 5%;
+    background: var(--bg-dark);
+}
+
+.booking-steps-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 30px;
+    padding: 2rem;
+    max-width: 1200px;
+    width: 100%;
+    color: var(--text-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.steps-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Left Content */
+.steps-content {
+    flex: 1;
+}
+
+.steps-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--text-light);
 }
 
 .btn-book {
@@ -239,6 +283,28 @@
 
 /* RESPONSIVE */
 @media (max-width: 1100px) {
+    .hero-split-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 4rem;
+    }
+
+    .hero-content-left {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+    }
+
+    .hero-form-right {
+        width: 100%;
+        max-width: 600px;
+    }
+
     .steps-container {
         flex-direction: column;
         text-align: center;
@@ -264,6 +330,146 @@
 
     .step-item:hover {
         transform: translateY(-10px);
+    }
+}
+
+/* BOOKING FORM SECTION */
+.booking-form-section {
+    padding: 6rem 0;
+    background: #000;
+}
+
+.form-wrapper-v2 {
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 4rem;
+    border-radius: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+}
+
+.form-header-v2 {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.form-header-v2 .subtitle {
+    display: block;
+    color: var(--primary-yellow);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.form-header-v2 .title {
+    font-size: 2.5rem;
+    color: #fff;
+    font-weight: 800;
+}
+
+.form-header-v2 .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--secondary-red);
+    margin: 20px auto 0;
+}
+
+.main-booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.form-group-v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group-v2.full-width {
+    grid-column: span 2;
+}
+
+.form-group-v2 label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-group-v2 input,
+.form-group-v2 select,
+.form-group-v2 textarea {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 1.2rem;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group-v2 input:focus,
+.form-group-v2 select:focus,
+.form-group-v2 textarea:focus {
+    outline: none;
+    border-color: var(--primary-yellow);
+    background: #202020;
+}
+
+.form-group-v2 textarea {
+    min-height: 120px;
+    resize: none;
+}
+
+.form-submit-v2 {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.btn-confirm-v2 {
+    background: linear-gradient(135deg, var(--secondary-red) 0%, #a00000 100%);
+    color: #fff;
+    border: none;
+    padding: 1.2rem 4rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.btn-confirm-v2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(208, 0, 0, 0.4);
+    background: #fff;
+    color: var(--secondary-red);
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group-v2.full-width {
+        grid-column: span 1;
+    }
+
+    .form-wrapper-v2 {
+        padding: 2.5rem;
+        border-radius: 0;
     }
 }
 

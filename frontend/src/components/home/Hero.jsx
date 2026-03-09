@@ -34,7 +34,7 @@ const Hero = () => {
 
                 <div className="hero-buttons-warehouse fade-up-delay-3">
                     <a href="#menu" className="btn-warehouse">EXPLORE MENU</a>
-                    <Link to="/table-booking" className="btn-warehouse outline">BOOK A TABLE</Link>
+                    <a href="#booking" className="btn-warehouse outline">BOOK A TABLE</a>
                 </div>
             </div>
 
