@@ -4,6 +4,7 @@ import Navbar from './components/common/Navbar';
 import QRNavbar from './QRweb/components/QRNavbar';
 import Footer from './components/common/Footer';
 import Home from './pages/Home';
+import Events from './pages/Events';
 import Contact from './pages/Contact';
 import TableBooking from './pages/TableBooking';
 import About from './pages/About';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/my-orders" element={<MyOrdersPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/table-booking" element={<TableBooking />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/about" element={<About />} />
           <Route path="/plan-event" element={<PlanEvent />} />
           <Route path="/event/:id" element={<EventDetail />} />
