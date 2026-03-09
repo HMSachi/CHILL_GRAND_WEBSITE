@@ -1,7 +1,7 @@
 .categories-page {
     padding: 160px 0 100px;
     min-height: 100vh;
-    background: #0f172a;
+    background: var(--bg-dark);
     transition: padding-right 0.3s ease;
 }
 
@@ -40,8 +40,8 @@
 .categories-page .smart-search-input {
     width: 100%;
     padding: 1rem 1rem 1rem 3.5rem;
-    background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(255, 215, 0, 0.2);
     border-radius: 1rem;
     color: white;
     font-size: 1rem;
@@ -80,7 +80,7 @@
 }
 
 .categories-page .menu-item-card {
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--bg-card);
     border-radius: 1rem;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -141,10 +141,10 @@
 .categories-page .add-to-cart-btn {
     width: 100%;
     padding: 0.75rem;
-    background: #fbbf24;
+    background: var(--primary-yellow);
     border: none;
     border-radius: 0.75rem;
-    color: #0f172a;
+    color: #000;
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;

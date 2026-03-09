@@ -12,62 +12,62 @@ const DiscoverMenu = () => {
 
     const menuItems = [
         {
-            title: "Special Menus",
-            subtitle: "Discover our special menus",
+            title: "Gourmet Mains",
+            subtitle: "Exquisite culinary creations",
             image: imgRestaurant,
             id: 1
         },
         {
-            title: "Cocktails",
-            subtitle: "Enjoy!",
+            title: "Signature Cocktails",
+            subtitle: "Crafted by experts",
             image: imgCocktail,
             id: 2
         },
         {
-            title: "Fine Dining",
-            subtitle: "Experience luxury",
+            title: "Pub Snacks",
+            subtitle: "Perfect pairings",
             image: imgDining,
             id: 3
         },
         {
-            title: "Desserts",
-            subtitle: "Sweet treats",
+            title: "Craft Collection",
+            subtitle: "Premium spirits",
             image: imgDessert,
             id: 4
         },
         {
-            title: "Breakfast",
-            subtitle: "Start your day right",
+            title: "Classic Bites",
+            subtitle: "Always a favorite",
             image: imgRestaurant,
             id: 5
         },
         {
-            title: "Lunch",
+            title: "Lunch Specials",
             subtitle: "Mid-day delight",
             image: imgDining,
             id: 6
         },
         {
-            title: "Dinner",
-            subtitle: "Evening feast",
+            title: "Evening Vibes",
+            subtitle: "Nightlife energy",
             image: imgCocktail,
             id: 7
         },
         {
-            title: "Events",
-            subtitle: "Celebrate with us",
+            title: "Private Events",
+            subtitle: "Celebrate in style",
             image: Music,
             id: 8
         },
         {
-            title: "Brunch",
-            subtitle: "Weekend vibes",
+            title: "Weekly Brunch",
+            subtitle: "Weekend relaxation",
             image: imgRestaurant,
             id: 9
         },
         {
-            title: "Late Night",
-            subtitle: "After hours",
+            title: "Late Night Menu",
+            subtitle: "After hours snacks",
             image: imgCocktail,
             id: 10
         }

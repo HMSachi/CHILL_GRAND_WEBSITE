@@ -1,12 +1,13 @@
 /* PAGE CONTAINER */
 .table-booking-page {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-main);
     width: 100%;
+    background-color: var(--bg-dark);
 }
 
 /* HERO SECTION */
 .booking-hero {
-    height: 80vh;
+    height: 70vh;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -14,14 +15,13 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #fff;
+    color: var(--text-light);
 }
 
 .hero-overlay {
-    background: rgba(0, 0, 0, 0.5);
-    /* Dark overlay */
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,17 +29,21 @@
 }
 
 .hero-subtitle {
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    color: var(--primary-yellow);
+    font-weight: 700;
 }
 
 .hero-title {
     font-size: 4rem;
     font-weight: 800;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .hero-buttons {
@@ -48,131 +52,173 @@
 }
 
 .btn-book {
-    background: #ff2b55;
-    /* Red */
+    background: linear-gradient(135deg, var(--secondary-red) 0%, #b30000 100%);
     color: #fff;
-    border: 2px solid #ff2b55;
-    padding: 12px 30px;
-    font-weight: 700;
+    border: none;
+    padding: 16px 40px;
+    font-weight: 800;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    letter-spacing: 1px;
+    box-shadow: 0 5px 20px rgba(208, 0, 0, 0.3);
 }
 
 .btn-book:hover {
-    background: transparent;
-    color: #ff2b55;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(208, 0, 0, 0.5);
+    background: #fff;
+    color: var(--secondary-red);
 }
 
 .btn-menu {
     background: transparent;
-    color: #fff;
-    border: 2px solid #fff;
-    padding: 12px 30px;
-    font-weight: 700;
+    color: var(--text-light);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 16px 40px;
+    font-weight: 800;
     text-transform: uppercase;
     cursor: pointer;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    letter-spacing: 1px;
 }
 
 .btn-menu:hover {
-    background: #fff;
-    color: #000;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--text-light);
 }
 
 /* STEPS SECTION */
 .booking-steps-wrapper {
     display: flex;
     justify-content: center;
-    padding: 4rem 2rem;
-    background: #fff;
-    /* Page background */
+    padding: 6rem 5%;
+    background: var(--bg-dark);
 }
 
 .booking-steps-box {
-    background-color: #ff2b55;
-    background-image: url("../../assets/pattern.png");
-    background-repeat: repeat;
-    background-size: 200px;
-    background-blend-mode: soft-light;
-
-    border-radius: 30px;
-    padding: 4rem;
-    max-width: 1200px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 40px;
+    padding: 5rem;
+    max-width: 1300px;
     width: 100%;
-    box-shadow: 0 15px 40px rgba(255, 43, 85, 0.2);
-    color: #fff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    color: var(--text-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.booking-steps-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.03) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .steps-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4rem;
+    gap: 5rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Left Content */
 .steps-content {
-    flex: 1;
+    flex: 1.2;
 }
 
 .steps-title {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 800;
     line-height: 1.1;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-light);
+}
+
+.steps-title span {
+    color: var(--primary-yellow);
 }
 
 .steps-label {
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 2px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 3rem;
-    opacity: 0.9;
+    margin-bottom: 4rem;
+    color: var(--secondary-red);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.steps-label::after {
+    content: '';
+    flex-grow: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--secondary-red), transparent);
 }
 
 .steps-list {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
 .step-item {
     display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.step-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(10px);
+    border-color: rgba(255, 215, 0, 0.2);
 }
 
 .step-icon-wrapper {
-    background: #f4c400;
-    /* Yellow */
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-yellow) 0%, #e6c200 100%);
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #000;
     flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
 }
 
 .step-icon {
-    font-size: 1.5rem;
-    font-weight: 800;
+    font-size: 1.8rem;
+    font-weight: 900;
     color: #000;
 }
 
 .step-text h3 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
+    color: var(--primary-yellow);
 }
 
 .step-text p {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    opacity: 0.9;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-gray);
 }
 
 /* Right Image */
@@ -180,26 +226,50 @@
     flex: 1;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .steps-image img {
     width: 100%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 550px;
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 /* RESPONSIVE */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .steps-container {
         flex-direction: column;
         text-align: center;
+        gap: 4rem;
+    }
+
+    .steps-title {
+        font-size: 2.8rem;
+    }
+
+    .steps-label::after {
+        display: none;
+    }
+
+    .steps-label {
+        justify-content: center;
     }
 
     .step-item {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        padding: 2.5rem;
+    }
+
+    .step-item:hover {
+        transform: translateY(-10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .booking-hero {
+        height: 50vh;
     }
 
     .hero-title {
@@ -207,6 +277,12 @@
     }
 
     .booking-steps-box {
-        padding: 2rem;
+        padding: 3rem 1.5rem;
+        border-radius: 0;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 80%;
     }
 }

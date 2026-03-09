@@ -9,10 +9,10 @@ import lunchImg from '../../assets/private_dining.jpg'; // Placeholder
 
 const EventTypes = () => {
     const events = [
-        { title: 'Birthday Parties', img: birthdayImg },
-        { title: 'Engagements', img: engagementImg },
-        { title: 'Gatherings', img: gatheringImg },
-        { title: 'Private Lunch', img: lunchImg },
+        { title: 'Cocktail Nights', img: birthdayImg },
+        { title: 'Corporate Mixers', img: engagementImg },
+        { title: 'Private Watch Parties', img: gatheringImg },
+        { title: 'Gourmet Dinners', img: lunchImg },
     ];
 
     return (
@@ -30,11 +30,6 @@ const EventTypes = () => {
                 ))}
             </div>
 
-            <div className="event-types-action">
-                <Link to="/event-inquiry" className="btn-book-event">
-                    Fill the form to book the event
-                </Link>
-            </div>
         </div>
     );
 };

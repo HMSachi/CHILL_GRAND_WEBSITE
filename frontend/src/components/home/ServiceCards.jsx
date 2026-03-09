@@ -7,15 +7,15 @@ import imgDining from '../../assets/private_dining.jpg';
 const ServiceCards = () => {
     const services = [
         {
-            title: 'Restaurant',
+            title: 'Gourmet Dining',
             image: imgRestaurant,
         },
         {
-            title: 'Cocktail Bar',
+            title: 'Vibrant Pub',
             image: imgCocktail,
         },
         {
-            title: 'Private Dining',
+            title: 'Private Lounges',
             image: imgDining,
         }
     ];

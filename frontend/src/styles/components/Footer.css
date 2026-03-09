@@ -1,8 +1,8 @@
 .footer {
-    background-color: #f9f9f9;
-    /* Light background as per image */
+    background-color: #000000;
     padding: 4rem 0 2rem;
-    color: var(--text-dark);
+    color: var(--text-light);
+    border-top: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 .footer-container {

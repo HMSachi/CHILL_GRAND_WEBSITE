@@ -31,17 +31,17 @@ const Hero = () => {
 
             <div className="container hero-content">
                 <h1>
-                    The Perfect Space to <br /> Enjoy Fantastic Food
+                    Your Premium <span>Restaurant & <br /> Vibrant Pub</span> Destination
                 </h1>
 
                 <p className="hero-subtitle">
-                    Festive dining at Farthings where we are strong believers in <br />
-                    using the very best produce
+                    Experience the perfect fusion of gourmet dining and a lively bar atmosphere. <br />
+                    Where great food meets even better vibes at Chill Grand.
                 </p>
 
                 <div className="hero-buttons">
-                    <a href="#menu" className="btn-hero-menu">See Our Menus</a>
-                    <Link to="/table-booking" className="btn-hero-menu" style={{ marginLeft: '1rem', backgroundColor: 'transparent', border: '2px solid #fff' }}>Book A Table</Link>
+                    <a href="#menu" className="btn-hero-menu">Explore Menu</a>
+                    <Link to="/table-booking" className="btn-hero-secondary">Book Your Table</Link>
                 </div>
             </div>
         </section>
