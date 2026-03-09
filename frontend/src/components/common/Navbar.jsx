@@ -20,29 +20,30 @@ const Navbar = () => {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
 
-        {/* Logo */}
+        {/* Desktop Links - Left */}
+        <div className="navbar-links left">
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/plan-event" className="nav-link">Plan Event</Link>
+          <Link to="/events" className="nav-link">Upcoming Events</Link>
+        </div>
+
+        {/* Logo - Centered */}
         <div className="navbar-logo">
           <Link to="/">
-            <img
-              src={logo}
-              alt="Chill Grand Logo"
-              className="logo-img"
-            />
+            <img src={logo} alt="Chill Grand Logo" className="logo-img" />
           </Link>
         </div>
 
-        {/* Links */}
-        <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
-          <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-          <Link to="/plan-event" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Plan Your Event</Link>
-          <Link to="/table-booking" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Table Booking</Link>
-          <Link to="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
+        {/* Desktop Links - Right */}
+        <div className="navbar-links right">
+          <Link to="/table-booking" className="nav-link">Reservations</Link>
+          <Link to="/menu" className="nav-link">Menu</Link>
+          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/contact" className="nav-link">Contact</Link>
         </div>
 
-        {/* Actions */}
-        <div className="navbar-actions">
-          <Link to="/contact" className="btn-primary" onClick={() => setMobileMenuOpen(false)}>Contact Us</Link>
-
+        {/* Mobile Toggle */}
+        <div className="navbar-mobile-toggle">
           <div
             className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -50,6 +51,19 @@ const Navbar = () => {
             <span className="bar"></span>
             <span className="bar"></span>
             <span className="bar"></span>
+          </div>
+        </div>
+
+        {/* Mobile Menu (Overlay) */}
+        <div className={`navbar-mobile-overlay ${mobileMenuOpen ? 'active' : ''}`}>
+          <div className="mobile-links">
+            <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link to="/plan-event" onClick={() => setMobileMenuOpen(false)}>Plan Event</Link>
+            <Link to="/events" onClick={() => setMobileMenuOpen(false)}>Upcoming Events</Link>
+            <Link to="/table-booking" onClick={() => setMobileMenuOpen(false)}>Reservations</Link>
+            <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
+            <Link to="/menu" onClick={() => setMobileMenuOpen(false)}>Menu</Link>
+            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           </div>
         </div>
       </div>

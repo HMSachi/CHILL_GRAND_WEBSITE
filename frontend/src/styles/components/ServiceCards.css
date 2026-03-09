@@ -1,127 +1,192 @@
 .service-cards-section {
-    padding: 6rem 0;
+    padding: 8rem 0;
     background-color: var(--bg-dark);
+    border-top: 1px solid rgba(255, 215, 0, 0.05);
+}
+
+.section-header-warehouse {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.section-header-warehouse .header-accent {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: var(--primary-yellow);
+    margin-bottom: -1rem;
+}
+
+.section-header-warehouse .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 950;
+    color: #fff;
+    letter-spacing: 2px;
 }
 
 .service-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-    justify-content: center;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* =========================
    OUTER CARD
-========================= */
+ ========================= */
 
 .service-card {
-    border-radius: 30px;
-    padding: 12px;
+    position: relative;
     height: 380px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    will-change: transform;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 /* =========================
    INNER CARD
-========================= */
+ ========================= */
 
 .service-card-inner {
     position: relative;
-    width: 90%;
+    width: 100%;
     height: 100%;
-    border-radius: 22px;
-    overflow: hidden;
+    z-index: 1;
 }
 
-/* INNER BORDER (INSIDE IMAGE) */
+/* OVERLAY */
+.service-card-inner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.1) 70%);
+    z-index: 2;
+    transition: opacity 0.4s ease;
+}
+
+/* INNER BORDER */
 .service-card-inner::before {
     content: "";
     position: absolute;
-    inset: 14px;
-    border-radius: 16px;
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    z-index: 2;
+    inset: 12px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    z-index: 4;
     pointer-events: none;
-    transition: border-color 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 /* =========================
    IMAGE
-========================= */
+ ========================= */
 
 .service-card-image {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    z-index: 0;
-
-    transition: transform 0.4s ease;
+    transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+    filter: brightness(0.6);
 }
 
 /* =========================
    TITLE LABEL
-========================= */
+ ========================= */
 
 .service-card-title {
     position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-
-    background: linear-gradient(to right, var(--primary-yellow), #ffd700);
-    color: #000;
-    font-weight: 800;
-    font-size: 0.95rem;
-    padding: 12px 0;
-    width: 85%;
-    text-align: center;
-    border-radius: 40px;
+    bottom: 25px;
+    left: 20px;
+    right: 20px;
+    z-index: 5;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.15rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+    line-height: 1.2;
+}
 
-    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
-    transition: all 0.3s ease;
+/* ACCENT */
+.service-card-title::before {
+    content: 'CHILL GRAND';
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 2px;
+    color: var(--primary-yellow);
+    margin-bottom: 5px;
+    font-weight: 800;
+    opacity: 0.8;
 }
 
 /* =========================
-   HOVER (TONED DOWN)
-========================= */
+   HOVER
+ ========================= */
 
-.service-card:hover .service-card-inner::before {
-    border-color: var(--primary-yellow);
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 .service-card:hover .service-card-image {
-    transform: scale(1.05);
+    transform: scale(1.1);
+    filter: brightness(1);
+}
+
+.service-card:hover .service-card-inner::before {
+    inset: 10px;
+    border-color: var(--primary-yellow);
+    opacity: 0.6;
 }
 
 .service-card:hover .service-card-title {
-    background: white;
-    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.3);
+    color: var(--primary-yellow);
+    transform: translateY(-5px);
 }
 
 /* =========================
    RESPONSIVE
-========================= */
+ ========================= */
 
-@media (max-width: 768px) {
-    .service-card {
-        height: 340px;
+@media (max-width: 1200px) {
+    .service-cards-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.8rem;
     }
 
     .service-card-title {
-        font-size: 0.9rem;
-        padding: 8px 0;
-        width: 85%;
+        font-size: 1rem;
+        bottom: 20px;
+        left: 15px;
+    }
+}
+
+@media (max-width: 900px) {
+    .service-cards-grid {
+        overflow-x: auto;
+        display: flex;
+        gap: 1rem;
+        padding-bottom: 20px;
+    }
+
+    .service-card {
+        min-width: 200px;
+        flex: 0 0 auto;
+        height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-header-warehouse .header-title {
+        font-size: 2.3rem;
+    }
+
+    .section-header-warehouse .header-accent {
+        font-size: 2.8rem;
     }
 }
