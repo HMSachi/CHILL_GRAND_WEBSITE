@@ -8,6 +8,12 @@ import OrderSidebar from '../components/OrderSidebar';
 import { useOrder } from './OrderContext';
 import QRFooter from '../components/QRFooter';
 import '../styles/CategoriesPage.css';
+import chickenImg from '../../assets/chicken.jpeg';
+import juiceImg from '../../assets/juice.jpeg';
+import friedriceImg from '../../assets/friedrice.jpeg';
+import noodlesImg from '../../assets/noodles.jpeg';
+import seafoodImg from '../../assets/seafood.jpeg';
+import specialImg from '../../assets/special.jpeg';
 
 const CategoriesPage = () => {
     const navigate = useNavigate();
@@ -28,9 +34,23 @@ const CategoriesPage = () => {
             .then(res => res.json())
             .then(data => {
                 const dataArray = Array.isArray(data) ? data : [];
-                setCategories(dataArray);
-                if (dataArray.length > 0) {
-                    setSelectedCategory(dataArray[0].id);
+                // Assign images based on category name
+                const withImages = dataArray.map(cat => {
+                    let image;
+                    switch (cat.name?.toUpperCase()) {
+                        case 'CHICKEN': image = chickenImg; break;
+                        case 'FRESH JUICE': image = juiceImg; break;
+                        case 'FRIED RICE': image = friedriceImg; break;
+                        case 'NOODLES': image = noodlesImg; break;
+                        case 'SEAFOOD': image = seafoodImg; break;
+                        case 'SPECIAL': image = specialImg; break;
+                        default: image = undefined;
+                    }
+                    return { ...cat, image };
+                });
+                setCategories(withImages);
+                if (withImages.length > 0) {
+                    setSelectedCategory(withImages[0].id);
                 }
             })
             .catch(err => console.error('Error fetching categories:', err));
