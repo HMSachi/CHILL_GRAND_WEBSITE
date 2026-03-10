@@ -103,19 +103,13 @@
 }
 
 .brand-chill {
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-yellow);
     filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
 }
 
 .brand-grand {
-    background: linear-gradient(135deg, #ff2b55, #ff6b88);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 20px rgba(255, 43, 85, 0.4));
+    color: var(--text-light);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
 }
 
 /* Slides */
@@ -193,6 +187,7 @@
 }
 
 .slide-title {
+    font-family: var(--font-heading);
     font-size: 3.5rem;
     color: #fff;
     font-weight: 900;
@@ -200,10 +195,7 @@
     margin-bottom: 15px;
     text-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
     line-height: 1.2;
-    background: linear-gradient(135deg, #fff, #FFD700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    text-transform: uppercase;
 }
 
 .slide-subtitle {
@@ -289,7 +281,7 @@
     left: 0;
     width: 0;
     height: 100%;
-    background: linear-gradient(90deg, #FFD700, #ff2b55);
+    background: var(--primary-yellow);
     transition: width 0.3s ease;
 }
 
