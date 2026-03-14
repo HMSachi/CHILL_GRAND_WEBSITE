@@ -22,7 +22,7 @@ const Contact = () => {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch("http://localhost:5000/api/contact", {
+      const response = await fetch("http://localhost:5000/api/website/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
