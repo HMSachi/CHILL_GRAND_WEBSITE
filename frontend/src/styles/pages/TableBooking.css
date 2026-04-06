@@ -424,7 +424,7 @@
 .form-group-v2 textarea:focus {
     outline: none;
     border-color: var(--primary-yellow);
-    background: #202020;
+    background: #232d3f;
 }
 
 .form-group-v2 textarea {

@@ -1,18 +1,16 @@
 /* VARIABLES & ANIMATIONS */
 :root {
-    --primary-color: #f4c400;
-    /* Gold/Yellow */
-    --secondary-color: #ff2b55;
-    /* Red/Pink */
-    --text-dark: #222;
-    --text-light: #666;
-    --bg-light: #f9f9f9;
+    --primary-color: var(--primary-yellow);
+    --secondary-color: var(--secondary-red);
+    --text-dark: var(--text-light);
+    --text-light: #f8fafc;
+    --bg-light: #1e293b;
     --white: #fff;
     --black: #000;
     --font-main: 'Inter', sans-serif;
-    --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.15);
+    --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.5);
     --transition-fast: 0.3s ease;
     --transition-smooth: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
