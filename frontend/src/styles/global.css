@@ -8,14 +8,16 @@
   /* Pure Black */
 
   /* Background Colors */
-  --bg-dark: #000000;
-  --bg-card: #1A1A1A;
-  --bg-light: #F5F5F5;
+  --bg-dark: #0f172a;
+  /* Rich Midnight Blue */
+  --bg-card: #1e293b;
+  /* Elevated Slate */
+  --bg-light: #1e293b;
 
   /* Text Colors */
-  --text-light: #FFFFFF;
-  --text-dark: #121212;
-  --text-gray: #CCCCCC;
+  --text-light: #f8fafc;
+  --text-dark: #f8fafc;
+  --text-gray: #94a3b8;
   --text-yellow: var(--primary-yellow);
 
   /* Typography */
@@ -144,7 +146,7 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark);
+  background: #0f172a;
 }
 
 ::-webkit-scrollbar-thumb {

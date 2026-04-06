@@ -1,6 +1,6 @@
 .reserve-table {
     padding: 10rem 0;
-    background: #030303;
+    background: #0f172a;
     position: relative;
     overflow: hidden;
     border-top: 1px solid rgba(255, 215, 0, 0.05);
@@ -104,7 +104,7 @@
 }
 
 .form-container-premium {
-    background: #111;
+    background: #1e293b;
     padding: 3.5rem;
     border-radius: 20px;
     position: relative;

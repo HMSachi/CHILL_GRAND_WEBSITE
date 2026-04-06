@@ -37,7 +37,6 @@ const Navbar = () => {
         {/* Desktop Links - Right */}
         <div className="navbar-links right">
           <Link to="/table-booking" className="nav-link">Reservations</Link>
-          <Link to="/menu" className="nav-link">Menu</Link>
           <Link to="/about" className="nav-link">About</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
         </div>
@@ -62,7 +61,6 @@ const Navbar = () => {
             <Link to="/events" onClick={() => setMobileMenuOpen(false)}>Upcoming Events</Link>
             <Link to="/table-booking" onClick={() => setMobileMenuOpen(false)}>Reservations</Link>
             <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
-            <Link to="/menu" onClick={() => setMobileMenuOpen(false)}>Menu</Link>
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           </div>
         </div>

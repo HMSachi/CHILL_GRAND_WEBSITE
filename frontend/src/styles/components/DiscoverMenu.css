@@ -143,8 +143,8 @@
 
 .btn-see-menu:hover {
     transform: translateY(-5px);
-    background-color: #fff;
-    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+    background-color: #e2e8f0;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
 }
 
 /* ===============================
