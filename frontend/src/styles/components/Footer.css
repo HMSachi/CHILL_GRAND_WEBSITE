@@ -82,7 +82,7 @@
 .icon {
     width: 35px;
     height: 35px;
-    background-color: #e0e0e0;
+    background-color: var(--bg-card);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -110,9 +110,10 @@
 
 .newsletter-form input {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
-    background-color: white;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
 }
 
 .btn-secondary {
