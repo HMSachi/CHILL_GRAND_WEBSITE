@@ -24,6 +24,8 @@ const EventInquiry = () => {
         budget: '',
         notes: ''
     });
+    const [status, setStatus] = useState({ type: '', message: '' });
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -33,11 +35,41 @@ const EventInquiry = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Inquiry Submitted:', formData);
-        alert('Thank you for your inquiry! We will get back to you shortly.');
-        // In a real app, redirect or clear form here
+        setLoading(true);
+        setStatus({ type: '', message: '' });
+
+        try {
+            // Mapping frontend model to backend model
+            const payload = {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                eventType: formData.eventType,
+                date: formData.date,
+                guestCount: parseInt(formData.adults || 0) + parseInt(formData.children || 0),
+                requirements: `Time: ${formData.time}, Venue: ${formData.venuePref}, Food: ${formData.foodNeeded ? formData.foodDetails : 'No'}, Decor: ${formData.decorNeeded ? formData.decorDetails : 'No'}, Music: ${formData.musicNeeded}, Photography: ${formData.photographyNeeded}, Budget: ${formData.budget}, Notes: ${formData.notes}`
+            };
+
+            const response = await fetch("http://localhost:5000/api/website/inquiries", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                setStatus({ type: 'success', message: 'Inquiry sent! Our team will contact you soon.' });
+                // Reset form optionally
+            } else {
+                const data = await response.json();
+                setStatus({ type: 'error', message: data.error || 'Something went wrong.' });
+            }
+        } catch {
+            setStatus({ type: 'error', message: 'Failed to connect to server.' });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
