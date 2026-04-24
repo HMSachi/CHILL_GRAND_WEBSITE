@@ -14,18 +14,30 @@
     background-size: cover;
     background-position: center;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 2s ease-in-out, transform 10s ease-in-out;
     z-index: 0;
+    transform: scale(1.1);
 }
 
 .hero-bg-image.active {
     opacity: 1;
+    transform: scale(1);
 }
 
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, #000000 100%);
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.2) 0%, #000000 100%);
+    z-index: 1;
+}
+
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://grain-y.com/images/grain.png');
+    opacity: 0.15;
+    pointer-events: none;
     z-index: 1;
 }
 
@@ -48,7 +60,7 @@
     font-size: clamp(8rem, 18vw, 22rem);
     font-weight: 950;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
     white-space: nowrap;
     z-index: 1;
     pointer-events: none;
@@ -92,13 +104,43 @@
 
 .hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(4rem, 12vw, 10rem);
-    font-weight: 900;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 950;
     color: #fff;
     letter-spacing: -2px;
-    line-height: 1;
+    line-height: 0.9;
     margin-bottom: 2rem;
     text-transform: uppercase;
+    display: flex;
+    gap: 2rem;
+    perspective: 1000px;
+}
+
+.hero-title span {
+    display: inline-block;
+    animation: titleReveal 1.5s cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+.hero-title span:nth-child(2) {
+    animation-delay: 0.2s;
+    color: var(--primary-yellow);
+    -webkit-text-stroke: 1px var(--primary-yellow);
+    background: linear-gradient(to bottom, var(--primary-yellow), #E6C200);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes titleReveal {
+    from {
+        opacity: 0;
+        transform: rotateX(90deg) translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotateX(0deg) translateY(0);
+    }
 }
 
 .hero-tagline {
@@ -128,6 +170,23 @@
     border-radius: 4px;
     transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
     box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-warehouse::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+.btn-warehouse:hover::before {
+    left: 100%;
 }
 
 .btn-warehouse:hover {
@@ -137,15 +196,17 @@
 }
 
 .btn-warehouse.outline {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     box-shadow: none;
 }
 
 .btn-warehouse.outline:hover {
-    border-color: #fff;
-    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary-yellow);
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--primary-yellow);
 }
 
 /* SCROLL INDICATOR */

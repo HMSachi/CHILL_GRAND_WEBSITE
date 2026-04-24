@@ -138,7 +138,7 @@
 .booking-steps-wrapper {
     display: flex;
     justify-content: center;
-    padding: 6rem 5%;
+    padding: 6rem 5% 4rem;
     background: var(--bg-dark);
 }
 
@@ -146,7 +146,7 @@
     background: var(--bg-card);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 40px;
-    padding: 5rem;
+    padding: 2rem 4rem;
     max-width: 1300px;
     width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
@@ -180,48 +180,113 @@
     flex: 1.2;
 }
 
-.steps-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 2rem;
-    color: var(--text-light);
+/* PREMIUM HEADER */
+.steps-header-premium {
+    margin-bottom: 1rem;
 }
 
-.steps-title span {
+.steps-subtitle-premium {
+    font-size: 0.8rem;
     color: var(--primary-yellow);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
-.steps-label {
-    font-size: 0.95rem;
+.steps-title-premium {
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+}
+
+.steps-label-red {
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 4rem;
+    margin-bottom: 1.5rem;
     color: var(--secondary-red);
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-.steps-label::after {
+.steps-label-red::after {
     content: '';
     flex-grow: 1;
-    height: 2px;
+    height: 1px;
     background: linear-gradient(to right, var(--secondary-red), transparent);
+}
+
+/* UNIQUE CTA BUTTON */
+.steps-cta-premium {
+    margin-top: 1.5rem;
+}
+
+.btn-unique-booking {
+    position: relative;
+    display: inline-block;
+    padding: 18px 50px;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+}
+
+.btn-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: var(--primary-yellow);
+    border-radius: 50%;
+    transition: all 0.6s ease;
+    z-index: -1;
+    filter: blur(20px);
+    opacity: 0;
+}
+
+.btn-unique-booking:hover {
+    color: #000;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.4);
+}
+
+.btn-unique-booking:hover .btn-glow {
+    width: 300px;
+    height: 300px;
+    opacity: 0.8;
+}
+
+.btn-text {
+    position: relative;
+    z-index: 2;
 }
 
 .steps-list {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1.2rem;
 }
 
 .step-item {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    padding: 1.5rem;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
     background: rgba(255, 255, 255, 0.02);
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -236,9 +301,9 @@
 
 .step-icon-wrapper {
     background: linear-gradient(135deg, var(--primary-yellow) 0%, #e6c200 100%);
-    width: 70px;
-    height: 70px;
-    border-radius: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -247,21 +312,21 @@
 }
 
 .step-icon {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 900;
     color: #000;
 }
 
 .step-text h3 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     color: var(--primary-yellow);
 }
 
 .step-text p {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.4;
     color: var(--text-gray);
 }
 
@@ -340,13 +405,26 @@
 }
 
 .form-wrapper-v2 {
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 4rem;
     border-radius: 40px;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.form-wrapper-v2::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--primary-yellow), transparent);
 }
 
 .form-header-v2 {
@@ -358,20 +436,21 @@
     display: block;
     color: var(--primary-yellow);
     text-transform: uppercase;
-    letter-spacing: 3px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
+    letter-spacing: 5px;
+    font-weight: 800;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
 }
 
 .form-header-v2 .title {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #fff;
-    font-weight: 800;
+    font-weight: 900;
+    font-family: 'Playfair Display', serif;
 }
 
 .form-header-v2 .divider {
-    width: 60px;
+    width: 50px;
     height: 3px;
     background: var(--secondary-red);
     margin: 20px auto 0;
@@ -380,82 +459,95 @@
 .main-booking-form {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem 2rem;
 }
 
 .form-group-v2 {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .form-group-v2.full-width {
-    grid-column: span 2;
+    grid-column: span 3;
 }
 
 .form-group-v2 label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    margin-left: 5px;
 }
 
 .form-group-v2 input,
 .form-group-v2 select,
 .form-group-v2 textarea {
-    background: #1a1a1a;
-    border: 1px solid #333;
-    padding: 1.2rem;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.1rem 1.4rem;
+    border-radius: 15px;
     color: #fff;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    outline: none;
+}
+
+.form-group-v2 select option {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.form-group-v2 input::placeholder,
+.form-group-v2 textarea::placeholder {
+    color: rgba(255, 255, 255, 0.2);
 }
 
 .form-group-v2 input:focus,
 .form-group-v2 select:focus,
 .form-group-v2 textarea:focus {
-    outline: none;
+    background: rgba(255, 255, 255, 0.06);
     border-color: var(--primary-yellow);
-    background: #232d3f;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .form-group-v2 textarea {
-    min-height: 120px;
+    min-height: 100px;
     resize: none;
 }
 
 .form-submit-v2 {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .btn-confirm-v2 {
-    background: linear-gradient(135deg, var(--secondary-red) 0%, #a00000 100%);
-    color: #fff;
+    background: #fff;
+    color: #000;
     border: none;
-    padding: 1.2rem 4rem;
-    font-size: 1.1rem;
-    font-weight: 800;
+    padding: 1.1rem 4.5rem;
+    font-size: 1rem;
+    font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 2px;
-    border-radius: 15px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.4s ease;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .btn-confirm-v2:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(208, 0, 0, 0.4);
-    background: #fff;
-    color: var(--secondary-red);
+    background: var(--primary-yellow);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
 }
 
 @media (max-width: 768px) {

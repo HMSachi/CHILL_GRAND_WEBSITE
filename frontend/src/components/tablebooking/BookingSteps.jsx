@@ -9,10 +9,12 @@ const BookingSteps = () => {
                 <div className="steps-container">
                     {/* Left Content */}
                     <div className="steps-content">
-                        <h2 className="steps-title">
-                            How Table<br />Booking using<br /><span>360° view</span>
-                        </h2>
-                        <p className="steps-label">EASY ORDER IN 3 STEPS</p>
+                        <div className="steps-header-premium">
+                            <h4 className="steps-subtitle-premium">Reserve table using 360° View</h4>
+                            <h2 className="steps-title-premium">RESERVE<br />YOUR TABLE</h2>
+                        </div>
+
+                        <p className="steps-label-red">EASY ORDER IN 3 STEPS</p>
 
                         <div className="steps-list">
                             {/* Step 1 */}
@@ -47,6 +49,13 @@ const BookingSteps = () => {
                                     <p>Review your details and confirm your table instantly.</p>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="steps-cta-premium">
+                            <a href="#reservation-form" className="btn-unique-booking">
+                                <span className="btn-glow"></span>
+                                <span className="btn-text">BOOK A TABLE</span>
+                            </a>
                         </div>
                     </div>
 

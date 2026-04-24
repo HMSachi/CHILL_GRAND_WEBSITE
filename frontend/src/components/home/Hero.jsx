@@ -19,6 +19,9 @@ const Hero = () => {
 
     return (
         <section className="hero" id="home">
+            <div className="hero-watermark">CHILL GRAND</div>
+            <div className="hero-overlay"></div>
+
             {images.map((img, index) => (
                 <div
                     key={index}
@@ -29,19 +32,21 @@ const Hero = () => {
 
             <div className="container hero-content-warehouse">
                 <div className="hero-welcome fade-up">Welcome to</div>
-                <h1 className="hero-title fade-up-delay-1">CHILL GRAND</h1>
+                <h1 className="hero-title fade-up-delay-1">
+                    <span>CHILL</span> <span>GRAND</span>
+                </h1>
                 <div className="hero-tagline fade-up-delay-2">RESTAURANT & PUB</div>
 
                 <div className="hero-buttons-warehouse fade-up-delay-3">
-                    <a href="#menu" className="btn-warehouse">EXPLORE MENU</a>
-                    <a href="#booking" className="btn-warehouse outline">BOOK A TABLE</a>
+                    <a href="#booking" className="btn-warehouse">BOOK A TABLE</a>
                 </div>
             </div>
 
             <div className="hero-scroll-warehouse">
-                <div className="scroll-arrow">
-                    <span></span>
-                    <span></span>
+                <div className="hero-scroll-indicator">
+                    <div className="mouse">
+                        <div className="wheel"></div>
+                    </div>
                 </div>
             </div>
         </section>
