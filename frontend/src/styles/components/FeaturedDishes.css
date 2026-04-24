@@ -34,7 +34,7 @@
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
-    background-color: white;
+    background-color: var(--bg-card);
     height: 100%;
 }
 
@@ -86,7 +86,7 @@
 .dish-info h3 {
     font-size: 1.2rem;
     margin-bottom: 1rem;
-    color: black;
+    color: var(--text-light);
     font-weight: 700;
 }
 
@@ -128,9 +128,9 @@
 
 /* NAVIGATION BUTTONS */
 .nav-btn {
-    background-color: white;
+    background-color: var(--bg-card);
     border: 2px solid var(--primary-yellow);
-    color: black;
+    color: var(--text-light);
     width: 45px;
     height: 45px;
     border-radius: 50%;

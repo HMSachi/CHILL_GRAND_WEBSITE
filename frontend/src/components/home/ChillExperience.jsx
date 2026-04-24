@@ -1,19 +1,47 @@
 import React, { useRef, useEffect } from "react";
-import "../../styles/components/DiscoverMenu.css";
+import "../../styles/components/ChillExperience.css";
+import bar1 from "../../assets/bar.jpg";
+import bar2 from "../../assets/bar2.jpg";
+import party1 from "../../assets/private_dining.jpg";
+import scene1 from "../../assets/restaurants.jpg";
 
-import { discoverMenuItems } from "../../dummy/menuData";
+const experienceItems = [
+    {
+        id: 1,
+        title: "LIVE MUSIC & DJs",
+        subtitle: "VIBRANT NIGHTLIFE",
+        image: bar1
+    },
+    {
+        id: 2,
+        title: "SIGNATURE COCKTAILS",
+        subtitle: "ARTISANAL MIXOLOGY",
+        image: bar2
+    },
+    {
+        id: 3,
+        title: "PRIVATE PARTIES",
+        subtitle: "EXCLUSIVE CELEBRATIONS",
+        image: party1
+    },
+    {
+        id: 4,
+        title: "PREMIUM SPIRITS",
+        subtitle: "CURATED COLLECTION",
+        image: scene1
+    }
+];
 
-const DiscoverMenu = () => {
+const ChillExperience = () => {
     const scrollRef = useRef(null);
-    const menuItems = discoverMenuItems;
-
-    const infiniteItems = [...menuItems, ...menuItems, ...menuItems];
+    const items = experienceItems;
+    const infiniteItems = [...items, ...items, ...items];
 
     useEffect(() => {
         const container = scrollRef.current;
         let animationId;
         let pause = false;
-        const speed = 0.8; // Slightly faster for smoother feel
+        const speed = 0.8;
 
         const setupScroll = () => {
             if (!container || !container.children[0]) return;
@@ -21,9 +49,8 @@ const DiscoverMenu = () => {
             const card = container.children[0];
             const cardWidth = card.offsetWidth;
             const gap = parseFloat(window.getComputedStyle(container).gap) || 0;
-            const singleSetWidth = (cardWidth + gap) * menuItems.length;
+            const singleSetWidth = (cardWidth + gap) * items.length;
 
-            // Initialize scroll position to the start of the second set
             if (container.scrollLeft === 0) {
                 container.scrollLeft = singleSetWidth;
             }
@@ -31,8 +58,6 @@ const DiscoverMenu = () => {
             const scroll = () => {
                 if (!pause && container) {
                     container.scrollLeft -= speed;
-
-                    // If we have scrolled past the start (into the first set), reset to the second set
                     if (container.scrollLeft <= 0) {
                         container.scrollLeft = singleSetWidth;
                     }
@@ -40,51 +65,51 @@ const DiscoverMenu = () => {
                 animationId = requestAnimationFrame(scroll);
             };
 
-            // Cancel previous animation if any
             cancelAnimationFrame(animationId);
             animationId = requestAnimationFrame(scroll);
         };
 
-        // Wait for layout to be ready
         setTimeout(setupScroll, 100);
 
-        container.addEventListener("mouseenter", () => pause = true);
-        container.addEventListener("mouseleave", () => pause = false);
+        const onEnter = () => pause = true;
+        const onLeave = () => pause = false;
+
+        container.addEventListener("mouseenter", onEnter);
+        container.addEventListener("mouseleave", onLeave);
 
         return () => {
             cancelAnimationFrame(animationId);
-            container.removeEventListener("mouseenter", () => pause = true);
-            container.removeEventListener("mouseleave", () => pause = false);
+            if (container) {
+                container.removeEventListener("mouseenter", onEnter);
+                container.removeEventListener("mouseleave", onLeave);
+            }
         };
-    }, [menuItems.length]);
+    }, [items.length]);
 
     return (
-        <section className="discover-menu" id="menu">
+        <section className="chill-experience" id="experience">
             <div className="container">
                 <div className="section-header-warehouse">
-                    <div className="header-accent">Our Selection</div>
-                    <h2 className="header-title">DISCOVER MENU</h2>
+                    <div className="header-accent">The Atmosphere</div>
+                    <h2 className="header-title">CHILL VIBES</h2>
                 </div>
 
                 <div className="menu-scroll-container" ref={scrollRef}>
                     {infiniteItems.map((item, index) => (
                         <div className="menu-card" key={`${item.id}-${index}`}>
-
                             <div className="menu-image-wrapper">
                                 <img
                                     src={item.image}
                                     alt={item.title}
                                     className="menu-bg"
                                 />
-
                                 <div className="menu-content">
                                     <h3>{item.title}</h3>
                                     <p>{item.subtitle}</p>
                                 </div>
                             </div>
-
                             <button className="btn-see-menu">
-                                See<br />More
+                                BROWSE<br />MOMENTS
                             </button>
                         </div>
                     ))}
@@ -94,4 +119,4 @@ const DiscoverMenu = () => {
     );
 };
 
-export default DiscoverMenu;
+export default ChillExperience;

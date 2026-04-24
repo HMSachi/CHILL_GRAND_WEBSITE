@@ -20,9 +20,9 @@ const QRFooter = () => {
                 <div className="qr-footer-info">
                     <div className="qr-footer-section">
                         <h4>Contact Us</h4>
-                        <p>0345678901</p>
+                        <p>0761400071</p>
                         <p>chillgrand@gmail.com</p>
-                        <p>No 053, Malabe</p>
+                        <p>Kaduwela Road, Malabe</p>
                     </div>
 
                     <div className="qr-footer-section">
