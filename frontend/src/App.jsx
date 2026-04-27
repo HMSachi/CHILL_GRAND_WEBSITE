@@ -11,10 +11,12 @@ import About from './pages/About';
 import PlanEvent from './pages/PlanEvent';
 import EventDetail from './pages/EventDetail';
 import EventInquiry from './pages/EventInquiry';
+import VirtualTour from './pages/VirtualTour';
 import LandingPage from './QRweb/QRPages/LandingPage';
 import CategoriesPage from './QRweb/QRPages/CategoriesPage';
 import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
+import ChefDashboard from './pages/ChefDashboard';
 import './styles/global.css';
 import './App.css';
 
@@ -23,13 +25,15 @@ function App() {
   const isQRweb = ['/landing', '/categories', '/menu', '/my-orders'].some(path =>
     location.pathname.startsWith(path)
   );
+  const isKDS = location.pathname === '/kds-portal-9922';
 
   return (
     <div className="app">
-      {isQRweb ? <QRNavbar /> : <Navbar />}
+      {!isKDS && (isQRweb ? <QRNavbar /> : <Navbar />)}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/kds-portal-9922" element={<ChefDashboard />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/menu/:categoryId" element={<MenuItemsPage />} />
@@ -41,10 +45,11 @@ function App() {
           <Route path="/plan-event" element={<PlanEvent />} />
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/event-inquiry" element={<EventInquiry />} />
+          <Route path="/virtual-tour" element={<VirtualTour />} />
 
         </Routes>
       </main>
-      {!isQRweb && <Footer />}
+      {!isQRweb && !isKDS && <Footer />}
     </div>
   );
 }
