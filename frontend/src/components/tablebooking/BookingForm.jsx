@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../../styles/pages/TableBooking.css';
 
 const BookingForm = () => {
+    const location = useLocation();
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -11,6 +13,20 @@ const BookingForm = () => {
         seatingPreference: 'indoor',
         specialInstructions: ''
     });
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const tableId = queryParams.get('tableId');
+        if (tableId) {
+            setFormData(prev => ({
+                ...prev,
+                specialInstructions: prev.specialInstructions
+                    ? prev.specialInstructions + `\nPre-selected Table No: ${tableId}`
+                    : `Pre-selected Table No: ${tableId}`
+            }));
+        }
+    }, [location]);
+
     const [status, setStatus] = useState({ type: '', message: '' });
     const [loading, setLoading] = useState(false);
 
