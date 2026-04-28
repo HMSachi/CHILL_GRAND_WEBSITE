@@ -4,10 +4,26 @@ import gatheringImg from '../assets/bar2.jpg';
 import lunchImg from '../assets/private_dining.jpg';
 
 export const eventTypes = [
-    { title: 'Cocktail Nights', img: birthdayImg },
-    { title: 'Corporate Mixers', img: engagementImg },
-    { title: 'Private Watch Parties', img: gatheringImg },
-    { title: 'Gourmet Dinners', img: lunchImg },
+    {
+        title: 'Cocktail Nights',
+        img: birthdayImg,
+        desc: 'Experience-driven mixology in a high-energy atmosphere.'
+    },
+    {
+        title: 'Corporate Mixers',
+        img: engagementImg,
+        desc: 'Sophisticated networking events designed for professionals.'
+    },
+    {
+        title: 'Private Watch Parties',
+        img: gatheringImg,
+        desc: 'Exclusive screenings and sports events in your private lounge.'
+    },
+    {
+        title: 'Gourmet Dinners',
+        img: lunchImg,
+        desc: 'Exquisite fine dining journeys with curated wine pairings.'
+    },
 ];
 
 export const uiLabels = {
