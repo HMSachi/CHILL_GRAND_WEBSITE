@@ -546,40 +546,6 @@
     letter-spacing: 4px;
 }
 
-/* PAST EVENTS REFINEMENT */
-.past-events-section {
-    padding: 100px 10% 150px;
-    background: #000;
-    border-top: 1px solid rgba(212, 175, 55, 0.1);
-}
-
-.past-events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 40px;
-}
-
-.past-event-card {
-    background: #050505;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.past-event-card:hover {
-    border-color: var(--luxury-gold);
-    transform: translateY(-10px);
-}
-
-.past-event-info {
-    padding: 2.5rem;
-}
-
-.past-event-info h3 {
-    color: var(--luxury-gold);
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    margin-bottom: 0.5rem;
-}
 
 /* RESPONSIVE MOSAIC */
 @media (max-width: 1024px) {
