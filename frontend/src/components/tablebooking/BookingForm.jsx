@@ -123,34 +123,13 @@ const BookingForm = () => {
                             </div>
                             <div className="form-group-v2">
                                 <label>Time</label>
-                                <select required>
-                                    <option value="" disabled selected>Select Time</option>
-                                    <option value="11:00 AM">11:00 AM</option>
-                                    <option value="11:30 AM">11:30 AM</option>
-                                    <option value="12:00 PM">12:00 PM</option>
-                                    <option value="12:30 PM">12:30 PM</option>
-                                    <option value="01:00 PM">01:00 PM</option>
-                                    <option value="01:30 PM">01:30 PM</option>
-                                    <option value="02:00 PM">02:00 PM</option>
-                                    <option value="02:30 PM">02:30 PM</option>
-                                    <option value="03:00 PM">03:00 PM</option>
-                                    <option value="03:30 PM">03:30 PM</option>
-                                    <option value="04:00 PM">04:00 PM</option>
-                                    <option value="04:30 PM">04:30 PM</option>
-                                    <option value="05:00 PM">05:00 PM</option>
-                                    <option value="05:30 PM">05:30 PM</option>
-                                    <option value="06:00 PM">06:00 PM</option>
-                                    <option value="06:30 PM">06:30 PM</option>
-                                    <option value="07:00 PM">07:00 PM</option>
-                                    <option value="07:30 PM">07:30 PM</option>
-                                    <option value="08:00 PM">08:00 PM</option>
-                                    <option value="08:30 PM">08:30 PM</option>
-                                    <option value="09:00 PM">09:00 PM</option>
-                                    <option value="09:30 PM">09:30 PM</option>
-                                    <option value="10:00 PM">10:00 PM</option>
-                                    <option value="10:30 PM">10:30 PM</option>
-                                    <option value="11:00 PM">11:00 PM</option>
-                                </select>
+                                <input
+                                    name="time"
+                                    type="time"
+                                    value={formData.time}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </div>
                             <div className="form-group-v2">
                                 <label>Guests</label>
@@ -182,8 +161,8 @@ const BookingForm = () => {
                             </div>
                         </div>
                         <div className="form-group-v2 full-width">
-                            <label>Special Instructions</label>
-                            <textarea name="specialInstructions" placeholder="Allergies, special occasions, or requests..." value={formData.specialInstructions} onChange={handleChange}></textarea>
+                            <label>Any Special Requests?</label>
+                            <textarea name="specialInstructions" placeholder="Please mention any special requests or preferences here..." value={formData.specialInstructions} onChange={handleChange}></textarea>
                         </div>
                         {status.message && (
                             <p style={{ color: status.type === 'success' ? '#4CAF50' : '#f44336', marginBottom: '1rem', textAlign: 'center', fontWeight: 'bold' }}>

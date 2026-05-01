@@ -405,14 +405,15 @@
 }
 
 .form-wrapper-v2 {
-    background: rgba(20, 20, 20, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(10, 10, 10, 0.9) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 215, 0, 0.15);
     padding: 4rem;
     border-radius: 40px;
     max-width: 1000px;
     margin: 0 auto;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -450,9 +451,9 @@
 }
 
 .form-header-v2 .divider {
-    width: 50px;
+    width: 60px;
     height: 3px;
-    background: var(--secondary-red);
+    background: linear-gradient(90deg, transparent, var(--primary-yellow), transparent);
     margin: 20px auto 0;
 }
 
@@ -481,7 +482,7 @@
 .form-group-v2 label {
     font-size: 0.75rem;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 215, 0, 0.8);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-left: 5px;
@@ -490,8 +491,8 @@
 .form-group-v2 input,
 .form-group-v2 select,
 .form-group-v2 textarea {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 1.1rem 1.4rem;
     border-radius: 15px;
     color: #fff;
@@ -507,7 +508,7 @@
 
 .form-group-v2 input::placeholder,
 .form-group-v2 textarea::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .form-group-v2 input:focus,
@@ -530,10 +531,11 @@
 }
 
 .btn-confirm-v2 {
-    background: #fff;
+    background: linear-gradient(135deg, var(--primary-yellow) 0%, #e6b800 100%);
     color: #000;
     border: none;
     padding: 1.1rem 4.5rem;
+
     font-size: 1rem;
     font-weight: 900;
     text-transform: uppercase;
