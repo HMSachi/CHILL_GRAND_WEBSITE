@@ -16,6 +16,7 @@ import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
 import ChefDashboard from './pages/ChefDashboard';
 import WaiterDashboard from './pages/WaiterDashboard';
+import VirtualTour from './pages/VirtualTour';
 import './styles/global.css';
 import './App.css';
 

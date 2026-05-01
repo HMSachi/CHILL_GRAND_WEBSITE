@@ -21,56 +21,56 @@ const EventDetail = () => {
     }
 
     return (
-        <div className="event-detail-page-v2">
-            {/* PRE-HEADER NAV */}
-            <div className="detail-nav">
-                <div className="container">
-                    <Link to="/events" className="back-btn-minimal">
-                        <span>←</span> {uiLabels.backBtn}
-                    </Link>
-                </div>
-            </div>
+        <div className="event-detail-page-premium">
+            {/* Cinematic Background Overlay */}
+            <div className="premium-bg-fix"></div>
+            <div className="gold-particles"></div>
 
-            {/* HERO SECTION */}
             <section className="premium-hero" style={{ backgroundImage: `url(${event.coverImg})` }}>
+                <div className="hero-vignette"></div>
                 <div className="premium-hero-overlay">
                     <div className="container hero-inner">
-                        <div className="hero-content-box">
-                            <span className="event-badge">{event.date}</span>
-                            <h1 className="main-title">{event.title}</h1>
-                            <p className="hero-subtext">{event.location}</p>
+                        <div className="hero-content-box fade-in-up">
+                            <div className="badge-wrapper">
+                                <span className="event-badge-premium">{event.date}</span>
+                            </div>
+                            <h1 className="main-title-luxury">{event.title}</h1>
+                            <div className="location-reveal">
+                                <span className="location-icon">✧</span>
+                                <p className="hero-subtext-elegant">{event.location}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* QUICK INFO BAR */}
-            <section className="quick-info-bar">
-                <div className="container info-grid">
-                    <div className="info-item">
-                        <span className="info-icon">🕒</span>
-                        <div className="info-text">
+            {/* QUICK INFO BAR - UPGRADED GLASS */}
+            <section className="quick-info-bar-floating">
+                <div className="container info-grid-luxury">
+                    <div className="info-item-premium">
+                        <div className="info-icon-glow">🕒</div>
+                        <div className="info-text-luxury">
                             <strong>{uiLabels.time}</strong>
                             <span>{event.time}</span>
                         </div>
                     </div>
-                    <div className="info-item">
-                        <span className="info-icon">📍</span>
-                        <div className="info-text">
+                    <div className="info-item-premium">
+                        <div className="info-icon-glow">📍</div>
+                        <div className="info-text-luxury">
                             <strong>{uiLabels.venue}</strong>
                             <span>{event.location}</span>
                         </div>
                     </div>
-                    <div className="info-item">
-                        <span className="info-icon">👥</span>
-                        <div className="info-text">
+                    <div className="info-item-premium">
+                        <div className="info-icon-glow">👥</div>
+                        <div className="info-text-luxury">
                             <strong>{uiLabels.capacity}</strong>
                             <span>{event.capacity}</span>
                         </div>
                     </div>
-                    <div className="info-item">
-                        <span className="info-icon">👔</span>
-                        <div className="info-text">
+                    <div className="info-item-premium">
+                        <div className="info-icon-glow">👔</div>
+                        <div className="info-text-luxury">
                             <strong>{uiLabels.dressCode}</strong>
                             <span>{event.dressCode}</span>
                         </div>
@@ -81,10 +81,11 @@ const EventDetail = () => {
             <div className="container main-content-wrapper">
                 {/* OVERVIEW & HIGHLIGHTS */}
                 <div className="overview-highlights-row">
-                    <section className="overview-card">
+                    <section className="overview-card-premium">
+                        <h2 className="section-title-premium" style={{ fontStyle: 'normal' }}>{event.title}</h2>
                         <p className="description-text">{event.description}</p>
                         <div className="price-tag">
-                            <strong>{uiLabels.entry}</strong> {event.priceRange}
+                            <strong>{uiLabels.entry}</strong> <span>{event.priceRange}</span>
                         </div>
                     </section>
 
@@ -97,11 +98,6 @@ const EventDetail = () => {
                         </ul>
                     </section>
                 </div>
-
-
-
-
-
             </div>
         </div>
     );
