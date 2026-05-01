@@ -17,6 +17,7 @@ import CategoriesPage from './QRweb/QRPages/CategoriesPage';
 import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
 import ChefDashboard from './pages/ChefDashboard';
+import WaiterDashboard from './pages/WaiterDashboard';
 import './styles/global.css';
 import './App.css';
 
@@ -26,14 +27,17 @@ function App() {
     location.pathname.startsWith(path)
   );
   const isKDS = location.pathname === '/kds-portal-9922';
+  const isWaiter = location.pathname === '/waiter-portal-4421';
 
   return (
     <div className="app">
-      {!isKDS && (isQRweb ? <QRNavbar /> : <Navbar />)}
+      {!isKDS && !isWaiter && (isQRweb ? <QRNavbar /> : <Navbar />)}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/kds-portal-9922" element={<ChefDashboard />} />
+          <Route path="/waiter-portal-4421" element={<WaiterDashboard />} />
+
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/menu/:categoryId" element={<MenuItemsPage />} />
@@ -49,7 +53,7 @@ function App() {
 
         </Routes>
       </main>
-      {!isQRweb && !isKDS && <Footer />}
+      {!isQRweb && !isKDS && !isWaiter && <Footer />}
     </div>
   );
 }
