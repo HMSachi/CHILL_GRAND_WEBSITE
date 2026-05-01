@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock } from 'lucide-react';
 import '../styles/pages/ChefDashboard.css';
 import logo from '../assets/logo.png';
 
@@ -17,6 +18,8 @@ const ChefDashboard = () => {
     const [sessionInputs, setSessionInputs] = useState({ chef_name: '', chef_id: '' });
     const [error, setError] = useState('');
     const [selectedChefId, setSelectedChefId] = useState('');
+    const [historySearch, setHistorySearch] = useState('');
+    const [historySort, setHistorySort] = useState('latest'); // 'latest' or 'oldest'
 
     const API_BASE_URL = 'http://localhost:5000/api/kds';
 
@@ -78,12 +81,23 @@ const ChefDashboard = () => {
                 });
             }
         });
-        return flatCompleted.sort((a, b) => {
+
+        // Search Filter
+        let filtered = flatCompleted.filter(item => {
+            if (!historySearch) return true;
+            const search = historySearch.toLowerCase();
+            return item.item_name.toLowerCase().includes(search) ||
+                item.parentOrder.order_id.toString().includes(search) ||
+                (item.parentOrder.table_id && item.parentOrder.table_id.toString().includes(search));
+        });
+
+        // Time Sort
+        return filtered.sort((a, b) => {
             const timeA = new Date(a.parentOrder.kitchen_tracking?.item_served_times?.[a.order_item_id] || a.parentOrder.kitchen_tracking?.served_at || a.parentOrder.updated_at);
             const timeB = new Date(b.parentOrder.kitchen_tracking?.item_served_times?.[b.order_item_id] || b.parentOrder.kitchen_tracking?.served_at || b.parentOrder.updated_at);
-            return timeB - timeA;
+            return historySort === 'latest' ? timeB - timeA : timeA - timeB;
         });
-    }, [backendCompletedOrders, orders]);
+    }, [backendCompletedOrders, orders, historySearch, historySort]);
 
     const handleApiError = (err) => {
         if (err.response?.status === 401) {
@@ -126,10 +140,12 @@ const ChefDashboard = () => {
             return;
         }
         try {
+            const currentChef = activeSessions.find(s => s.chef_id === selectedChefId);
             await axios.patch(`${API_BASE_URL}/orders/${orderId}/status`, {
                 status: newStatus,
                 itemId,
                 chefId: selectedChefId,
+                chefName: currentChef?.chef_name,
                 pin
             });
             fetchOrders();
@@ -195,12 +211,43 @@ const ChefDashboard = () => {
                     </div>
                     {currentView === 'DASHBOARD' && (
                         <div className="header-controls">
-                            <input type="text" placeholder="Search Item/Table..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                            <div className="search-wrapper">
+                                <Search size={16} />
+                                <input type="text" placeholder="Search Item/Table..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                            </div>
                             <select value={filterType} onChange={e => setFilterType(e.target.value)}>
                                 <option value="ALL">All Services</option>
                                 <option value="DINEIN">Dine-In</option>
                                 <option value="TAKEAWAY">Take-Away</option>
                             </select>
+                        </div>
+                    )}
+
+                    {currentView === 'COMPLETED' && (
+                        <div className="header-controls history-controls">
+                            <div className="search-wrapper">
+                                <Search size={16} />
+                                <input
+                                    type="text"
+                                    placeholder="Search completed items..."
+                                    value={historySearch}
+                                    onChange={e => setHistorySearch(e.target.value)}
+                                />
+                            </div>
+                            <div className="sort-pills">
+                                <button
+                                    className={`pill-btn ${historySort === 'latest' ? 'active' : ''}`}
+                                    onClick={() => setHistorySort('latest')}
+                                >
+                                    <ArrowDownWideNarrow size={14} /> Latest First
+                                </button>
+                                <button
+                                    className={`pill-btn ${historySort === 'oldest' ? 'active' : ''}`}
+                                    onClick={() => setHistorySort('oldest')}
+                                >
+                                    <ArrowUpNarrowWide size={14} /> Oldest First
+                                </button>
+                            </div>
                         </div>
                     )}
                     <div className="live-clock">{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
@@ -456,27 +503,58 @@ const ChefDashboard = () => {
                                                 <span className="v-val">{new Date(selectedItem.parentOrder.kitchen_tracking.accepted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                             </div>
                                         )}
-                                        {((selectedItem.parentOrder.kitchen_tracking?.served_item_ids || []).includes(selectedItem.order_item_id) || ['SERVED', 'CLOSED', 'PAID'].includes(selectedItem.parentOrder.status)) && (() => {
-                                            const servedAtTime = selectedItem.parentOrder.kitchen_tracking?.item_served_times?.[selectedItem.order_item_id] || selectedItem.parentOrder.kitchen_tracking?.served_at || selectedItem.parentOrder.updated_at;
-                                            const servedAt = new Date(servedAtTime);
-                                            const acceptedAt = selectedItem.parentOrder.kitchen_tracking?.accepted_at ? new Date(selectedItem.parentOrder.kitchen_tracking.accepted_at) : null;
-                                            const activePrepTime = acceptedAt ? Math.floor((servedAt - acceptedAt) / 60000) : 0;
-                                            const totalCycle = Math.floor((servedAt - new Date(selectedItem.parentOrder.created_at)) / 60000);
+                                        {(() => {
+                                            const kt = selectedItem.parentOrder.kitchen_tracking || {};
+                                            const itemId = selectedItem.order_item_id;
+
+                                            const placedAt = new Date(selectedItem.parentOrder.created_at);
+                                            const acceptedAt = kt.accepted_at ? new Date(kt.accepted_at) : null;
+                                            const readyAtTime = kt.item_ready_times?.[itemId] || kt.ready_at;
+                                            const readyAt = readyAtTime ? new Date(readyAtTime) : null;
+                                            const servedAtTime = kt.item_served_times?.[itemId] || kt.served_at || selectedItem.parentOrder.updated_at;
+                                            const servedAt = (kt.served_item_ids || []).includes(itemId) || ['SERVED', 'CLOSED', 'PAID'].includes(selectedItem.parentOrder.status)
+                                                ? new Date(servedAtTime) : null;
+
+                                            const activePrepTime = (acceptedAt && readyAt) ? Math.floor((readyAt - acceptedAt) / 60000) : null;
+                                            const pickupDelay = (readyAt && servedAt) ? Math.floor((servedAt - readyAt) / 60000) : null;
+                                            const totalCycle = servedAt ? Math.floor((servedAt - placedAt) / 60000) : null;
 
                                             return (
                                                 <>
-                                                    <div className="v-item">
-                                                        <span className="v-key">Served:</span>
-                                                        <span className="v-val" style={{ color: '#34d399' }}>{servedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                    </div>
-                                                    <div className="v-item">
-                                                        <span className="v-key">Active Prep Time:</span>
-                                                        <span className="v-val" style={{ color: '#10b981' }}>{activePrepTime < 0 ? 0 : activePrepTime} min</span>
-                                                    </div>
-                                                    <div className="v-item">
-                                                        <span className="v-key">Total Time (Placed -{'>'} Served):</span>
-                                                        <span className="v-val" style={{ color: '#10b981' }}>{totalCycle < 0 ? 0 : totalCycle} min</span>
-                                                    </div>
+                                                    {readyAt && (
+                                                        <div className="v-item">
+                                                            <span className="v-key">Ready At:</span>
+                                                            <span className="v-val" style={{ color: '#f59e0b' }}>{readyAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {servedAt && (
+                                                        <div className="v-item">
+                                                            <span className="v-key">Served At:</span>
+                                                            <span className="v-val" style={{ color: '#34d399' }}>{servedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {activePrepTime !== null && (
+                                                        <div className="v-item" style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                                            <span className="v-key">Active Cooking Time:</span>
+                                                            <span className="v-val" style={{ color: '#10b981' }}>{activePrepTime < 0 ? 0 : activePrepTime} min</span>
+                                                        </div>
+                                                    )}
+
+                                                    {pickupDelay !== null && (
+                                                        <div className="v-item">
+                                                            <span className="v-key">Pickup Delay (Waiting):</span>
+                                                            <span className="v-val" style={{ color: '#f59e0b' }}>{pickupDelay < 0 ? 0 : pickupDelay} min</span>
+                                                        </div>
+                                                    )}
+
+                                                    {totalCycle !== null && (
+                                                        <div className="v-item">
+                                                            <span className="v-key">Total Journey:</span>
+                                                            <span className="v-val" style={{ color: '#10b981', fontWeight: 950 }}>{totalCycle < 0 ? 0 : totalCycle} min</span>
+                                                        </div>
+                                                    )}
                                                 </>
                                             );
                                         })()}
@@ -506,11 +584,11 @@ const ChefDashboard = () => {
 
                             <div className="m-footer">
                                 {selectedItem.parentOrder.status === 'SERVED' || (selectedItem.parentOrder.kitchen_tracking?.served_item_ids || []).includes(selectedItem.order_item_id) ? (
-                                    <div className="m-completed-badge">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="m-completed-badge item-served">
+                                        <svg className="status-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                         </svg>
-                                        Already Completed & Served
+                                        Item Delivered & Served
                                     </div>
                                 ) : (
                                     (selectedItem.parentOrder.kitchen_tracking?.ready_item_ids || []).includes(selectedItem.order_item_id) ? (
