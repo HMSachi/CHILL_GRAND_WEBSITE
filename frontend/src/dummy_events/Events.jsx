@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/pages/Events.css';
-import '../styles/components/UpcomingEvents.css';
+import './Events.css';
+import './UpcomingEvents.css';
 
 import { allEvents } from '../dummy/eventsData';
 

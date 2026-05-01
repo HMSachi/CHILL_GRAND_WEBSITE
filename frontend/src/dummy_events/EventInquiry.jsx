@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaChild, FaMoneyBillWave, FaPen, FaPlus, FaMinus, FaExternalLinkAlt } from 'react-icons/fa';
-import '../styles/pages/EventInquiry.css';
+import './EventInquiry.css';
 import heroBg from '../assets/bar.jpg';
 
 const EventInquiry = () => {

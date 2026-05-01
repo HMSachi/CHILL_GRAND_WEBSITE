@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import '../styles/pages/EventDetail.css';
+import './EventDetail.css';
 
 import { allEvents, uiLabels } from '../dummy/eventsData';
 

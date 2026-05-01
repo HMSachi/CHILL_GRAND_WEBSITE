@@ -2,6 +2,7 @@ import React from 'react';
 import '../../styles/pages/About.css';
 import bar1 from '../../assets/bar.jpg';
 import bar2 from '../../assets/bar2.jpg';
+import aboutImg from '../../assets/about.jpg';
 import dining1 from '../../assets/private_dining.jpg';
 import dining2 from '../../assets/restaurants.jpg';
 
@@ -11,7 +12,7 @@ const AboutStory = () => {
             <div className="about-story-grid">
                 {/* Row 1 */}
                 <div className="story-image-item">
-                    <img src={dining1} alt="Chill Grand Dining" />
+                    <img src={aboutImg} alt="Chill Grand Dining" />
                 </div>
 
                 <div className="story-content-item">

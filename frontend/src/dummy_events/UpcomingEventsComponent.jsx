@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../styles/components/UpcomingEvents.css';
+import './UpcomingEvents.css';
 
-import { upcomingEvents } from '../../dummy/eventsData';
+import { upcomingEvents } from '../dummy/eventsData';
 
 const UpcomingEvents = () => {
     return (
