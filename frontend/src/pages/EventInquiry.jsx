@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaChild, FaMoneyBillWave, FaPen } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaChild, FaMoneyBillWave, FaPen, FaPlus, FaMinus, FaExternalLinkAlt } from 'react-icons/fa';
 import '../styles/pages/EventInquiry.css';
 import heroBg from '../assets/bar.jpg';
 
@@ -9,7 +9,7 @@ const EventInquiry = () => {
         name: '',
         email: '',
         phone: '',
-        eventType: '',
+        eventType: 'Birthday Parties',
         date: '',
         time: '',
         adults: '',
@@ -27,11 +27,53 @@ const EventInquiry = () => {
     const [status, setStatus] = useState({ type: '', message: '' });
     const [loading, setLoading] = useState(false);
 
+    const [menuCategories, setMenuCategories] = useState([]);
+    const [selectedFoodCats, setSelectedFoodCats] = useState([]);
+    const [selectedDecorCats, setSelectedDecorCats] = useState([]);
+
+    const decorCategoryList = ['Flowers', 'Balloons', 'Lights', 'Special Theme', 'Simple Setup', 'Luxury Setup', 'Candles'];
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/menu/categories')
+            .then(res => res.json())
+            .then(data => {
+                const cats = Array.isArray(data) ? data : [];
+                setMenuCategories(cats);
+            })
+            .catch(err => console.error('Error fetching categories:', err));
+    }, []);
+
+    const toggleFoodCat = (catName) => {
+        setSelectedFoodCats(prev =>
+            prev.includes(catName) ? prev.filter(c => c !== catName) : [...prev, catName]
+        );
+    };
+
+    const toggleDecorCat = (catName) => {
+        setSelectedDecorCats(prev =>
+            prev.includes(catName) ? prev.filter(c => c !== catName) : [...prev, catName]
+        );
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleIncrement = (name) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: (parseInt(prev[name]) || 0) + 1
+        }));
+    };
+
+    const handleDecrement = (name) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: Math.max(0, (parseInt(prev[name]) || 0) - 1)
         }));
     };
 
@@ -49,7 +91,7 @@ const EventInquiry = () => {
                 eventType: formData.eventType,
                 date: formData.date,
                 guestCount: parseInt(formData.adults || 0) + parseInt(formData.children || 0),
-                requirements: `Time: ${formData.time}, Venue: ${formData.venuePref}, Food: ${formData.foodNeeded ? formData.foodDetails : 'No'}, Decor: ${formData.decorNeeded ? formData.decorDetails : 'No'}, Music: ${formData.musicNeeded}, Photography: ${formData.photographyNeeded}, Budget: ${formData.budget}, Notes: ${formData.notes}`
+                requirements: `Time: ${formData.time}, Venue: ${formData.venuePref}, Food: ${formData.foodNeeded ? `Selections: [${selectedFoodCats.join(', ')}] Notes: ${formData.foodDetails}` : 'No'}, Decor: ${formData.decorNeeded ? `Selections: [${selectedDecorCats.join(', ')}] Notes: ${formData.decorDetails}` : 'No'}, Music: ${formData.musicNeeded}, Photography: ${formData.photographyNeeded}, Budget: ${formData.budget}, Notes: ${formData.notes}`
             };
 
             const response = await fetch("http://localhost:5000/api/website/inquiries", {
@@ -77,6 +119,7 @@ const EventInquiry = () => {
             <div className="inquiry-hero" style={{ backgroundImage: `url(${heroBg})` }}>
                 <div className="inquiry-hero-overlay">
                     <h1>Plan Your <span>Dream Event</span></h1>
+                    <p>Tell us about your vision, and we'll craft an exceptional experience tailored just for you.</p>
                 </div>
             </div>
 
@@ -119,13 +162,14 @@ const EventInquiry = () => {
                                 <label>Event Type</label>
                                 <div className="input-wrapper">
                                     <select name="eventType" value={formData.eventType} onChange={handleChange} required>
-                                        <option value="">Select Type</option>
-                                        <option value="Birthday">Birthday Party</option>
-                                        <option value="Anniversary">Anniversary</option>
-                                        <option value="Wedding">Wedding</option>
-                                        <option value="Corporate">Corporate Event</option>
-                                        <option value="Gathering">Social Gathering</option>
-                                        <option value="Other">Other</option>
+                                        <option value="Birthday Parties">Birthday Parties</option>
+                                        <option value="Private Dining">Private Dining</option>
+                                        <option value="DJ / Live Music">DJ / Live Music</option>
+                                        <option value="Family Gatherings">Family Gatherings</option>
+                                        <option value="Corporate Events">Corporate Events</option>
+                                        <option value="Graduation / Farewell">Graduation / Farewell</option>
+                                        <option value="Engagement">Engagement</option>
+                                        <option value="Anniversaries">Anniversaries</option>
                                     </select>
                                 </div>
                             </div>
@@ -154,16 +198,40 @@ const EventInquiry = () => {
                             <div className="guest-inputs">
                                 <div className="guest-input-group">
                                     <span>Adults</span>
-                                    <div className="input-wrapper">
-                                        <FaUsers className="input-icon" />
-                                        <input type="number" name="adults" value={formData.adults} onChange={handleChange} required min="0" placeholder="0" />
+                                    <div className="guest-counter">
+                                        <button type="button" className="counter-btn" onClick={() => handleDecrement('adults')}>
+                                            <FaMinus />
+                                        </button>
+                                        <input
+                                            type="number"
+                                            name="adults"
+                                            value={formData.adults}
+                                            onChange={handleChange}
+                                            min="0"
+                                            placeholder="0"
+                                        />
+                                        <button type="button" className="counter-btn" onClick={() => handleIncrement('adults')}>
+                                            <FaPlus />
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="guest-input-group">
                                     <span>Children</span>
-                                    <div className="input-wrapper">
-                                        <FaChild className="input-icon" />
-                                        <input type="number" name="children" value={formData.children} onChange={handleChange} min="0" placeholder="0" />
+                                    <div className="guest-counter">
+                                        <button type="button" className="counter-btn" onClick={() => handleDecrement('children')}>
+                                            <FaMinus />
+                                        </button>
+                                        <input
+                                            type="number"
+                                            name="children"
+                                            value={formData.children}
+                                            onChange={handleChange}
+                                            min="0"
+                                            placeholder="0"
+                                        />
+                                        <button type="button" className="counter-btn" onClick={() => handleIncrement('children')}>
+                                            <FaPlus />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -176,59 +244,97 @@ const EventInquiry = () => {
 
                         <div className="form-group">
                             <label>Do you prefer an Indoor or Outdoor event?</label>
-                            <div className="radio-group">
-                                <label className="radio-label">
+                            <div className="venue-card-group">
+                                <label className={`venue-card ${formData.venuePref === 'Indoor' ? 'active' : ''}`}>
                                     <input type="radio" name="venuePref" value="Indoor" checked={formData.venuePref === 'Indoor'} onChange={handleChange} />
-                                    Indoor
+                                    <span className="venue-name">Indoor</span>
+                                    <span className="venue-desc">Sophisticated banquet hall</span>
                                 </label>
-                                <label className="radio-label">
+                                <label className={`venue-card ${formData.venuePref === 'Outdoor' ? 'active' : ''}`}>
                                     <input type="radio" name="venuePref" value="Outdoor" checked={formData.venuePref === 'Outdoor'} onChange={handleChange} />
-                                    Outdoor
+                                    <span className="venue-name">Outdoor</span>
+                                    <span className="venue-desc">Beautiful terrace & garden</span>
                                 </label>
                             </div>
                         </div>
 
                         <div className="services-grid">
-                            <div className="service-item">
+                            <div className={`service-item ${formData.foodNeeded ? 'selected' : ''}`}>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="foodNeeded" checked={formData.foodNeeded} onChange={handleChange} />
                                     Do you need Food & Catering menus?
                                 </label>
                                 {formData.foodNeeded && (
-                                    <textarea
-                                        name="foodDetails"
-                                        value={formData.foodDetails}
-                                        onChange={handleChange}
-                                        placeholder="Describe your menu preferences (e.g., Vegetarian, Italian, Buffet...)"
-                                        className="service-details"
-                                    />
+                                    <div className="service-extra-content">
+                                        <div className="category-chips-container">
+                                            {menuCategories.length > 0 ? (
+                                                menuCategories.map(cat => (
+                                                    <button
+                                                        key={cat.id || cat.name}
+                                                        type="button"
+                                                        className={`category-chip ${selectedFoodCats.includes(cat.name) ? 'active' : ''}`}
+                                                        onClick={() => toggleFoodCat(cat.name)}
+                                                    >
+                                                        {cat.name}
+                                                    </button>
+                                                ))
+                                            ) : (
+                                                <span className="chips-loading">Loading menu categories...</span>
+                                            )}
+                                        </div>
+                                        <a href="/categories" target="_blank" rel="noopener noreferrer" className="qr-menu-link">
+                                            <span>View Full QR Menu</span>
+                                            <FaExternalLinkAlt className="qr-menu-icon" />
+                                        </a>
+                                        <textarea
+                                            name="foodDetails"
+                                            value={formData.foodDetails}
+                                            onChange={handleChange}
+                                            placeholder="Paste specific selections here or describe preferences..."
+                                            className="service-textarea"
+                                        />
+                                    </div>
                                 )}
                             </div>
 
-                            <div className="service-item">
+                            <div className={`service-item ${formData.decorNeeded ? 'selected' : ''}`}>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="decorNeeded" checked={formData.decorNeeded} onChange={handleChange} />
                                     Do you need Decorations?
                                 </label>
                                 {formData.decorNeeded && (
-                                    <textarea
-                                        name="decorDetails"
-                                        value={formData.decorDetails}
-                                        onChange={handleChange}
-                                        placeholder="Describe your theme or color preferences..."
-                                        className="service-details"
-                                    />
+                                    <div className="service-extra-content">
+                                        <div className="category-chips-container">
+                                            {decorCategoryList.map(cat => (
+                                                <button
+                                                    key={cat}
+                                                    type="button"
+                                                    className={`category-chip ${selectedDecorCats.includes(cat) ? 'active' : ''}`}
+                                                    onClick={() => toggleDecorCat(cat)}
+                                                >
+                                                    {cat}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <textarea
+                                            name="decorDetails"
+                                            value={formData.decorDetails}
+                                            onChange={handleChange}
+                                            placeholder="Additional theme or color preferences..."
+                                            className="service-textarea"
+                                        />
+                                    </div>
                                 )}
                             </div>
 
-                            <div className="service-item">
+                            <div className={`service-item ${formData.musicNeeded ? 'selected' : ''}`}>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="musicNeeded" checked={formData.musicNeeded} onChange={handleChange} />
                                     Do you need Music / DJ?
                                 </label>
                             </div>
 
-                            <div className="service-item">
+                            <div className={`service-item ${formData.photographyNeeded ? 'selected' : ''}`}>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="photographyNeeded" checked={formData.photographyNeeded} onChange={handleChange} />
                                     Do you need Photography?
@@ -241,10 +347,10 @@ const EventInquiry = () => {
                     <section className="form-section">
                         <h2 className="section-title">Budget & Additional Notes</h2>
                         <div className="form-group">
-                            <label>Estimated Budget</label>
+                            <label>Estimated Budget (Rs.)</label>
                             <div className="input-wrapper">
                                 <FaMoneyBillWave className="input-icon" />
-                                <input type="text" name="budget" value={formData.budget} onChange={handleChange} placeholder="e.g. $5000" />
+                                <input type="text" name="budget" value={formData.budget} onChange={handleChange} placeholder="e.g. Rs. 500,000" />
                             </div>
                         </div>
                         <div className="form-group">
@@ -257,8 +363,10 @@ const EventInquiry = () => {
                     </section>
 
                     <div className="form-actions">
-                        <button type="submit" className="btn-submit-inquiry">Submit Inquiry</button>
-                        <Link to="/plan-event" className="btn-cancel">Cancel</Link>
+                        <Link to="/plan-event" className="btn-cancel">Return to Events</Link>
+                        <button type="submit" className="btn-submit-inquiry" disabled={loading}>
+                            {loading ? 'Processing...' : 'Submit Inquiry'}
+                        </button>
                     </div>
 
                 </form>

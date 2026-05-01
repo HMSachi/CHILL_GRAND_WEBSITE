@@ -40,7 +40,7 @@ const EventTypes = () => {
                             <span className="mosaic-category">Experience</span>
                             <h3>{type.title}</h3>
                             <p className="mosaic-desc">{type.desc}</p>
-                            <Link to="/event-inquiry" className="mosaic-link">Enquire Now</Link>
+                            <Link to="/event-inquiry" className="mosaic-link">Plan Your Event</Link>
                         </div>
                     </div>
                 ))}
