@@ -16,7 +16,7 @@ const Footer = () => {
                             <img src={logo} alt="Chill Grand Logo" style={{ height: '80px', width: 'auto' }} />
                         </Link>
                     </div>
-                    <p className="footer-hours">Monday - Sunday: 10:00am - 10:00pm</p>
+                    <p className="footer-hours">Monday - Sunday: 11:00 AM - 11:00 PM</p>
                     <p className="footer-copyright">© 2025 Chill Grand Restaurant | All rights reserved</p>
                 </div>
 
@@ -51,11 +51,15 @@ const Footer = () => {
                     </div>
 
                     <h4>Newsletter</h4>
-                    <p>Get recent news and updates.</p>
-                    <form className="newsletter-form">
-                        <input type="email" placeholder="Email Address" />
-                        <button type="submit" className="btn-secondary">Subscribe</button>
-                    </form>
+                    <div className="newsletter-wrapper">
+                        <p>Get recent news and updates.</p>
+                        <form className="newsletter-form">
+                            <div className="newsletter-input-group">
+                                <input type="email" placeholder="Email Address" required />
+                                <button type="submit" className="btn-subscribe">Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </footer>

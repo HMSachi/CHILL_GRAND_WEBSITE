@@ -138,7 +138,7 @@
 .booking-steps-wrapper {
     display: flex;
     justify-content: center;
-    padding: 6rem 5% 4rem;
+    padding: 8rem 5% 2rem;
     background: var(--bg-dark);
 }
 
@@ -146,7 +146,7 @@
     background: var(--bg-card);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 40px;
-    padding: 2rem 4rem;
+    padding: 1.5rem 4rem;
     max-width: 1300px;
     width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
@@ -286,17 +286,21 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
+    padding: 0.7rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .step-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(10px);
-    border-color: rgba(255, 215, 0, 0.2);
+    background: rgba(255, 215, 0, 0.08);
+    transform: translateX(12px) scale(1.02);
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
 }
 
 .step-icon-wrapper {
@@ -405,14 +409,15 @@
 }
 
 .form-wrapper-v2 {
-    background: rgba(20, 20, 20, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(10, 10, 10, 0.9) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 215, 0, 0.15);
     padding: 4rem;
     border-radius: 40px;
     max-width: 1000px;
     margin: 0 auto;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -450,9 +455,9 @@
 }
 
 .form-header-v2 .divider {
-    width: 50px;
+    width: 60px;
     height: 3px;
-    background: var(--secondary-red);
+    background: linear-gradient(90deg, transparent, var(--primary-yellow), transparent);
     margin: 20px auto 0;
 }
 
@@ -481,7 +486,7 @@
 .form-group-v2 label {
     font-size: 0.75rem;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 215, 0, 0.8);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-left: 5px;
@@ -490,8 +495,8 @@
 .form-group-v2 input,
 .form-group-v2 select,
 .form-group-v2 textarea {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 1.1rem 1.4rem;
     border-radius: 15px;
     color: #fff;
@@ -507,7 +512,7 @@
 
 .form-group-v2 input::placeholder,
 .form-group-v2 textarea::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .form-group-v2 input:focus,
@@ -530,10 +535,11 @@
 }
 
 .btn-confirm-v2 {
-    background: #fff;
+    background: linear-gradient(135deg, var(--primary-yellow) 0%, #e6b800 100%);
     color: #000;
     border: none;
     padding: 1.1rem 4.5rem;
+
     font-size: 1rem;
     font-weight: 900;
     text-transform: uppercase;
@@ -582,5 +588,62 @@
     .hero-buttons {
         flex-direction: column;
         width: 80%;
+    }
+}
+
+/* EMBEDDED 360 VIEWER STYLES */
+.embedded-tour-box {
+    height: 450px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    background: #000;
+}
+
+.table-marker-embedded {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid var(--primary-yellow);
+    color: var(--primary-yellow);
+    font-weight: 900;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.table-marker-embedded:hover {
+    background: var(--primary-yellow);
+    color: #000;
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+}
+
+.marker-pulse-embedded {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-yellow);
+    animation: pulse-embedded 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse-embedded {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
     }
 }

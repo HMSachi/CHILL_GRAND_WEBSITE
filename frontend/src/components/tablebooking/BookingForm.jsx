@@ -1,6 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { ReactPhotoSphereViewer } from 'react-photo-sphere-viewer';
+import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
+import '@photo-sphere-viewer/core/index.css';
+import '@photo-sphere-viewer/markers-plugin/index.css';
 import '../../styles/pages/TableBooking.css';
+
+const createTableMarker = (id, yaw, pitch, label) => ({
+    id: `table-${id}-${label}`,
+    position: { yaw, pitch },
+    html: `
+        <div class="table-marker-embedded">
+            <div class="marker-pulse-embedded"></div>
+            <div class="marker-content">●</div>
+        </div>
+    `,
+    size: { width: 35, height: 35 },
+    anchor: 'center center',
+    tooltip: `Select Table: ${label}`,
+    data: { label }
+});
+
+const tableMarkers = [
+    createTableMarker('window-1', 1.0, -0.2, 'T1 (Window)'),
+    createTableMarker('window-2', 1.4, -0.2, 'T2 (Window)'),
+    createTableMarker('center-1', 2.0, -0.15, 'C1 (Center Hall)'),
+    createTableMarker('center-2', 2.5, -0.15, 'C2 (Center Hall)'),
+    createTableMarker('vip-1', 3.14, -0.1, 'VIP 1 (Private)')
+];
 
 const BookingForm = () => {
     const location = useLocation();
@@ -10,7 +37,7 @@ const BookingForm = () => {
         date: '',
         time: '',
         guests: '',
-        seatingPreference: 'indoor',
+        seatingPreference: '',
         specialInstructions: ''
     });
 
@@ -35,6 +62,15 @@ const BookingForm = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleViewerReady = (instance) => {
+        const markersPlugin = instance.getPlugin(MarkersPlugin);
+        markersPlugin.addEventListener('select-marker', ({ marker }) => {
+            if (marker.id.startsWith('table-')) {
+                setFormData(prev => ({ ...prev, seatingPreference: marker.data.label }));
+            }
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -50,7 +86,7 @@ const BookingForm = () => {
             const data = await response.json();
             if (response.ok) {
                 setStatus({ type: 'success', message: 'Reservation requested! We will contact you soon.' });
-                setFormData({ name: '', phone: '', date: '', time: '', guests: '', seatingPreference: 'indoor', specialInstructions: '' });
+                setFormData({ name: '', phone: '', date: '', time: '', guests: '', seatingPreference: '', specialInstructions: '' });
             } else {
                 setStatus({ type: 'error', message: data.error || 'Something went wrong.' });
             }
@@ -87,51 +123,46 @@ const BookingForm = () => {
                             </div>
                             <div className="form-group-v2">
                                 <label>Time</label>
-                                <select required>
-                                    <option value="" disabled selected>Select Time</option>
-                                    <option value="11:00 AM">11:00 AM</option>
-                                    <option value="11:30 AM">11:30 AM</option>
-                                    <option value="12:00 PM">12:00 PM</option>
-                                    <option value="12:30 PM">12:30 PM</option>
-                                    <option value="01:00 PM">01:00 PM</option>
-                                    <option value="01:30 PM">01:30 PM</option>
-                                    <option value="02:00 PM">02:00 PM</option>
-                                    <option value="02:30 PM">02:30 PM</option>
-                                    <option value="03:00 PM">03:00 PM</option>
-                                    <option value="03:30 PM">03:30 PM</option>
-                                    <option value="04:00 PM">04:00 PM</option>
-                                    <option value="04:30 PM">04:30 PM</option>
-                                    <option value="05:00 PM">05:00 PM</option>
-                                    <option value="05:30 PM">05:30 PM</option>
-                                    <option value="06:00 PM">06:00 PM</option>
-                                    <option value="06:30 PM">06:30 PM</option>
-                                    <option value="07:00 PM">07:00 PM</option>
-                                    <option value="07:30 PM">07:30 PM</option>
-                                    <option value="08:00 PM">08:00 PM</option>
-                                    <option value="08:30 PM">08:30 PM</option>
-                                    <option value="09:00 PM">09:00 PM</option>
-                                    <option value="09:30 PM">09:30 PM</option>
-                                    <option value="10:00 PM">10:00 PM</option>
-                                    <option value="10:30 PM">10:30 PM</option>
-                                    <option value="11:00 PM">11:00 PM</option>
-                                </select>
+                                <input
+                                    name="time"
+                                    type="time"
+                                    value={formData.time}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </div>
                             <div className="form-group-v2">
                                 <label>Guests</label>
                                 <input name="guests" type="number" min="1" placeholder="No. of Guests" value={formData.guests} onChange={handleChange} required />
                             </div>
                             <div className="form-group-v2">
-                                <label>Seating Preference</label>
-                                <select name="seatingPreference" value={formData.seatingPreference} onChange={handleChange}>
-                                    <option value="indoor">Indoor Dining</option>
-                                    <option value="outdoor">Outdoor Terrace</option>
-                                    <option value="private">Private Lounge</option>
-                                </select>
+                                <label>Selected Table</label>
+                                <input
+                                    name="seatingPreference"
+                                    type="text"
+                                    value={formData.seatingPreference || 'Please select on 360 map'}
+                                    readOnly
+                                    style={{ color: formData.seatingPreference ? '#ffcc00' : 'rgba(255,255,255,0.4)', fontWeight: 'bold' }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Interactive 360 Viewer */}
+                        <div className="form-group-v2 full-width">
+                            <label>Interactive 360 Table Selection</label>
+                            <div className="embedded-tour-box">
+                                <ReactPhotoSphereViewer
+                                    src={'/360-images/scene2.jpg'} // Main Dining Scene
+                                    height={'100%'}
+                                    width={'100%'}
+                                    plugins={[[MarkersPlugin, { markers: tableMarkers }]]}
+                                    onReady={handleViewerReady}
+                                />
                             </div>
                         </div>
                         <div className="form-group-v2 full-width">
-                            <label>Special Instructions</label>
-                            <textarea name="specialInstructions" placeholder="Allergies, special occasions, or requests..." value={formData.specialInstructions} onChange={handleChange}></textarea>
+                            <label>Any Special Requests?</label>
+                            <textarea name="specialInstructions" placeholder="Please mention any special requests or preferences here..." value={formData.specialInstructions} onChange={handleChange}></textarea>
                         </div>
                         {status.message && (
                             <p style={{ color: status.type === 'success' ? '#4CAF50' : '#f44336', marginBottom: '1rem', textAlign: 'center', fontWeight: 'bold' }}>
