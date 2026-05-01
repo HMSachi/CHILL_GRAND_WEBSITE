@@ -8,7 +8,7 @@ const QrCodeSection = () => {
     const navigate = useNavigate();
 
     const handleGetStarted = () => {
-        navigate('/landing');
+        navigate('/categories');
     };
 
     return (

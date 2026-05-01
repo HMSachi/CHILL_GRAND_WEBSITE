@@ -11,7 +11,6 @@ import About from './pages/About';
 import PlanEvent from './pages/PlanEvent';
 import EventDetail from './pages/EventDetail';
 import EventInquiry from './pages/EventInquiry';
-import LandingPage from './QRweb/QRPages/LandingPage';
 import CategoriesPage from './QRweb/QRPages/CategoriesPage';
 import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
@@ -20,7 +19,7 @@ import './App.css';
 
 function App() {
   const location = useLocation();
-  const isQRweb = ['/landing', '/categories', '/menu', '/my-orders'].some(path =>
+  const isQRweb = ['/categories', '/menu', '/my-orders'].some(path =>
     location.pathname.startsWith(path)
   );
 
@@ -30,7 +29,6 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/landing" element={<LandingPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/menu/:categoryId" element={<MenuItemsPage />} />
           <Route path="/my-orders" element={<MyOrdersPage />} />
