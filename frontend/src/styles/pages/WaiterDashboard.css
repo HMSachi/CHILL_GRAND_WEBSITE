@@ -47,18 +47,18 @@
 }
 
 .sidebar-logo {
-    width: 38px;
-    height: 38px;
+    width: 46px;
+    height: 46px;
     object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
 }
 
 .brand-name {
-    font-weight: 800;
-    font-size: 1.15rem;
-    letter-spacing: -0.5px;
+    font-weight: 900;
+    font-size: 1.35rem;
+    letter-spacing: -0.75px;
     color: var(--text-primary);
-    background: linear-gradient(to right, #fff, #94a3b8);
+    background: linear-gradient(to right, #fff, #cbd5e1);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2677,4 +2677,175 @@
 .no-result p {
     font-size: 1.1rem;
     font-weight: 700;
+}
+
+/* ============================================================
+   TABLET & MOBILE OPTIMIZATION (MAINTAINING PREMIUM STYLE)
+   ============================================================ */
+
+/* Large Tablets & Small Laptops (1024px - 1440px) */
+@media (max-width: 1366px) {
+    .waiter-sidebar {
+        width: 240px;
+    }
+
+    .scroll-content {
+        padding: 2rem;
+    }
+
+    .menu-active-session-layout.with-sidebar .menu-explorer {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Medium Tablets (Landscape & Portrait - 768px to 1024px) */
+@media (max-width: 1024px) {
+    .waiter-sidebar {
+        width: 90px;
+        padding: 2rem 0.5rem;
+    }
+
+    .sidebar-header .brand-name,
+    .sidebar-nav button span,
+    .user-info .name-role,
+    .logout-btn span {
+        display: none;
+    }
+
+    .sidebar-nav button {
+        justify-content: center;
+        padding: 1.2rem;
+    }
+
+    .user-info {
+        justify-content: center;
+    }
+
+    .logout-btn {
+        padding: 1rem;
+    }
+
+    .content-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .scroll-content {
+        padding: 1.5rem;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .menu-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.25rem;
+    }
+
+    /* Split screen order mode on tablet */
+    .menu-active-session-layout.with-sidebar {
+        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menu-active-session-layout.with-sidebar .table-session-summary {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 90px;
+        right: 0;
+        height: auto;
+        max-height: 40vh;
+        z-index: 50;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        width: calc(100% - 90px);
+    }
+
+    .menu-active-session-layout.with-sidebar .menu-explorer {
+        padding-bottom: 40vh;
+        /* Make room for the bottom cart */
+    }
+
+    .places-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Phone & Small Tablet (Below 768px) */
+@media (max-width: 768px) {
+    .waiter-layout {
+        flex-direction: column;
+    }
+
+    .waiter-sidebar {
+        width: 100%;
+        height: 70px;
+        flex-direction: row;
+        padding: 0 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-header {
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        gap: 0.5rem;
+        height: 100%;
+        align-items: center;
+    }
+
+    .sidebar-nav button {
+        padding: 0.8rem;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-top-bar {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .prep-queue-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-active-session-layout.with-sidebar .table-session-summary {
+        left: 0;
+        width: 100%;
+    }
+}
+
+/* Extra touch target scaling for tablet users */
+@media (pointer: coarse) {
+
+    button,
+    .tab-item,
+    .tablet-table-card,
+    .sidebar-nav button {
+        min-height: 48px;
+        /* High-end touch size */
+    }
+
+    .search-box input {
+        padding: 12px;
+    }
 }

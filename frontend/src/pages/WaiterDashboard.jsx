@@ -569,12 +569,12 @@ const DashboardView = ({ orders, onTabChange }) => {
                 <div className="stat-card green">
                     <div className="stat-icon"><CheckCircle2 size={22} /></div>
                     <span className="s-label">Ready to Serve</span>
-                    <span className="s-value">{orders.filter(o => o.status === 'SERVED').length}</span>
+                    <span className="s-value">{orders.filter(o => (o.kitchen_tracking?.ready_item_ids?.length > 0) && o.status !== 'PAID' && o.status !== 'CLOSED').length}</span>
                 </div>
                 <div className="stat-card orange">
                     <div className="stat-icon"><ReceiptText size={22} /></div>
-                    <span className="s-label">Billing Pending</span>
-                    <span className="s-value">{orders.filter(o => o.status === 'BILL_OPEN').length}</span>
+                    <span className="s-label">Closed Orders</span>
+                    <span className="s-value">{orders.filter(o => ['CLOSED', 'PAID'].includes(o.status)).length}</span>
                 </div>
             </div>
 
