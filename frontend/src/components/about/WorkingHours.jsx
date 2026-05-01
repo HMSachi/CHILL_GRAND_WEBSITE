@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/pages/About.css';
-import bgImage from '../../assets/working_hours_bg.png';
+import bgImage from '../../assets/back.jpg';
 
 const WorkingHours = () => {
     return (
