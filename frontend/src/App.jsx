@@ -14,6 +14,8 @@ import EventInquiry from './dummy_events/EventInquiry';
 import CategoriesPage from './QRweb/QRPages/CategoriesPage';
 import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
+import ChefDashboard from './pages/ChefDashboard';
+import WaiterDashboard from './pages/WaiterDashboard';
 import './styles/global.css';
 import './App.css';
 
@@ -22,10 +24,12 @@ function App() {
   const isQRweb = ['/categories', '/menu', '/my-orders'].some(path =>
     location.pathname.startsWith(path)
   );
+  const isKDS = location.pathname === '/kds-portal-9922';
+  const isWaiter = location.pathname === '/waiter-portal-4421';
 
   return (
     <div className="app">
-      {isQRweb ? <QRNavbar /> : <Navbar />}
+      {!isKDS && !isWaiter && (isQRweb ? <QRNavbar /> : <Navbar />)}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -39,10 +43,11 @@ function App() {
           <Route path="/plan-event" element={<PlanEvent />} />
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/event-inquiry" element={<EventInquiry />} />
+          <Route path="/virtual-tour" element={<VirtualTour />} />
 
         </Routes>
       </main>
-      {!isQRweb && <Footer />}
+      {!isQRweb && !isKDS && !isWaiter && <Footer />}
     </div>
   );
 }
