@@ -1,7 +1,7 @@
-import birthdayImg from '../assets/dj.jpg';
+import birthdayImg from '../assets/birthday_celebration.jpg';
 import engagementImg from '../assets/restaurants.jpg';
 import gatheringImg from '../assets/bar2.jpg';
-import lunchImg from '../assets/private_dining.jpg';
+import lunchImg from '../assets/dining.jpg';
 
 export const eventTypes = [
     {

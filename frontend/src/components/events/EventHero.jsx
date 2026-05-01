@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/pages/PlanEvent.css';
-import heroBg from '../../assets/hero_restaurant_lounge.png';
+import heroBg from '../../assets/hero_restaurant_lounge.jpg';
 
 
 // This component is likely where the h1 tag would be rendered.
@@ -25,13 +25,6 @@ const EventHero = () => {
                         <Link to="/event-inquiry" className="btn-fill-form">
                             Fill The Form
                         </Link>
-                    </div>
-                </div>
-
-                <div className="scroll-indicator">
-                    <span>Explore</span>
-                    <div className="mouse">
-                        <div className="wheel"></div>
                     </div>
                 </div>
             </div>

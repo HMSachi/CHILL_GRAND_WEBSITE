@@ -58,8 +58,8 @@
 .event-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.45) 0%, transparent 60%);
-    /* Much lighter scrim */
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, transparent 70%);
+    /* Darker scrim for better text legibility */
     display: flex;
     padding: 0 10%;
     align-items: center;
@@ -78,14 +78,16 @@
 }
 
 .event-hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     color: #ffffff;
-    line-height: 1.8;
-    margin-bottom: 3.5rem;
-    max-width: 500px;
-    font-weight: 400;
-    text-shadow: 0 2px 15px rgba(0, 0, 0, 1);
-    /* Deep shadow for pop */
+    line-height: 1.6;
+    margin-bottom: 4rem;
+    max-width: 600px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 5px rgba(0, 0, 0, 1);
+    opacity: 0.9;
+    z-index: 2;
 }
 
 .hero-content {
@@ -96,62 +98,90 @@
     flex-direction: column;
     align-items: flex-start;
     animation: fadeInUp 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
 }
 
 .event-hero-title {
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 300;
-    line-height: 1.1;
-    margin-bottom: 2rem;
+    font-size: clamp(3.5rem, 10vw, 6.5rem);
+    /* Larger, more cinematic */
+    font-weight: 200;
+    line-height: 1;
+    margin-bottom: 2.5rem;
     text-transform: capitalize;
     color: var(--luxury-white);
-    letter-spacing: -1px;
+    letter-spacing: -2px;
 }
 
 .event-hero-title span {
     font-style: italic;
-    font-family: serif;
+    font-family: var(--font-serif);
     display: block;
-    color: var(--luxury-gold);
+    background: linear-gradient(90deg, var(--luxury-gold), #FFF, var(--luxury-gold));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite;
     letter-spacing: 0;
     margin-top: 0.5rem;
 }
 
-.hero-divider {
-    width: 80px;
-    height: 1px;
-    background: var(--luxury-gold);
-    margin-bottom: 2.5rem;
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
 }
 
-.event-hero-subtitle {
-    font-size: 1.1rem;
-    color: var(--luxury-text-muted);
-    line-height: 1.8;
-    margin-bottom: 3.5rem;
-    max-width: 500px;
-    font-weight: 300;
+.hero-divider {
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--luxury-gold), transparent);
+    margin-bottom: 3rem;
 }
+
+/* Duplicate removed - styles consolidated above */
 
 .btn-fill-form {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--luxury-white);
-    padding: 18px 45px;
-    font-size: 0.85rem;
+    background: var(--luxury-gold);
+    border: 1px solid var(--luxury-gold);
+    color: var(--luxury-black);
+    padding: 16px 40px;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    letter-spacing: 5px;
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     border-radius: 0;
     text-decoration: none;
     font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    display: inline-block;
+}
+
+.btn-fill-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            transparent);
+    transition: 0.5s;
 }
 
 .btn-fill-form:hover {
-    border-color: var(--luxury-gold);
-    background: transparent;
-    color: var(--luxury-gold);
-    padding-left: 65px;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+    background: #e5c04a;
+    /* Lightened gold */
+}
+
+.btn-fill-form:hover::before {
+    left: 100%;
 }
 
 /* SCROLL INDICATOR - Minimalist */
@@ -255,12 +285,12 @@
 /* ELEVATED GALLERY GRID */
 /* ELEVATED MOSAIC GALLERY */
 .event-types-section {
-    padding: 120px 8%;
+    padding: 80px 8% 120px;
     background: var(--luxury-black);
 }
 
 .section-header {
-    margin-bottom: 100px;
+    margin-bottom: 60px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -270,25 +300,25 @@
 
 .section-tag {
     color: var(--luxury-gold);
-    font-size: 0.8rem;
-    letter-spacing: 8px;
-    /* Extra spacing for luxury feel */
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    /* Reduced size and spacing */
     text-transform: uppercase;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     display: block;
     font-weight: 500;
     opacity: 0.8;
 }
 
 .section-title {
-    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-size: clamp(2.2rem, 5.5vw, 3.5rem);
     color: var(--luxury-white);
     font-family: 'Playfair Display', serif;
     /* Use serif for title */
     font-weight: 300;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     line-height: 1.1;
-    letter-spacing: -1px;
+    letter-spacing: 1px;
 }
 
 .section-divider {
