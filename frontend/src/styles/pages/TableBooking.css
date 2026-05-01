@@ -584,3 +584,60 @@
         width: 80%;
     }
 }
+
+/* EMBEDDED 360 VIEWER STYLES */
+.embedded-tour-box {
+    height: 450px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    background: #000;
+}
+
+.table-marker-embedded {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid var(--primary-yellow);
+    color: var(--primary-yellow);
+    font-weight: 900;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.table-marker-embedded:hover {
+    background: var(--primary-yellow);
+    color: #000;
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+}
+
+.marker-pulse-embedded {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-yellow);
+    animation: pulse-embedded 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse-embedded {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
