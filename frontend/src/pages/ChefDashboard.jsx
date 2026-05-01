@@ -263,6 +263,11 @@ const ChefDashboard = () => {
                                         <div className="card-bottom-info">
                                             {(() => {
                                                 const isPreparing = (card.parentOrder.kitchen_tracking?.preparing_item_ids || []).includes(card.order_item_id);
+                                                const isReady = (card.parentOrder.kitchen_tracking?.ready_item_ids || []).includes(card.order_item_id);
+
+                                                if (isReady) {
+                                                    return <span className="status-badge" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', border: '1px solid currentColor' }}>WAITING FOR WAITER</span>;
+                                                }
                                                 return (
                                                     <span className={`status-badge ${isPreparing ? 'preparing-badge' : 'placed-badge'}`}>
                                                         {isPreparing ? 'PREPARING' : 'PLACED'}
@@ -508,10 +513,19 @@ const ChefDashboard = () => {
                                         Already Completed & Served
                                     </div>
                                 ) : (
-                                    (selectedItem.parentOrder.kitchen_tracking?.preparing_item_ids || []).includes(selectedItem.order_item_id) ? (
-                                        <button className="m-btn m-btn-serve" onClick={() => handleStatusUpdate(selectedItem.parentOrder.order_id, 'SERVED', selectedItem.order_item_id)}>Mark Item as Served</button>
+                                    (selectedItem.parentOrder.kitchen_tracking?.ready_item_ids || []).includes(selectedItem.order_item_id) ? (
+                                        <div className="m-completed-badge waiter-waiting">
+                                            <svg className="status-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            Waiting for Waiter to Serve
+                                        </div>
                                     ) : (
-                                        <button className="m-btn m-btn-start" onClick={() => handleStatusUpdate(selectedItem.parentOrder.order_id, 'PREPARING', selectedItem.order_item_id)}>Start Preparing</button>
+                                        (selectedItem.parentOrder.kitchen_tracking?.preparing_item_ids || []).includes(selectedItem.order_item_id) ? (
+                                            <button className="m-btn m-btn-serve" onClick={() => handleStatusUpdate(selectedItem.parentOrder.order_id, 'READY', selectedItem.order_item_id)}>Mark Item as Ready to Serve</button>
+                                        ) : (
+                                            <button className="m-btn m-btn-start" onClick={() => handleStatusUpdate(selectedItem.parentOrder.order_id, 'PREPARING', selectedItem.order_item_id)}>Start Preparing</button>
+                                        )
                                     )
                                 )}
                             </div>
