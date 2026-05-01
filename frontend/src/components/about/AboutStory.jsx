@@ -1,9 +1,9 @@
 import React from 'react';
 import '../../styles/pages/About.css';
+import dining1 from '../../assets/about.jpg';
 import bar1 from '../../assets/bar.jpg';
 import bar2 from '../../assets/bar2.jpg';
-import aboutImg from '../../assets/about.jpg';
-import dining1 from '../../assets/private_dining.jpg';
+import aboutImg from '../../assets/about2.jpg';
 import dining2 from '../../assets/restaurants.jpg';
 
 const AboutStory = () => {
@@ -12,7 +12,7 @@ const AboutStory = () => {
             <div className="about-story-grid">
                 {/* Row 1 */}
                 <div className="story-image-item">
-                    <img src={aboutImg} alt="Chill Grand Dining" />
+                    <img src={dining1} alt="Chill Grand Burger" />
                 </div>
 
                 <div className="story-content-item">
@@ -31,12 +31,12 @@ const AboutStory = () => {
                 </div>
 
                 <div className="story-image-item">
-                    <img src={bar1} alt="Chill Grand Bar" />
+                    <img src={aboutImg} alt="Chill Grand Dining" />
                 </div>
 
                 {/* Row 2 */}
                 <div className="story-image-item">
-                    <img src={bar2} alt="Chill Grand Ambiance" />
+                    <img src={bar1} alt="Chill Grand Cocktail" />
                 </div>
 
                 <div className="story-image-item">
@@ -44,7 +44,7 @@ const AboutStory = () => {
                 </div>
 
                 <div className="story-image-item">
-                    <img src={dining1} alt="Chill Grand Interior" />
+                    <img src={bar2} alt="Chill Grand Bartender" />
                 </div>
             </div>
         </section>
