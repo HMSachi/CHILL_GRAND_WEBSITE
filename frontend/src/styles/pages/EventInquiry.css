@@ -164,6 +164,17 @@
     align-items: center;
 }
 
+/* AUTOFILL FIX FOR DARK THEME */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
+    -webkit-text-fill-color: var(--text-light) !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: var(--text-light);
+}
+
 .input-icon {
     position: absolute;
     left: 20px;
@@ -420,6 +431,10 @@ input[type="number"] {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem;
     margin-top: 15px;
+}
+
+.tables-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
 }
 
 .venue-card {

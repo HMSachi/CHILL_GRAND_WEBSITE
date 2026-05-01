@@ -14,7 +14,7 @@ const EventInquiry = () => {
         time: '',
         adults: '',
         children: '',
-        venuePref: 'Indoor',
+        selectedTableId: null,
         foodNeeded: false,
         foodDetails: '',
         decorNeeded: false,
@@ -31,9 +31,13 @@ const EventInquiry = () => {
     const [selectedFoodCats, setSelectedFoodCats] = useState([]);
     const [selectedDecorCats, setSelectedDecorCats] = useState([]);
 
+    const [places, setPlaces] = useState([]);
+    const [tables, setTables] = useState([]);
+
     const decorCategoryList = ['Flowers', 'Balloons', 'Lights', 'Special Theme', 'Simple Setup', 'Luxury Setup', 'Candles'];
 
     useEffect(() => {
+        // Fetch Categories
         fetch('http://localhost:5000/api/menu/categories')
             .then(res => res.json())
             .then(data => {
@@ -41,6 +45,22 @@ const EventInquiry = () => {
                 setMenuCategories(cats);
             })
             .catch(err => console.error('Error fetching categories:', err));
+
+        // Fetch Places
+        fetch('http://localhost:5000/api/places')
+            .then(res => res.json())
+            .then(data => {
+                if (data.places) setPlaces(data.places);
+            })
+            .catch(err => console.error('Error fetching places:', err));
+
+        // Fetch Tables
+        fetch('http://localhost:5000/api/tables')
+            .then(res => res.json())
+            .then(data => {
+                if (data.tables) setTables(data.tables);
+            })
+            .catch(err => console.error('Error fetching tables:', err));
     }, []);
 
     const toggleFoodCat = (catName) => {
@@ -91,7 +111,7 @@ const EventInquiry = () => {
                 eventType: formData.eventType,
                 date: formData.date,
                 guestCount: parseInt(formData.adults || 0) + parseInt(formData.children || 0),
-                requirements: `Time: ${formData.time}, Venue: ${formData.venuePref}, Food: ${formData.foodNeeded ? `Selections: [${selectedFoodCats.join(', ')}] Notes: ${formData.foodDetails}` : 'No'}, Decor: ${formData.decorNeeded ? `Selections: [${selectedDecorCats.join(', ')}] Notes: ${formData.decorDetails}` : 'No'}, Music: ${formData.musicNeeded}, Photography: ${formData.photographyNeeded}, Budget: ${formData.budget}, Notes: ${formData.notes}`
+                requirements: `Time: ${formData.time}, Table ID: ${formData.selectedTableId || 'Not Selected'}, Food: ${formData.foodNeeded ? `Selections: [${selectedFoodCats.join(', ')}] Notes: ${formData.foodDetails}` : 'No'}, Decor: ${formData.decorNeeded ? `Selections: [${selectedDecorCats.join(', ')}] Notes: ${formData.decorDetails}` : 'No'}, Music: ${formData.musicNeeded}, Photography: ${formData.photographyNeeded}, Budget: ${formData.budget}, Notes: ${formData.notes}`
             };
 
             const response = await fetch("http://localhost:5000/api/website/inquiries", {
@@ -243,19 +263,32 @@ const EventInquiry = () => {
                         <h2 className="section-title">Venue & Services</h2>
 
                         <div className="form-group">
-                            <label>Do you prefer an Indoor or Outdoor event?</label>
-                            <div className="venue-card-group">
-                                <label className={`venue-card ${formData.venuePref === 'Indoor' ? 'active' : ''}`}>
-                                    <input type="radio" name="venuePref" value="Indoor" checked={formData.venuePref === 'Indoor'} onChange={handleChange} />
-                                    <span className="venue-name">Indoor</span>
-                                    <span className="venue-desc">Sophisticated banquet hall</span>
-                                </label>
-                                <label className={`venue-card ${formData.venuePref === 'Outdoor' ? 'active' : ''}`}>
-                                    <input type="radio" name="venuePref" value="Outdoor" checked={formData.venuePref === 'Outdoor'} onChange={handleChange} />
-                                    <span className="venue-name">Outdoor</span>
-                                    <span className="venue-desc">Beautiful terrace & garden</span>
-                                </label>
-                            </div>
+                            <label>Select a Table</label>
+                            {places.length > 0 ? (
+                                places.map(place => {
+                                    const placeTables = tables.filter(t => t.place_id === place.id);
+                                    if (placeTables.length === 0) return null;
+                                    return (
+                                        <div key={place.id} className="place-section" style={{ marginBottom: '1.5rem' }}>
+                                            <h3 className="place-header" style={{ color: 'var(--primary-yellow)', marginBottom: '0.8rem', fontSize: '1rem', borderBottom: '1px solid rgba(255, 215, 0, 0.2)', paddingBottom: '5px' }}>{place.place_name}</h3>
+                                            <div className="venue-card-group tables-grid">
+                                                {placeTables.map(table => (
+                                                    <div
+                                                        key={table.id}
+                                                        className={`venue-card ${formData.selectedTableId === table.id ? 'active' : ''}`}
+                                                        onClick={() => setFormData(prev => ({ ...prev, selectedTableId: table.id }))}
+                                                    >
+                                                        <span className="venue-name">Table #{table.id}</span>
+                                                        <span className="venue-desc">{table.seats} Seats</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <span className="chips-loading">Loading tables...</span>
+                            )}
                         </div>
 
                         <div className="services-grid">
