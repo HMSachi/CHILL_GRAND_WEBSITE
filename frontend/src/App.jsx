@@ -4,33 +4,36 @@ import Navbar from './components/common/Navbar';
 import QRNavbar from './QRweb/components/QRNavbar';
 import Footer from './components/common/Footer';
 import Home from './pages/Home';
-import Events from './pages/Events';
+import Events from './dummy_events/Events';
 import Contact from './pages/Contact';
 import TableBooking from './pages/TableBooking';
 import About from './pages/About';
 import PlanEvent from './pages/PlanEvent';
-import EventDetail from './pages/EventDetail';
-import EventInquiry from './pages/EventInquiry';
-import LandingPage from './QRweb/QRPages/LandingPage';
+import EventDetail from './dummy_events/EventDetail';
+import EventInquiry from './dummy_events/EventInquiry';
 import CategoriesPage from './QRweb/QRPages/CategoriesPage';
 import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
+import ChefDashboard from './pages/ChefDashboard';
+import WaiterDashboard from './pages/WaiterDashboard';
+import VirtualTour from './pages/VirtualTour';
 import './styles/global.css';
 import './App.css';
 
 function App() {
   const location = useLocation();
-  const isQRweb = ['/landing', '/categories', '/menu', '/my-orders'].some(path =>
+  const isQRweb = ['/categories', '/menu', '/my-orders'].some(path =>
     location.pathname.startsWith(path)
   );
+  const isKDS = location.pathname === '/kds-portal-9922';
+  const isWaiter = location.pathname === '/waiter-portal-4421';
 
   return (
     <div className="app">
-      {isQRweb ? <QRNavbar /> : <Navbar />}
+      {!isKDS && !isWaiter && (isQRweb ? <QRNavbar /> : <Navbar />)}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/landing" element={<LandingPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/menu/:categoryId" element={<MenuItemsPage />} />
           <Route path="/my-orders" element={<MyOrdersPage />} />
@@ -41,10 +44,11 @@ function App() {
           <Route path="/plan-event" element={<PlanEvent />} />
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/event-inquiry" element={<EventInquiry />} />
+          <Route path="/virtual-tour" element={<VirtualTour />} />
 
         </Routes>
       </main>
-      {!isQRweb && <Footer />}
+      {!isQRweb && !isKDS && !isWaiter && <Footer />}
     </div>
   );
 }

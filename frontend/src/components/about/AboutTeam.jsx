@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/pages/About.css';
-import teamImage from '../../assets/bar.jpg'; // Placeholder
+import teamImage from '../../assets/visionaries.png';
 
 const AboutTeam = () => {
     return (

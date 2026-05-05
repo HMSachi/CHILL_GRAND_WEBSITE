@@ -4,57 +4,65 @@
     left: 0;
     width: 100%;
     z-index: 1000;
-
-    /* HEIGHT CONTROL */
-    height: 90px;
-    padding: 0 0;
-
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(15px) saturate(180%);
-    -webkit-backdrop-filter: blur(15px) saturate(180%);
-
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    height: 120px;
+    padding: 0 2rem;
+    background: transparent;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
 }
 
+/* FLOATING PREMIUM STATE */
 .navbar.scrolled {
-    height: 75px;
-    background: rgba(0, 0, 0, 0.9);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    height: 85px;
+    top: 15px;
+    width: calc(100% - 40px);
+    left: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 100px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-container {
     height: 100%;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 0 4rem;
     position: relative;
+    padding: 0 2rem;
 }
 
-/* LOGO - THE CENTER */
+/* LOGO ENHANCEMENT */
 .navbar-logo {
     order: 2;
-    padding: 0 4rem;
     display: flex;
     align-items: center;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .logo-img {
-    height: 65px;
+    height: 100px;
     width: auto;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+}
+
+.navbar-logo:hover .logo-img {
+    transform: scale(1.1) rotate(2deg);
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5));
 }
 
 .navbar.scrolled .logo-img {
-    height: 50px;
+    height: 70px;
 }
 
-/* LINKS - THE SPLIT */
+/* NAVIGATION LINKS */
 .navbar-links {
     display: flex;
     gap: 3.5rem;
@@ -65,39 +73,43 @@
 .navbar-links.left {
     order: 1;
     justify-content: flex-end;
+    padding-right: 2rem;
 }
 
 .navbar-links.right {
     order: 3;
     justify-content: flex-start;
+    padding-left: 2rem;
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 700;
-    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 800;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    transition: all 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+    letter-spacing: 4px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
-    padding: 5px 0;
+    padding: 10px 0;
+    text-decoration: none;
 }
 
 .nav-link:hover {
     color: var(--primary-yellow);
-    letter-spacing: 5px;
+    letter-spacing: 6px;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 50%;
+    bottom: 0;
+    left: 0;
     width: 0;
     height: 1px;
     background: var(--primary-yellow);
-    transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
-    transform: translateX(-50%);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 10px var(--primary-yellow);
 }
 
 .nav-link:hover::after {

@@ -1,19 +1,14 @@
-import React from 'react';
 import Hero from '../components/home/Hero';
 import ServiceCards from '../components/home/ServiceCards';
-import DiscoverMenu from '../components/home/DiscoverMenu';
-import ReserveTable from '../components/home/ReserveTable';
-import UpcomingEvents from '../components/home/UpcomingEvents';
+import GalleryWall from '../components/home/GalleryWall';
 
 const Home = () => {
     return (
-        <>
+        <div className="home-container">
             <Hero />
             <ServiceCards />
-            <UpcomingEvents />
-            <DiscoverMenu />
-            <ReserveTable />
-        </>
+            <GalleryWall />
+        </div>
     );
 };
 

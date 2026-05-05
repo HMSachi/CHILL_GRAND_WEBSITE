@@ -61,7 +61,16 @@
 .footer-column ul li {
     margin-bottom: 0.8rem;
     font-size: 0.9rem;
+}
+
+.footer-column ul li a {
     color: #555;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: var(--primary-yellow);
 }
 
 .footer-newsletter {
@@ -82,7 +91,7 @@
 .icon {
     width: 35px;
     height: 35px;
-    background-color: #e0e0e0;
+    background-color: var(--bg-card);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -102,34 +111,61 @@
     object-fit: contain;
 }
 
-.newsletter-form {
+.newsletter-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1.5rem;
 }
 
-.newsletter-form input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
+.newsletter-wrapper p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
 }
 
-.btn-secondary {
-    background-color: var(--primary-yellow);
-    color: black;
-    font-weight: 700;
-    padding: 12px 24px;
+.newsletter-input-group {
+    display: flex;
+    gap: 0;
+    max-width: 400px;
     border-radius: 50px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.newsletter-input-group:focus-within {
+    border-color: var(--primary-yellow);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.newsletter-input-group input {
+    background: transparent;
     border: none;
+    padding: 12px 20px;
+    color: #fff;
+    width: 100%;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.btn-subscribe {
+    background: var(--primary-yellow);
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    font-weight: 900;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     white-space: nowrap;
 }
 
-.btn-secondary:hover {
-    background-color: #e6c200;
-    transform: translateY(-2px);
+.btn-subscribe:hover {
+    background: #fff;
+    letter-spacing: 2px;
 }
 
 @media (max-width: 768px) {

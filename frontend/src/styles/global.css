@@ -8,11 +8,11 @@
   /* Pure Black */
 
   /* Background Colors */
-  --bg-dark: #0f172a;
-  /* Rich Midnight Blue */
-  --bg-card: #1e293b;
-  /* Elevated Slate */
-  --bg-light: #1e293b;
+  --bg-dark: #070707;
+  /* Deep Premium Black */
+  --bg-card: #111111;
+  /* Elevated Dark Charcoal */
+  --bg-light: #181818;
 
   /* Text Colors */
   --text-light: #f8fafc;
@@ -142,14 +142,13 @@ button {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: #0f172a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary-yellow);
-  border-radius: 5px;
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

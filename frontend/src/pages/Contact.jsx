@@ -58,6 +58,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit}>
               <div className="form-group">
 
+                <label>Name</label>
                 <input
                   type="text"
                   name="name"
@@ -112,9 +113,9 @@ const Contact = () => {
 
           {/* RIGHT INFO CARD */}
           <div className="contact-info-card">
-            <p><strong>Email: info@chillgrand.com</strong></p>
-            <p><strong>Phone: +1 234 567 890</strong></p>
-            <p><strong>Address: 123 Food Street,<br />Flavor Town</strong></p>
+            <p><strong>Email:</strong> chillgrand@gmail.com</p>
+            <p><strong>Phone:</strong> 0761400071</p>
+            <p><strong>Address:</strong> Kaduwela Road,<br />Malabe, Sri Lanka</p>
           </div>
         </div>
       </div>

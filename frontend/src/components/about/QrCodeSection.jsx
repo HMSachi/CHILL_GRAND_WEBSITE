@@ -2,29 +2,46 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/About.css';
 import qrBg from '../../assets/restaurants.jpg'; // Placeholder
-import qrCode from '../../assets/logo.png'; // Placeholder for QR code
+import qrCode from '../../assets/qr_premium.png';
 
 const QrCodeSection = () => {
     const navigate = useNavigate();
 
     const handleGetStarted = () => {
-        navigate('/landing');
+        navigate('/categories');
     };
 
     return (
-        <div className="qr-section" style={{ backgroundImage: `url(${qrBg})` }}>
+        <section className="qr-section" style={{ backgroundImage: `url(${qrBg})` }}>
             <div className="qr-overlay">
+                <div className="qr-container">
+                    <div className="qr-card-premium">
+                        <div className="qr-card-badge">SMART MENU</div>
+                        <h2 className="qr-card-title">INSTANT <br /><span>ORDERING</span></h2>
 
-                <div className="qr-card-right">
-                    <h3 className="qr-card-title">PRIVATE EXPERIENCE</h3>
-                    <div className="qr-code-large" onClick={handleGetStarted} style={{ cursor: 'pointer' }}>
-                        <img src={qrCode} alt="Scan QR Code" />
+                        <div className="qr-visual-wrapper" onClick={handleGetStarted}>
+                            <div className="qr-floating-bg"></div>
+                            <div className="qr-code-frame">
+                                <img src={qrCode} alt="Scan QR Code" className="qr-image" />
+                            </div>
+                        </div>
+
+                        <div className="qr-content-bottom">
+                            <p className="qr-description">
+                                Skip the wait. Scan to explore our <br />
+                                <strong>Digital Culinary Journey</strong> and order <br />
+                                directly from your table.
+                            </p>
+
+                            <button className="btn-premium-explore" onClick={handleGetStarted}>
+                                <span className="btn-text">EXPLORE THE MENU</span>
+                                <span className="btn-icon">→</span>
+                            </button>
+                        </div>
                     </div>
-                    <p className="qr-instruction">Scan to explorer our <br />digital culinary journey.</p>
-                    <button className="btn-get-start" onClick={handleGetStarted}>EXPLORE NOW</button>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

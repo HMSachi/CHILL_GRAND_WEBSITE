@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/components/Footer.css';
 import logo from '../../assets/logo.png';
 import instagramIcon from '../../assets/inster.png';
@@ -11,9 +12,11 @@ const Footer = () => {
             <div className="container footer-container">
                 <div className="footer-brand">
                     <div className="footer-logo">
-                        <img src={logo} alt="Chill Grand Logo" style={{ height: '80px', width: 'auto' }} />
+                        <Link to="/">
+                            <img src={logo} alt="Chill Grand Logo" style={{ height: '80px', width: 'auto' }} />
+                        </Link>
                     </div>
-                    <p className="footer-hours">Monday - Sunday: 10:00am - 10:00pm</p>
+                    <p className="footer-hours">Monday - Sunday: 11:00 AM - 11:00 PM</p>
                     <p className="footer-copyright">© 2025 Chill Grand Restaurant | All rights reserved</p>
                 </div>
 
@@ -21,21 +24,20 @@ const Footer = () => {
                     <div className="footer-column">
                         <h4>About</h4>
                         <ul>
-                            <li>0345678901</li>
+                            <li>0761400071</li>
                             <li>chillgrand@gmail.com</li>
-                            <li>No 053,</li>
-                            <li>Malabe</li>
+                            <li>Kaduwela Road, Malabe</li>
                         </ul>
                     </div>
                     <div className="footer-column">
                         <h4>Explore</h4>
                         <ul>
-                            <li><a href="#home">Home</a></li>
-                            <li><a href="#menu">Menu</a></li>
-                            <li><a href="#events">Plan Event</a></li>
-                            <li><a href="#booking">Table Booking</a></li>
-                            <li><a href="#about">About us</a></li>
-                            <li><a href="#contact">Contact</a></li>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/landing">Menu</Link></li>
+                            <li><Link to="/plan-event">Plan Event</Link></li>
+                            <li><Link to="/table-booking">Table Booking</Link></li>
+                            <li><Link to="/about">About us</Link></li>
+                            <li><Link to="/contact">Contact</Link></li>
                         </ul>
                     </div>
                 </div>
@@ -49,11 +51,15 @@ const Footer = () => {
                     </div>
 
                     <h4>Newsletter</h4>
-                    <p>Get recent news and updates.</p>
-                    <form className="newsletter-form">
-                        <input type="email" placeholder="Email Address" />
-                        <button type="submit" className="btn-secondary">Subscribe</button>
-                    </form>
+                    <div className="newsletter-wrapper">
+                        <p>Get recent news and updates.</p>
+                        <form className="newsletter-form">
+                            <div className="newsletter-input-group">
+                                <input type="email" placeholder="Email Address" required />
+                                <button type="submit" className="btn-subscribe">Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </footer>
