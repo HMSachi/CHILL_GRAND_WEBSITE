@@ -14,6 +14,7 @@ import friedriceImg from '../../assets/friedrice.jpeg';
 import noodlesImg from '../../assets/noodles.jpeg';
 import seafoodImg from '../../assets/seafood.jpeg';
 import specialImg from '../../assets/special.jpeg';
+import VariantModal from '../components/VariantModal';
 
 const CategoriesPage = () => {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const CategoriesPage = () => {
     const [menuItems, setMenuItems] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [customizingItem, setCustomizingItem] = useState(null);
 
     const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -66,6 +68,12 @@ const CategoriesPage = () => {
     }, []);
 
     useEffect(() => {
+        const handleToggle = () => setIsSidebarOpen(prev => !prev);
+        window.addEventListener('toggleOrderSidebar', handleToggle);
+        return () => window.removeEventListener('toggleOrderSidebar', handleToggle);
+    }, []);
+
+    useEffect(() => {
         if (searchTerm.trim() === '') {
             setFilteredItems([]);
         } else {
@@ -82,7 +90,21 @@ const CategoriesPage = () => {
     };
 
     const handleAddToOrder = (item) => {
-        addToOrder(item);
+        if (item.variants && item.variants.length > 0) {
+            setCustomizingItem(item);
+        } else {
+            addToOrder({
+                ...item,
+                unitPrice: typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.-]+/g, "")) : item.price,
+                selectedVariants: []
+            });
+            setIsSidebarOpen(true);
+        }
+    };
+
+    const handleConfirmCustomization = (customizedItem) => {
+        addToOrder(customizedItem);
+        setCustomizingItem(null);
         setIsSidebarOpen(true);
     };
 
@@ -202,9 +224,17 @@ const CategoriesPage = () => {
                 </>
             )}
 
-            {!isSidebarOpen && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
+            {!isSidebarOpen && !customizingItem && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
             <OrderSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
             <QRFooter />
+
+            {customizingItem && (
+                <VariantModal
+                    item={customizingItem}
+                    onClose={() => setCustomizingItem(null)}
+                    onAddToCart={handleConfirmCustomization}
+                />
+            )}
         </div>
     );
 };

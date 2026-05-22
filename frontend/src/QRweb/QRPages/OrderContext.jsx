@@ -8,30 +8,82 @@ export const OrderProvider = ({ children }) => {
         return savedOrder ? JSON.parse(savedOrder) : [];
     });
 
+    const [customerPhone, setCustomerPhone] = useState(() => {
+        return localStorage.getItem('qr_customer_phone') || '';
+    });
+
+    const [activeOrder, setActiveOrder] = useState(null);
+    const [assignedWaiter, setAssignedWaiter] = useState(null);
+    const [activeCall, setActiveCall] = useState(null);
+    const [billRequest, setBillRequest] = useState(null);
+    const [finalBill, setFinalBill] = useState(null);
+
     useEffect(() => {
         localStorage.setItem('chill_grand_order', JSON.stringify(orderItems));
     }, [orderItems]);
 
+    useEffect(() => {
+        if (customerPhone) {
+            localStorage.setItem('qr_customer_phone', customerPhone);
+        }
+    }, [customerPhone]);
+
+    const refreshTableStatus = async () => {
+        const rawTableId = localStorage.getItem('qr_table_id');
+        if (!rawTableId) return;
+
+        const parts = rawTableId.split('-');
+        const tableId = parts.length >= 2 ? parts[1] : rawTableId;
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/menu/live/table-order/${tableId}`);
+            if (response.ok) {
+                const data = await response.json();
+                setActiveOrder(data.activeOrder);
+                setAssignedWaiter(data.assignedWaiter);
+                setActiveCall(data.activeCall);
+                setBillRequest(data.billRequest);
+                setFinalBill(data.finalBill);
+            }
+        } catch (err) {
+            console.error('Failed to fetch table status:', err);
+        }
+    };
+
+    useEffect(() => {
+        refreshTableStatus();
+        const interval = setInterval(refreshTableStatus, 15000); // Poll every 15 seconds
+        return () => clearInterval(interval);
+    }, []);
+
     const addToOrder = (item) => {
         setOrderItems(prevItems => {
-            const existingItem = prevItems.find(i => i.id === item.id);
-            if (existingItem) {
-                return prevItems.map(i =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-                );
+            const existingItemIndex = prevItems.findIndex(i =>
+                i.id === item.id &&
+                JSON.stringify(i.selectedVariants || []) === JSON.stringify(item.selectedVariants || [])
+            );
+
+            const addedQty = item.quantity || 1;
+
+            if (existingItemIndex >= 0) {
+                const newItems = [...prevItems];
+                newItems[existingItemIndex].quantity += addedQty;
+                return newItems;
             }
-            return [...prevItems, { ...item, quantity: 1 }];
+
+            const cartId = item.id + '-' + Math.random().toString(36).substr(2, 9);
+            return [...prevItems, { ...item, quantity: addedQty, cartId }];
         });
     };
 
-    const removeFromOrder = (itemId) => {
-        setOrderItems(prevItems => prevItems.filter(i => i.id !== itemId));
+    const removeFromOrder = (targetId) => {
+        setOrderItems(prevItems => prevItems.filter(i => (i.cartId || i.id) !== targetId));
     };
 
-    const updateQuantity = (itemId, delta) => {
+    const updateQuantity = (targetId, delta) => {
         setOrderItems(prevItems =>
             prevItems.map(i => {
-                if (i.id === itemId) {
+                if ((i.cartId || i.id) === targetId) {
                     const newQuantity = Math.max(1, i.quantity + delta);
                     return { ...i, quantity: newQuantity };
                 }
@@ -44,11 +96,69 @@ export const OrderProvider = ({ children }) => {
         setOrderItems([]);
     };
 
+    const requestWaiter = async () => {
+        const rawTableId = localStorage.getItem('qr_table_id');
+        if (!rawTableId) return;
+
+        const parts = rawTableId.split('-');
+        const tableId = parts.length >= 2 ? parts[1] : rawTableId;
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/menu/live/call-waiter`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ table_id: tableId.toString() })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setActiveCall(data.call);
+                return true;
+            } else {
+                const error = await response.json();
+                alert(error.error || 'Failed to call waiter');
+                return false;
+            }
+        } catch (err) {
+            console.error('Call waiter failed:', err);
+            return false;
+        }
+    };
+
+    const requestBillClose = async () => {
+        const rawTableId = localStorage.getItem('qr_table_id');
+        if (!rawTableId) return;
+
+        const parts = rawTableId.split('-');
+        const tableId = parts.length >= 2 ? parts[1] : rawTableId;
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/menu/live/request-bill-close`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ table_id: tableId.toString() })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setBillRequest(data.request);
+                return true;
+            } else {
+                const error = await response.json();
+                alert(error.error || 'Failed to request bill close');
+                return false;
+            }
+        } catch (err) {
+            console.error('Request bill close failed:', err);
+            return false;
+        }
+    };
+
     const getTotalPrice = () => {
         return orderItems.reduce((total, item) => {
-            let price = item.price;
+            let price = item.unitPrice !== undefined ? item.unitPrice : item.price;
             if (typeof price === 'string') {
-                price = parseInt(price.replace('Rs. ', ''));
+                price = parseFloat(price.replace(/[^0-9.-]+/g, ""));
             }
             return total + (price * item.quantity);
         }, 0);
@@ -61,7 +171,17 @@ export const OrderProvider = ({ children }) => {
             removeFromOrder,
             updateQuantity,
             clearOrder,
-            getTotalPrice
+            getTotalPrice,
+            customerPhone,
+            setCustomerPhone,
+            activeOrder,
+            assignedWaiter,
+            activeCall,
+            billRequest,
+            refreshTableStatus,
+            requestWaiter,
+            requestBillClose,
+            finalBill
         }}>
             {children}
         </OrderContext.Provider>
