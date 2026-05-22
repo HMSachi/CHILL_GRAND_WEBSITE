@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import QRNavbar from './QRweb/components/QRNavbar';
 import Footer from './components/common/Footer';
@@ -17,16 +17,19 @@ import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
 import ChefDashboard from './pages/ChefDashboard';
 import WaiterDashboard from './pages/WaiterDashboard';
 import VirtualTour from './pages/VirtualTour';
+import FinalBillModal from './QRweb/components/FinalBillModal';
+import { useOrder } from './QRweb/QRPages/OrderContext';
 import './styles/global.css';
 import './App.css';
 
 function App() {
   const location = useLocation();
-  const isQRweb = ['/categories', '/menu', '/my-orders'].some(path =>
+  const isQRweb = ['/categories', '/menu', '/my-orders', '/landing'].some(path =>
     location.pathname.startsWith(path)
   );
   const isKDS = location.pathname === '/kds-portal-9922';
   const isWaiter = location.pathname === '/waiter-portal-4421';
+  const { finalBill } = useOrder();
 
   return (
     <div className="app">
@@ -34,6 +37,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/landing" element={<Navigate to={`/categories${location.search}`} replace />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/menu/:categoryId" element={<MenuItemsPage />} />
           <Route path="/my-orders" element={<MyOrdersPage />} />
@@ -45,10 +49,12 @@ function App() {
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/event-inquiry" element={<EventInquiry />} />
           <Route path="/virtual-tour" element={<VirtualTour />} />
-
+          <Route path="/kds-portal-9922" element={<ChefDashboard />} />
+          <Route path="/waiter-portal-4421" element={<WaiterDashboard />} />
         </Routes>
       </main>
       {!isQRweb && !isKDS && !isWaiter && <Footer />}
+      {isQRweb && <FinalBillModal bill={finalBill} />}
     </div>
   );
 }
