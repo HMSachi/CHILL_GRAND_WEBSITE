@@ -16,6 +16,7 @@ const ChefDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('ALL');
     const [pinInput, setPinInput] = useState('');
+    const [passwordInput, setPasswordInput] = useState('');
     const [sessionInputs, setSessionInputs] = useState({ chef_name: '', chef_id: '' });
     const [error, setError] = useState('');
     const [selectedChefId, setSelectedChefId] = useState('');
@@ -107,14 +108,26 @@ const ChefDashboard = () => {
         }
     };
 
-    const handlePinSubmit = (e) => {
+    const handlePinSubmit = async (e) => {
         e.preventDefault();
-        if (pinInput === 'cheff@123') {
-            setPin(pinInput);
-            setIsAuthenticated(true);
-            sessionStorage.setItem('kds_pin', pinInput);
-            setError('');
-        } else { setError('Incorrect PIN.'); }
+        setError('');
+        try {
+            const response = await axios.post(`${BASE}/auth/login`, {
+                username: pinInput, // using pinInput as username for simplicity, or we can use dedicated state
+                password: passwordInput
+            });
+            const user = response.data.user;
+            if (user.role === 'CHEF' || user.role === 'ADMIN') {
+                setPin(response.data.token); // using token as pin equivalent
+                setIsAuthenticated(true);
+                sessionStorage.setItem('kds_pin', response.data.token);
+                sessionStorage.setItem('kds_user', JSON.stringify(user));
+            } else {
+                setError('Access denied. Kitchen staff account required.');
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Invalid username or password');
+        }
     };
 
     const startSession = async (e) => {
@@ -178,9 +191,10 @@ const ChefDashboard = () => {
                     <img src={logo} alt="Logo" className="kds-login-logo" />
                     <h2>KITCHEN PORTAL</h2>
                     <form onSubmit={handlePinSubmit}>
-                        <input type="password" placeholder="••••" value={pinInput} onChange={e => setPinInput(e.target.value)} autoFocus />
+                        <input type="text" placeholder="Username" value={pinInput} onChange={e => setPinInput(e.target.value)} autoFocus style={{ marginBottom: '10px' }} />
+                        <input type="password" placeholder="Password" value={passwordInput} onChange={e => setPasswordInput(e.target.value)} />
                         {error && <div className="kds-error-message">{error}</div>}
-                        <button type="submit">Unlock Dashboard</button>
+                        <button type="submit">Log In</button>
                     </form>
                 </div>
             </div>
