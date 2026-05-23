@@ -7,6 +7,7 @@ import OrderSidebar from '../components/OrderSidebar';
 import { useOrder } from './OrderContext';
 import QRFooter from '../components/QRFooter';
 import VariantModal from '../components/VariantModal';
+import { API_BASE_URL } from '../../config/api';
 import '../styles/MenuItemsPage.css';
 
 const MenuItemsPage = () => {
@@ -20,7 +21,8 @@ const MenuItemsPage = () => {
     const [items, setItems] = useState([]);
     const [categoryName, setCategoryName] = useState('Menu');
 
-    const API_BASE_URL = 'http://localhost:5000/api';
+    // Remove local API_BASE_URL
+
 
     useEffect(() => {
         // 1. Fetch Categories to find the name for this ID

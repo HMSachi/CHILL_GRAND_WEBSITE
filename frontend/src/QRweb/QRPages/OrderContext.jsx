@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
+
 
 const OrderContext = createContext();
 
@@ -36,7 +38,7 @@ export const OrderProvider = ({ children }) => {
         const tableId = parts.length >= 2 ? parts[1] : rawTableId;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/menu/live/table-order/${tableId}`);
+            const response = await fetch(`${API_BASE_URL}/menu/live/table-order/${tableId}`);
             if (response.ok) {
                 const data = await response.json();
                 setActiveOrder(data.activeOrder);
@@ -104,7 +106,7 @@ export const OrderProvider = ({ children }) => {
         const tableId = parts.length >= 2 ? parts[1] : rawTableId;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/menu/live/call-waiter`, {
+            const response = await fetch(`${API_BASE_URL}/menu/live/call-waiter`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ table_id: tableId.toString() })
@@ -133,7 +135,7 @@ export const OrderProvider = ({ children }) => {
         const tableId = parts.length >= 2 ? parts[1] : rawTableId;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/menu/live/request-bill-close`, {
+            const response = await fetch(`${API_BASE_URL}/menu/live/request-bill-close`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ table_id: tableId.toString() })
