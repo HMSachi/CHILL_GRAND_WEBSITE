@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import "../styles/pages/Contact.css";
 import glass from "../assets/glass.png";
 import SectionHeader from "../components/common/SectionHeader";
@@ -22,7 +23,7 @@ const Contact = () => {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch("http://localhost:5000/api/website/contact", {
+      const response = await fetch(`${API_BASE_URL}/website/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

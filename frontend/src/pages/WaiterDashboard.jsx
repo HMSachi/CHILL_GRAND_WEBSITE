@@ -40,6 +40,7 @@ import {
 } from 'lucide-react';
 import VariantModal from '../components/orders/VariantModal';
 import FinalBillModal from '../QRweb/components/FinalBillModal';
+import { API_BASE_URL } from '../config/api';
 
 const formatTime = (dateStr) => {
     if (!dateStr) return 'N/A';
@@ -77,7 +78,7 @@ const WaiterDashboard = () => {
     const [finalBills, setFinalBills] = useState({});
     const [previewBill, setPreviewBill] = useState(null);
 
-    const API_BASE_URL = 'http://localhost:5000/api';
+    // API_BASE_URL is imported from config/api.js
 
     useEffect(() => {
         if (user) {

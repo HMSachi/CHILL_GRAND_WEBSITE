@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import logo from '../assets/logo.png';
 import '../styles/pages/WaiterLogin.css';
+import { API_BASE_URL } from '../config/api';
 
 const WaiterLogin = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ const WaiterLogin = ({ onLogin }) => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', {
+            const response = await axios.post(`${API_BASE_URL}/auth/login`, {
                 username,
                 password
             });

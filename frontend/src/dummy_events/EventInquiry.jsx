@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaChild, FaMoneyBillWave, FaPen, FaPlus, FaMinus, FaExternalLinkAlt } from 'react-icons/fa';
 import './EventInquiry.css';
@@ -36,7 +37,7 @@ const EventInquiry = () => {
 
     useEffect(() => {
         // Fetch Categories
-        fetch('http://localhost:5000/api/menu/categories')
+        fetch(`${API_BASE_URL}/menu/categories`)
             .then(res => res.json())
             .then(data => {
                 const cats = Array.isArray(data) ? data : [];
@@ -98,7 +99,7 @@ const EventInquiry = () => {
                 requirements: `Time: ${formData.time}, Food: ${formData.foodNeeded ? `Selections: [${selectedFoodCats.join(', ')}] Notes: ${formData.foodDetails}` : 'No'}, Decor: ${formData.decorNeeded ? `Selections: [${selectedDecorCats.join(', ')}] Notes: ${formData.decorDetails}` : 'No'}, Music: ${formData.musicNeeded}, Photography: ${formData.photographyNeeded}, Budget: ${formData.budget}, Notes: ${formData.notes}`
             };
 
-            const response = await fetch("http://localhost:5000/api/website/inquiries", {
+            const response = await fetch(`${API_BASE_URL}/website/inquiries`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
