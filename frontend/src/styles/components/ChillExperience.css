@@ -1,0 +1,183 @@
+.chill-experience {
+    padding: 120px 0;
+    background-color: #000;
+    overflow: hidden;
+    position: relative;
+}
+
+.chill-experience::before {
+    content: 'EXPERIENCE';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    font-size: 20rem;
+    font-weight: 950;
+    color: rgba(255, 215, 0, 0.02);
+    z-index: 0;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.section-header-warehouse {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.section-header-warehouse .header-accent {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: var(--primary-yellow);
+    margin-bottom: -1rem;
+}
+
+.section-header-warehouse .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 950;
+    color: #fff;
+    letter-spacing: 2px;
+}
+
+/* ===============================
+   SCROLL CONTAINER
+================================ */
+.menu-scroll-container {
+    display: flex;
+    gap: 2.5rem;
+    width: 100%;
+    overflow-x: hidden;
+    padding-bottom: 4rem;
+    /* space for outside button */
+}
+
+/* ===============================
+   MENU CARD
+================================ */
+.menu-card {
+    min-width: 400px;
+    height: 250px;
+    border-radius: 4px;
+    /* Sharp premium look */
+    overflow: visible;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* IMAGE WRAPPER */
+.menu-image-wrapper {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* LIGHT OVERLAY */
+.menu-image-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.15),
+            rgba(0, 0, 0, 0.35));
+    z-index: 1;
+}
+
+/* IMAGE */
+.menu-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+    /* lighter */
+    transition: transform 0.6s ease;
+}
+
+.menu-card:hover .menu-bg {
+    transform: scale(1.08);
+}
+
+/* ===============================
+   CARD CONTENT
+================================ */
+.menu-content {
+    position: absolute;
+    inset: 0;
+    padding: 2.5rem;
+    color: #fff;
+    z-index: 2;
+}
+
+.menu-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin-bottom: 0.4rem;
+    color: #fff;
+}
+
+.menu-content p {
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--primary-yellow);
+    font-weight: 800;
+}
+
+/* ===============================
+   BUTTON OUTSIDE CARD
+================================ */
+.btn-see-menu {
+    position: absolute;
+    bottom: -30px;
+    right: 30px;
+    /* Move to right for asymmetrical modern look */
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    background-color: var(--primary-yellow);
+    color: #000;
+    border: none;
+    font-weight: 900;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.btn-see-menu:hover {
+    transform: translateY(-5px);
+    background-color: #e2e8f0;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+    .menu-card {
+        min-width: 85vw;
+        height: 300px;
+    }
+
+    .menu-content h3 {
+        font-size: 2.1rem;
+    }
+
+    .btn-see-menu {
+        width: 80px;
+        height: 80px;
+        bottom: -35px;
+        font-size: 0.9rem;
+    }
+}

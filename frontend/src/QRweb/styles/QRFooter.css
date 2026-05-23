@@ -1,0 +1,111 @@
+.qr-footer {
+    background: #0f172a;
+    padding: 4rem 1rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: white;
+    margin-top: 4rem;
+}
+
+.qr-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.qr-footer-brand {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.qr-footer-logo img {
+    height: 60px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.qr-footer-logo:hover img {
+    transform: scale(1.05);
+}
+
+.qr-footer-tagline {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    max-width: 300px;
+}
+
+.qr-footer-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    text-align: center;
+}
+
+.qr-footer-section h4 {
+    color: #fbbf24;
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.qr-footer-section p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.qr-social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.qr-social-icon img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) saturate(100%) invert(85%) sepia(45%) saturate(1200%) hue-rotate(350deg) brightness(102%) contrast(101%);
+    transition: all 0.3s ease;
+}
+
+.qr-social-icon:hover img {
+    transform: translateY(-3px);
+    filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.qr-footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.qr-footer-bottom p {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .qr-footer {
+        padding: 3rem 1rem 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .qr-footer-container {
+        gap: 2rem;
+    }
+
+    .qr-footer-info {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .qr-footer-logo img {
+        height: 50px;
+    }
+}

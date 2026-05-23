@@ -1,0 +1,248 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 120px;
+    padding: 0 2rem;
+    background: transparent;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+}
+
+/* FLOATING PREMIUM STATE */
+.navbar.scrolled {
+    height: 85px;
+    top: 15px;
+    width: calc(100% - 40px);
+    left: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 100px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 2rem;
+}
+
+/* LOGO ENHANCEMENT */
+.navbar-logo {
+    order: 2;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-img {
+    height: 100px;
+    width: auto;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+}
+
+.navbar-logo:hover .logo-img {
+    transform: scale(1.1) rotate(2deg);
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5));
+}
+
+.navbar.scrolled .logo-img {
+    height: 70px;
+}
+
+/* NAVIGATION LINKS */
+.navbar-links {
+    display: flex;
+    gap: 3.5rem;
+    flex: 1;
+    align-items: center;
+}
+
+.navbar-links.left {
+    order: 1;
+    justify-content: flex-end;
+    padding-right: 2rem;
+}
+
+.navbar-links.right {
+    order: 3;
+    justify-content: flex-start;
+    padding-left: 2rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    padding: 10px 0;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: var(--primary-yellow);
+    letter-spacing: 6px;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary-yellow);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 10px var(--primary-yellow);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* MOBILE TOGGLE */
+.navbar-mobile-toggle {
+    display: none;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1002;
+    order: 4;
+}
+
+.mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.bar {
+    width: 28px;
+    height: 2px;
+    background-color: #fff;
+    transition: 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.mobile-menu-toggle.active .bar {
+    background-color: var(--primary-yellow);
+}
+
+.mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* MOBILE OVERLAY */
+.navbar-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: rgba(0, 0, 0, 0.98);
+    backdrop-filter: blur(20px);
+    z-index: 1001;
+    overflow: hidden;
+    transition: height 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-mobile-overlay.active {
+    height: 100vh;
+}
+
+.mobile-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s ease 0.3s;
+}
+
+.navbar-mobile-overlay.active .mobile-links {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mobile-links a {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    transition: color 0.3s ease;
+}
+
+.mobile-links a:hover {
+    color: var(--primary-yellow);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .navbar-links {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-mobile-toggle {
+        display: block;
+    }
+
+    .navbar-container {
+        justify-content: flex-start;
+        padding: 0 2rem;
+    }
+
+    .navbar-logo {
+        padding: 0;
+        order: 1;
+    }
+}
+
+/* Remove global gap under navbar */
+:root {
+    --navbar-height: 96px;
+}
+
+.app>main {
+    padding-top: 0;
+}
+
+/* If any elements add margin-top, reset for hero section */
+.menu-page {
+    padding-top: 0 !important;
+}
