@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import BackButton from '../components/BackButton';
@@ -28,7 +29,7 @@ const CategoriesPage = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [customizingItem, setCustomizingItem] = useState(null);
 
-    const API_BASE_URL = 'http://localhost:5000/api';
+    // API_BASE_URL is imported from '../../config/api'
 
     useEffect(() => {
         // Fetch categories

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock } from 'lucide-react';
 import '../styles/pages/ChefDashboard.css';
 import logo from '../assets/logo.png';
+import { API_BASE_URL as BASE } from '../config/api';
 
 const ChefDashboard = () => {
     const [pin, setPin] = useState(sessionStorage.getItem('kds_pin') || '');
@@ -21,7 +22,7 @@ const ChefDashboard = () => {
     const [historySearch, setHistorySearch] = useState('');
     const [historySort, setHistorySort] = useState('latest'); // 'latest' or 'oldest'
 
-    const API_BASE_URL = 'http://localhost:5000/api/kds';
+    const API_BASE_URL = `${BASE}/kds`;
 
     useEffect(() => {
         if (isAuthenticated) {

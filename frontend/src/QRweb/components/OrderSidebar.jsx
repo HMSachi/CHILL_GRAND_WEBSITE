@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaMinus, FaPlus, FaTrash, FaTimes } from 'react-icons/fa';
 import { useOrder } from '../QRPages/OrderContext';
 import '../styles/OrderSidebar.css';
+import { API_BASE_URL } from '../../config/api';
 
 const OrderSidebar = ({ isOpen, onClose }) => {
     const {
@@ -91,7 +92,7 @@ const OrderSidebar = ({ isOpen, onClose }) => {
 
         try {
             setIsSubmitting(true);
-            const response = await fetch('http://localhost:5000/api/menu/live/order-requests', {
+            const response = await fetch(`${API_BASE_URL}/menu/live/order-requests`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
