@@ -5,6 +5,473 @@ import '../styles/pages/ChefDashboard.css';
 import logo from '../assets/logo.png';
 import { API_BASE_URL as BASE } from '../config/api';
 
+const normalizeDate = (dateStr) => {
+    if (!dateStr) return null;
+    if (dateStr instanceof Date) return dateStr;
+    const str = String(dateStr);
+    return (str.includes('T') && !str.endsWith('Z') && !str.includes('+'))
+        ? `${str}Z`
+        : str;
+};
+
+const formatDuration = (ms) => {
+    if (ms === null || ms === undefined || isNaN(ms)) return "";
+    const totalSecs = Math.max(0, Math.floor(ms / 1000));
+    const mins = Math.floor(totalSecs / 60);
+    const secs = totalSecs % 60;
+    return `${mins}m ${secs}s`;
+};
+
+const LiveTimer = ({ placedAtStr, servedAtStr, className = "" }) => {
+    const [elapsedStr, setElapsedStr] = useState("");
+    const [timerClass, setTimerClass] = useState("timer-ok");
+
+    useEffect(() => {
+        if (!placedAtStr) {
+            setElapsedStr("");
+            return;
+        }
+
+        const calculateTime = () => {
+            const placedTime = new Date(normalizeDate(placedAtStr));
+            const endTime = servedAtStr ? new Date(normalizeDate(servedAtStr)) : new Date();
+            const diffMs = endTime - placedTime;
+            const diffSecTotal = Math.max(0, Math.floor(diffMs / 1000));
+            const mins = Math.floor(diffSecTotal / 60);
+            const secs = diffSecTotal % 60;
+            
+            let tClass = "timer-ok";
+            if (mins >= 5) tClass = "timer-warning";
+            if (mins >= 10) tClass = "timer-late";
+            setTimerClass(tClass);
+
+            return `${mins}m ${secs}s`;
+        };
+
+        // Initial calculation
+        setElapsedStr(calculateTime());
+
+        // If served, we don't need a ticking interval
+        if (servedAtStr) {
+            return;
+        }
+
+        const interval = setInterval(() => {
+            setElapsedStr(calculateTime());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [placedAtStr, servedAtStr]);
+
+    return <span className={`${className} ${timerClass}`}>{elapsedStr}</span>;
+};
+
+const ItemDetailView = ({ orderId, itemId, orders, activeSessions, selectedChefId, setSelectedChefId, handleStatusUpdate, onBack }) => {
+    const order = orders.find(o => o.order_id === orderId);
+    if (!order) {
+        return (
+            <div className="order-detail-error" style={{ padding: '2rem', textAlign: 'center' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Order not found or has been completed.</p>
+                <button className="back-btn-kds" onClick={onBack}>← Back to Order</button>
+            </div>
+        );
+    }
+    
+    const item = order.items.find(i => i.order_item_id === itemId);
+    if (!item) {
+        return (
+            <div className="order-detail-error" style={{ padding: '2rem', textAlign: 'center' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Item not found in this order.</p>
+                <button className="back-btn-kds" onClick={onBack}>← Back to Order</button>
+            </div>
+        );
+    }
+
+    const itemStatusId = Number(item.order_item_id);
+    const servedIds = (order.kitchen_tracking?.served_item_ids || []).map(Number);
+    const readyIds = (order.kitchen_tracking?.ready_item_ids || []).map(Number);
+    const preparingIds = (order.kitchen_tracking?.preparing_item_ids || []).map(Number);
+
+    let itemStatus = 'PLACED';
+    if (servedIds.includes(itemStatusId)) itemStatus = 'SERVED';
+    else if (readyIds.includes(itemStatusId)) itemStatus = 'READY';
+    else if (preparingIds.includes(itemStatusId)) itemStatus = 'PREPARING';
+
+    const placedAt = new Date(normalizeDate(order.created_at));
+    const kt = order.kitchen_tracking || {};
+    const acceptedAt = kt.accepted_at ? new Date(normalizeDate(kt.accepted_at)) : null;
+    const readyAtTime = kt.item_ready_times?.[item.order_item_id] || kt.ready_at;
+    const readyAt = readyAtTime ? new Date(normalizeDate(readyAtTime)) : null;
+    const servedAtTime = kt.item_served_times?.[item.order_item_id] || kt.served_at || order.updated_at;
+    const servedAt = servedIds.includes(itemStatusId) || ['SERVED', 'CLOSED', 'PAID'].includes(order.status)
+        ? new Date(normalizeDate(servedAtTime)) : null;
+
+    const activePrepTimeMs = (acceptedAt && readyAt) ? (readyAt - acceptedAt) : null;
+    const pickupDelayMs = (readyAt && servedAt) ? (servedAt - readyAt) : null;
+    const totalCycleMs = servedAt ? (servedAt - placedAt) : null;
+
+    // Find the portion or size from selected_variants
+    const portionObj = item.selected_variants?.find(v => 
+        v.variant_name.toLowerCase().includes('portion') || 
+        v.variant_name.toLowerCase().includes('size') ||
+        v.variant_name.toLowerCase().includes('type')
+    );
+    
+    // If not found, check if there is any variant at all
+    const portionText = portionObj 
+        ? portionObj.option_name 
+        : (item.selected_variants?.length > 0 
+            ? item.selected_variants[0].option_name 
+            : 'Regular'); // default to Regular if no variant exists
+
+    // Other options/variants (not portion)
+    const otherVariants = item.selected_variants?.filter(v => v !== portionObj) || [];
+
+    return (
+        <div className="item-detail-workspace">
+            <div className="detail-header-row">
+                <button className="back-btn-kds" onClick={onBack}>
+                    <svg style={{ width: '20px', height: '20px', display: 'inline-block', marginRight: '5px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Order #{order.order_id}
+                </button>
+                <div className="order-detail-title">
+                    <h2>{item.item_name} Detail</h2>
+                </div>
+            </div>
+
+            <div className="item-detail-layout">
+                {/* Left Column: Visual Preview */}
+                <div className="item-detail-visual-panel">
+                    <img src={item.menu_item?.image || 'https://via.placeholder.com/400x300?text=Food'} alt={item.item_name} className="item-detail-img" />
+                    <div className="item-detail-img-overlay"></div>
+                </div>
+
+                {/* Right Column: Menu details & extra notes */}
+                <div className="item-detail-info-panel">
+                    <div className="item-info-header" style={{ paddingBottom: '1rem', borderBottom: 'none' }}>
+                        <span style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-muted)' }}>Meal Status</span>
+                        <span className={`status-pill-big ${itemStatus.toLowerCase()}`}>{itemStatus}</span>
+                    </div>
+
+                    <div className="info-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1.5rem' }}>
+                        <h3>Meal Details</h3>
+                        <div className="info-grid">
+                            <div className="info-row">
+                                <span className="info-label">Meal Name:</span>
+                                <span className="info-value" style={{ color: '#fff', fontSize: '1.1rem', fontWeight: '700' }}>{item.item_name}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Quantity:</span>
+                                <span className="info-value" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>x{item.quantity}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Portion:</span>
+                                <span className="info-value" style={{ color: '#34d399', fontWeight: 'bold' }}>{portionText}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Waiting Time:</span>
+                                <span className="info-value">
+                                    <LiveTimer placedAtStr={order.created_at} servedAtStr={servedAt} className="timer-val" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {otherVariants.length > 0 && (
+                        <div className="info-section">
+                            <h3>Selected Options</h3>
+                            <div className="detail-variants-list">
+                                {otherVariants.map((v, i) => (
+                                    <div key={i} className="detail-variant-item">
+                                        <span className="variant-label">{v.variant_name}:</span>
+                                        <span className="variant-value">{v.option_name}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {item.note && (
+                        <div className="info-section">
+                            <h3>Special Notes</h3>
+                            <div className="item-notes-box">
+                                "{item.note}"
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="info-section">
+                        <h3>Cooking Milestones</h3>
+                        <div className="milestones-list">
+                            <div className="milestone-row">
+                                <span className="milestone-label">Placed At:</span>
+                                <span className="milestone-value">{placedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            {acceptedAt && (
+                                <div className="milestone-row">
+                                    <span className="milestone-label">Started cooking:</span>
+                                    <span className="milestone-value">{acceptedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                </div>
+                            )}
+                            {readyAt && (
+                                <div className="milestone-row">
+                                    <span className="milestone-label">Marked ready:</span>
+                                    <span className="milestone-value" style={{ color: '#f59e0b' }}>{readyAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                </div>
+                            )}
+                            {servedAt && (
+                                <div className="milestone-row">
+                                    <span className="milestone-label">Served at table:</span>
+                                    <span className="milestone-value" style={{ color: '#34d399' }}>{servedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                </div>
+                            )}
+
+                            {activePrepTimeMs !== null && (
+                                <div className="milestone-row highlight" style={{ marginTop: '0.8rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.8rem' }}>
+                                    <span className="milestone-label">Active cooking:</span>
+                                    <span className="milestone-value" style={{ color: '#10b981' }}>{formatDuration(activePrepTimeMs)}</span>
+                                </div>
+                            )}
+                            {pickupDelayMs !== null && (
+                                <div className="milestone-row highlight">
+                                    <span className="milestone-label">Pickup delay:</span>
+                                    <span className="milestone-value" style={{ color: '#f59e0b' }}>{formatDuration(pickupDelayMs)}</span>
+                                </div>
+                            )}
+                            {totalCycleMs !== null && (
+                                <div className="milestone-row highlight">
+                                    <span className="milestone-label">Total Prep duration:</span>
+                                    <span className="milestone-value" style={{ color: '#10b981', fontWeight: 700 }}>{formatDuration(totalCycleMs)}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="info-section">
+                        <h3>Customer Contact</h3>
+                        <p className="item-detail-phone">{order.customer_phone || 'No phone number provided'}</p>
+                    </div>
+
+                    <div className="info-section">
+                        <h3>Preparing Chef</h3>
+                        <select 
+                            value={selectedChefId} 
+                            onChange={e => setSelectedChefId(e.target.value)} 
+                            className="chef-select-dropdown"
+                            style={{ marginTop: '0.5rem' }}
+                        >
+                            {activeSessions.map(s => <option key={s.chef_id} value={s.chef_id}>{s.chef_name} ({s.chef_id})</option>)}
+                            {activeSessions.length === 0 && <option value="">NO ACTIVE STAFF</option>}
+                        </select>
+                    </div>
+
+                    <div className="item-detail-action-footer">
+                        {itemStatus === 'PLACED' && (
+                            <button 
+                                className="item-detail-btn start-prep-btn"
+                                onClick={() => handleStatusUpdate(order.order_id, 'PREPARING', item.order_item_id)}
+                            >
+                                Start Preparing Item
+                            </button>
+                        )}
+                        {itemStatus === 'PREPARING' && (
+                            <button 
+                                className="item-detail-btn mark-ready-btn"
+                                onClick={() => {
+                                    const nextStatus = (!order.table_id || order.table_id === 0) ? 'SERVED' : 'READY';
+                                    handleStatusUpdate(order.order_id, nextStatus, item.order_item_id);
+                                }}
+                            >
+                                {(!order.table_id || order.table_id === 0) ? 'Mark Item as Completed' : 'Mark Item as Ready'}
+                            </button>
+                        )}
+                        {itemStatus === 'READY' && (
+                            <div className="status-note waiting-waiter-note">
+                                Waiting for Waiter to Serve
+                            </div>
+                        )}
+                        {itemStatus === 'SERVED' && (
+                            <div className="status-note served-note">
+                                {(!order.table_id || order.table_id === 0) ? '✓ Item Completed' : '✓ Item Delivered & Served'}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const OrderDetailView = ({ orderId, orders, activeSessions, selectedChefId, setSelectedChefId, handleStatusUpdate, setSelectedItemId, onBack }) => {
+    const order = orders.find(o => o.order_id === orderId);
+
+    if (!order) {
+        return (
+            <div className="order-detail-error" style={{ padding: '2rem', textAlign: 'center' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Order not found or has been completed.</p>
+                <button className="back-btn-kds" onClick={onBack}>← Back to Queue</button>
+            </div>
+        );
+    }
+
+    const isTakeaway = !order.table_id || order.table_id === 0;
+
+    return (
+        <div className="order-detail-workspace">
+            <div className="detail-header-row">
+                <button className="back-btn-kds" onClick={onBack}>
+                    <svg style={{ width: '20px', height: '20px', display: 'inline-block', marginRight: '5px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Queue
+                </button>
+                <div className="order-detail-title">
+                    <h2>Order #{order.order_id} Details</h2>
+                </div>
+            </div>
+
+            <div className="order-detail-layout">
+                {/* Left Panel: Info & Metrics */}
+                <div className="detail-info-panel">
+                    <div className="info-section">
+                        <h3>Order Data</h3>
+                        <div className="info-grid">
+                            <div className="info-row">
+                                <span className="info-label">Service Type:</span>
+                                <span className="info-value" style={{ color: '#fff', fontWeight: 'bold' }}>{isTakeaway ? 'TAKEAWAY' : `TABLE ${order.table_id}`}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Placed At:</span>
+                                <span className="info-value">{new Date(normalizeDate(order.created_at)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Waiting Time:</span>
+                                <span className="info-value">
+                                    <LiveTimer placedAtStr={order.created_at} servedAtStr={order.kitchen_tracking?.served_at} className="timer-val" />
+                                </span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Customer Contact:</span>
+                                <span className="info-value">{order.customer_phone || 'None provided'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {order.notes && (
+                        <div className="info-section">
+                            <h3>Special Notes</h3>
+                            <div className="notes-box">
+                                {order.notes}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="info-section">
+                        <h3>Preparing Chef</h3>
+                        <p className="chef-assign-help">Select the chef actively managing or preparing these items.</p>
+                        <select 
+                            value={selectedChefId} 
+                            onChange={e => setSelectedChefId(e.target.value)} 
+                            className="chef-select-dropdown"
+                        >
+                            {activeSessions.map(s => <option key={s.chef_id} value={s.chef_id}>{s.chef_name} ({s.chef_id})</option>)}
+                            {activeSessions.length === 0 && <option value="">NO ACTIVE STAFF</option>}
+                        </select>
+                    </div>
+                </div>
+
+                {/* Right Panel: Items List & Actions */}
+                <div className="detail-items-panel">
+                    <h3>Order Items ({order.items.length})</h3>
+                    <div className="detail-items-list">
+                        {order.items.map(item => {
+                            const itemId = Number(item.order_item_id);
+                            const servedIds = (order.kitchen_tracking?.served_item_ids || []).map(Number);
+                            const readyIds = (order.kitchen_tracking?.ready_item_ids || []).map(Number);
+                            const preparingIds = (order.kitchen_tracking?.preparing_item_ids || []).map(Number);
+
+                            let itemStatus = 'PLACED';
+                            if (servedIds.includes(itemId)) itemStatus = 'SERVED';
+                            else if (readyIds.includes(itemId)) itemStatus = 'READY';
+                            else if (preparingIds.includes(itemId)) itemStatus = 'PREPARING';
+
+                            return (
+                                <div 
+                                    key={item.order_item_id} 
+                                    className={`detail-item-row ${itemStatus.toLowerCase()}`}
+                                    onClick={() => setSelectedItemId(item.order_item_id)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <div className="item-main-details">
+                                        <div className="item-name-row-kds">
+                                            <h4>{item.item_name}</h4>
+                                            <span className="qty-tag-detail">x{item.quantity}</span>
+                                        </div>
+                                        {item.selected_variants?.length > 0 && (
+                                            <div className="item-variants-detail">
+                                                {item.selected_variants.map((v, idx) => (
+                                                    <span key={idx} className="variant-pill-detail">
+                                                        {v.variant_name}: {v.option_name}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {item.note && (
+                                            <p className="item-chef-note">Note: "{item.note}"</p>
+                                        )}
+                                    </div>
+
+                                    <div className="item-action-controls">
+                                        <span className={`status-pill-big ${itemStatus.toLowerCase()}`}>
+                                            {itemStatus}
+                                        </span>
+                                        
+                                        {itemStatus === 'PLACED' && (
+                                            <button 
+                                                className="action-btn-kds start-btn"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleStatusUpdate(order.order_id, 'PREPARING', item.order_item_id);
+                                                }}
+                                            >
+                                                Start Preparing
+                                            </button>
+                                        )}
+                                        {itemStatus === 'PREPARING' && (
+                                            <button 
+                                                className="action-btn-kds ready-btn"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    const nextStatus = isTakeaway ? 'SERVED' : 'READY';
+                                                    handleStatusUpdate(order.order_id, nextStatus, item.order_item_id);
+                                                }}
+                                            >
+                                                {isTakeaway ? 'Mark Served' : 'Mark as Ready'}
+                                            </button>
+                                        )}
+                                        {itemStatus === 'READY' && (
+                                            <span className="action-text-info" onClick={(e) => e.stopPropagation()}>
+                                                Waiting for Waiter
+                                            </span>
+                                        )}
+                                        {itemStatus === 'SERVED' && (
+                                            <span className="action-text-success" onClick={(e) => e.stopPropagation()}>
+                                                {isTakeaway ? '✓ Completed' : '✓ Item Served'}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const ChefDashboard = () => {
     const [pin, setPin] = useState(sessionStorage.getItem('kds_pin') || '');
     const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('kds_pin'));
@@ -12,7 +479,8 @@ const ChefDashboard = () => {
     const [backendCompletedOrders, setBackendCompletedOrders] = useState([]);
     const [activeSessions, setActiveSessions] = useState([]);
     const [currentView, setCurrentView] = useState('DASHBOARD');
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [selectedItemId, setSelectedItemId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('ALL');
     const [pinInput, setPinInput] = useState('');
@@ -27,9 +495,27 @@ const ChefDashboard = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            fetchOrders();
-            fetchCompletedItems();
-            fetchSessions();
+            const initDashboard = async () => {
+                const savedUserStr = sessionStorage.getItem('kds_user');
+                if (savedUserStr) {
+                    try {
+                        const savedUser = JSON.parse(savedUserStr);
+                        await axios.post(`${API_BASE_URL}/session/start`, {
+                            chef_name: savedUser.username,
+                            chef_id: savedUser.username,
+                            pin: pin
+                        });
+                    } catch (e) {
+                        // ignore already started or other session start errors
+                    }
+                }
+                fetchOrders();
+                fetchCompletedItems();
+                fetchSessions();
+            };
+
+            initDashboard();
+
             const interval = setInterval(() => {
                 fetchOrders();
                 fetchCompletedItems();
@@ -37,7 +523,7 @@ const ChefDashboard = () => {
             }, 8000);
             return () => clearInterval(interval);
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, pin]);
 
     const fetchSessions = async () => {
         try {
@@ -61,42 +547,62 @@ const ChefDashboard = () => {
         } catch (err) { handleApiError(err); }
     };
 
-    const completedItems = React.useMemo(() => {
-        const flatCompleted = [];
+    const completedOrders = React.useMemo(() => {
+        const completedByOrder = new Map();
+
+        const addCompletedItem = (order, item) => {
+            const orderId = order.order_id;
+            const existing = completedByOrder.get(orderId) || {
+                ...order,
+                items: [],
+                completedAt: order.kitchen_tracking?.served_at || order.updated_at
+            };
+
+            if (!existing.items.some(i => i.order_item_id === item.order_item_id)) {
+                existing.items.push(item);
+            }
+
+            const itemServedAt = order.kitchen_tracking?.item_served_times?.[item.order_item_id]
+                || order.kitchen_tracking?.served_at
+                || order.updated_at;
+
+            if (new Date(normalizeDate(itemServedAt)) > new Date(normalizeDate(existing.completedAt))) {
+                existing.completedAt = itemServedAt;
+            }
+
+            completedByOrder.set(orderId, existing);
+        };
+
         backendCompletedOrders.forEach(order => {
-            const servedIds = order.kitchen_tracking?.served_item_ids || [];
+            const servedIds = (order.kitchen_tracking?.served_item_ids || []).map(Number);
             order.items.forEach(item => {
-                if (servedIds.includes(item.order_item_id) || ['SERVED', 'CLOSED', 'PAID'].includes(order.status)) {
-                    flatCompleted.push({ ...item, parentOrder: order });
+                if (servedIds.includes(Number(item.order_item_id)) || ['SERVED', 'CLOSED', 'PAID'].includes(order.status)) {
+                    addCompletedItem(order, item);
                 }
             });
         });
         orders.forEach(order => {
             if (order.status !== 'SERVED') {
-                const servedIds = order.kitchen_tracking?.served_item_ids || [];
+                const servedIds = (order.kitchen_tracking?.served_item_ids || []).map(Number);
                 order.items.forEach(item => {
-                    if (servedIds.includes(item.order_item_id)) {
-                        if (!flatCompleted.some(c => c.order_item_id === item.order_item_id)) {
-                            flatCompleted.push({ ...item, parentOrder: order });
-                        }
+                    if (servedIds.includes(Number(item.order_item_id))) {
+                        addCompletedItem(order, item);
                     }
                 });
             }
         });
 
-        // Search Filter
-        let filtered = flatCompleted.filter(item => {
+        let filtered = Array.from(completedByOrder.values()).filter(order => {
             if (!historySearch) return true;
             const search = historySearch.toLowerCase();
-            return item.item_name.toLowerCase().includes(search) ||
-                item.parentOrder.order_id.toString().includes(search) ||
-                (item.parentOrder.table_id && item.parentOrder.table_id.toString().includes(search));
+            return order.order_id.toString().includes(search) ||
+                (order.table_id && order.table_id.toString().includes(search)) ||
+                order.items.some(item => item.item_name.toLowerCase().includes(search));
         });
 
-        // Time Sort
         return filtered.sort((a, b) => {
-            const timeA = new Date(a.parentOrder.kitchen_tracking?.item_served_times?.[a.order_item_id] || a.parentOrder.kitchen_tracking?.served_at || a.parentOrder.updated_at);
-            const timeB = new Date(b.parentOrder.kitchen_tracking?.item_served_times?.[b.order_item_id] || b.parentOrder.kitchen_tracking?.served_at || b.parentOrder.updated_at);
+            const timeA = new Date(normalizeDate(a.completedAt));
+            const timeB = new Date(normalizeDate(b.completedAt));
             return historySort === 'latest' ? timeB - timeA : timeA - timeB;
         });
     }, [backendCompletedOrders, orders, historySearch, historySort]);
@@ -118,10 +624,10 @@ const ChefDashboard = () => {
             });
             const user = response.data.user;
             if (user.role === 'CHEF' || user.role === 'ADMIN') {
-                setPin(response.data.token); // using token as pin equivalent
-                setIsAuthenticated(true);
                 sessionStorage.setItem('kds_pin', response.data.token);
                 sessionStorage.setItem('kds_user', JSON.stringify(user));
+                setPin(response.data.token); // using token as pin equivalent
+                setIsAuthenticated(true);
             } else {
                 setError('Access denied. Kitchen staff account required.');
             }
@@ -148,6 +654,22 @@ const ChefDashboard = () => {
         } catch (err) { alert(err.response?.data?.error || 'Failed to end session'); }
     };
 
+    const handleLogout = async () => {
+        try {
+            const savedUserStr = sessionStorage.getItem('kds_user');
+            if (savedUserStr) {
+                const savedUser = JSON.parse(savedUserStr);
+                await axios.post(`${API_BASE_URL}/session/end`, { chef_id: savedUser.username, pin });
+            }
+            setIsAuthenticated(false);
+            sessionStorage.removeItem('kds_pin');
+            sessionStorage.removeItem('kds_user');
+        } catch (err) {
+            const errMsg = err.response?.data?.error || 'Failed to log out.';
+            alert(errMsg);
+        }
+    };
+
     const handleStatusUpdate = async (orderId, newStatus, itemId = null) => {
         if (newStatus === 'PREPARING' && !selectedChefId) {
             alert('Please select a chef first.');
@@ -163,26 +685,21 @@ const ChefDashboard = () => {
                 pin
             });
             fetchOrders();
-            setSelectedItem(null);
         } catch (err) { alert('Update failed'); }
     };
 
-    const itemCards = [];
-    orders.forEach(order => {
-        const servedIds = order.kitchen_tracking?.served_item_ids || [];
-        order.items.forEach(item => {
-            if (!servedIds.includes(item.order_item_id)) itemCards.push({ ...item, parentOrder: order });
+    const filteredOrders = React.useMemo(() => {
+        return orders.filter(o => {
+            const isTakeaway = !o.table_id || o.table_id === 0;
+            const matchesType = filterType === 'ALL' || (filterType === 'TAKEAWAY' && isTakeaway) || (filterType === 'DINEIN' && !isTakeaway);
+            
+            const matchesSearch = o.order_id.toString().includes(searchTerm) ||
+                `T${o.table_id}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                o.items.some(item => item.item_name.toLowerCase().includes(searchTerm.toLowerCase()));
+                
+            return matchesType && matchesSearch;
         });
-    });
-
-    const filteredCards = itemCards.filter(card => {
-        const o = card.parentOrder;
-        const matchesSearch = card.item_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            `T${o.table_id}`.toLowerCase().includes(searchTerm.toLowerCase());
-        const isTakeaway = !o.table_id || o.table_id === 0;
-        const matchesType = filterType === 'ALL' || (filterType === 'TAKEAWAY' && isTakeaway) || (filterType === 'DINEIN' && !isTakeaway);
-        return matchesSearch && matchesType;
-    });
+    }, [orders, filterType, searchTerm]);
 
     if (!isAuthenticated) {
         return (
@@ -209,13 +726,13 @@ const ChefDashboard = () => {
                     <h3>CHILL GRAND</h3>
                 </div>
                 <nav className="sidebar-nav">
-                    <button className={currentView === 'DASHBOARD' ? 'active' : ''} onClick={() => setCurrentView('DASHBOARD')}>Dashboard</button>
-                    <button className={currentView === 'COMPLETED' ? 'active' : ''} onClick={() => setCurrentView('COMPLETED')}>Completed Items</button>
-                    <button className={currentView === 'SESSION' ? 'active' : ''} onClick={() => setCurrentView('SESSION')}>My Session</button>
+                    <button className={currentView === 'DASHBOARD' ? 'active' : ''} onClick={() => { setCurrentView('DASHBOARD'); setSelectedOrderId(null); setSelectedItemId(null); }}>Dashboard</button>
+                    <button className={currentView === 'COMPLETED' ? 'active' : ''} onClick={() => { setCurrentView('COMPLETED'); setSelectedOrderId(null); setSelectedItemId(null); }}>Completed Items</button>
+                    <button className={currentView === 'SESSION' ? 'active' : ''} onClick={() => { setCurrentView('SESSION'); setSelectedOrderId(null); setSelectedItemId(null); }}>My Session</button>
                 </nav>
                 <div className="sidebar-footer">
                     <div className="active-count-bubble">{activeSessions.length} Chefs Online</div>
-                    <button className="logout-btn" onClick={() => { setIsAuthenticated(false); sessionStorage.removeItem('kds_pin'); }}>Logout Portal</button>
+                    <button className="logout-btn" onClick={handleLogout}>Logout Portal</button>
                 </div>
             </aside>
 
@@ -244,7 +761,7 @@ const ChefDashboard = () => {
                                 <Search size={16} />
                                 <input
                                     type="text"
-                                    placeholder="Search completed items..."
+                                    placeholder="Search completed orders..."
                                     value={historySearch}
                                     onChange={e => setHistorySearch(e.target.value)}
                                 />
@@ -270,125 +787,151 @@ const ChefDashboard = () => {
 
                 <div className="kds-content">
                     {currentView === 'DASHBOARD' && (
-                        <div className="kds-grid">
-                            {filteredCards.length > 0 ? filteredCards.map(card => {
-                                const now = new Date();
-                                const createdAt = new Date(card.parentOrder.created_at);
-                                const acceptedAt = card.parentOrder.kitchen_tracking?.accepted_at
-                                    ? new Date(card.parentOrder.kitchen_tracking.accepted_at)
-                                    : null;
+                        selectedOrderId ? (
+                            selectedItemId ? (
+                                <ItemDetailView
+                                    orderId={selectedOrderId}
+                                    itemId={selectedItemId}
+                                    orders={orders}
+                                    activeSessions={activeSessions}
+                                    selectedChefId={selectedChefId}
+                                    setSelectedChefId={setSelectedChefId}
+                                    handleStatusUpdate={handleStatusUpdate}
+                                    onBack={() => setSelectedItemId(null)}
+                                />
+                            ) : (
+                                <OrderDetailView
+                                    orderId={selectedOrderId}
+                                    orders={orders}
+                                    activeSessions={activeSessions}
+                                    selectedChefId={selectedChefId}
+                                    setSelectedChefId={setSelectedChefId}
+                                    handleStatusUpdate={handleStatusUpdate}
+                                    setSelectedItemId={setSelectedItemId}
+                                    onBack={() => setSelectedOrderId(null)}
+                                />
+                            )
+                        ) : (
+                            <div className="kds-grid">
+                                {filteredOrders.length > 0 ? filteredOrders.map(order => {
+                                    const isTakeaway = !order.table_id || order.table_id === 0;
 
-                                // Total time since order was placed
-                                const totalWaitTime = Math.floor((now - createdAt) / 60000);
+                                    // Determine overall order display status
+                                    const isAnyPreparing = order.items.some(item => 
+                                        (order.kitchen_tracking?.preparing_item_ids || []).map(Number).includes(Number(item.order_item_id))
+                                    );
+                                    const isAnyReady = order.items.some(item => 
+                                        (order.kitchen_tracking?.ready_item_ids || []).map(Number).includes(Number(item.order_item_id))
+                                    );
+                                    
+                                    let orderStatusText = 'PLACED';
+                                    if (isAnyPreparing) orderStatusText = 'PREPARING';
+                                    else if (isAnyReady) orderStatusText = 'READY';
 
-                                // Time spent in queue before chef accepted it
-                                const queueTime = acceptedAt
-                                    ? Math.floor((acceptedAt - createdAt) / 60000)
-                                    : totalWaitTime;
-
-                                // Time spent being prepared
-                                const prepTime = acceptedAt
-                                    ? Math.floor((now - acceptedAt) / 60000)
-                                    : 0;
-
-                                const isTakeaway = !card.parentOrder.table_id || card.parentOrder.table_id === 0;
-                                let timerClass = 'timer-ok';
-                                if (totalWaitTime >= 5) timerClass = 'timer-warning';
-                                if (totalWaitTime >= 10) timerClass = 'timer-late';
-
-                                return (
-                                    <div key={card.order_item_id} className="item-card" onClick={() => setSelectedItem(card)}>
-                                        <div className="card-top-info">
-                                            <span className="order-num">#{card.parentOrder.order_id}</span>
-                                            <span className="table-badge">{isTakeaway ? 'TAKEAWAY' : `TABLE ${card.parentOrder.table_id}`}</span>
-                                        </div>
-                                        <h3 className="item-name-big">{card.item_name}</h3>
-                                        <div className="qty-tag">Quantity: {card.quantity}</div>
-
-                                        <div className="timer-section">
-                                            <div className="timer-row">
-                                                <span className="timer-label">In Queue:</span>
-                                                <span className={`timer-val ${acceptedAt ? 'timer-fixed' : timerClass}`}>
-                                                    {queueTime < 0 ? 0 : queueTime}m
-                                                </span>
+                                    return (
+                                        <div key={order.order_id} className="order-card-new" onClick={() => setSelectedOrderId(order.order_id)}>
+                                            <div className="card-top-info">
+                                                <span className="order-num">#{order.order_id}</span>
+                                                <span className="table-badge">{isTakeaway ? 'TAKEAWAY' : `TABLE ${order.table_id}`}</span>
                                             </div>
-                                            {acceptedAt && (
+                                            
+                                            <div className="order-card-items-list">
+                                                {order.items.map(item => {
+                                                    const itemId = Number(item.order_item_id);
+                                                    const servedIds = (order.kitchen_tracking?.served_item_ids || []).map(Number);
+                                                    const readyIds = (order.kitchen_tracking?.ready_item_ids || []).map(Number);
+                                                    const preparingIds = (order.kitchen_tracking?.preparing_item_ids || []).map(Number);
+
+                                                    let itemStatus = 'PLACED';
+                                                    if (servedIds.includes(itemId)) itemStatus = 'SERVED';
+                                                    else if (readyIds.includes(itemId)) itemStatus = 'READY';
+                                                    else if (preparingIds.includes(itemId)) itemStatus = 'PREPARING';
+
+                                                    return (
+                                                        <div key={item.order_item_id} className={`order-card-item ${itemStatus.toLowerCase()}`}>
+                                                            <span className="item-name-qty">
+                                                                {item.item_name} <strong className="qty-tag-inline">x{item.quantity}</strong>
+                                                            </span>
+                                                            <span className={`item-status-pill ${itemStatus.toLowerCase()}`}>
+                                                                {itemStatus}
+                                                            </span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            <div className="timer-section" style={{ marginTop: 'auto', paddingTop: '10px' }}>
                                                 <div className="timer-row">
-                                                    <span className="timer-label">Preparing:</span>
-                                                    <span className="timer-val timer-preparing-live">
-                                                        {prepTime < 0 ? 0 : prepTime}m
-                                                    </span>
+                                                    <span className="timer-label">Time Elapsed:</span>
+                                                    <LiveTimer placedAtStr={order.created_at} servedAtStr={order.kitchen_tracking?.served_at} className="timer-val" />
                                                 </div>
-                                            )}
-                                        </div>
+                                            </div>
 
-                                        <div className="card-bottom-info">
-                                            {(() => {
-                                                const isPreparing = (card.parentOrder.kitchen_tracking?.preparing_item_ids || []).includes(card.order_item_id);
-                                                const isReady = (card.parentOrder.kitchen_tracking?.ready_item_ids || []).includes(card.order_item_id);
-
-                                                if (isReady) {
-                                                    return <span className="status-badge" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', border: '1px solid currentColor' }}>WAITING FOR WAITER</span>;
-                                                }
-                                                return (
-                                                    <span className={`status-badge ${isPreparing ? 'preparing-badge' : 'placed-badge'}`}>
-                                                        {isPreparing ? 'PREPARING' : 'PLACED'}
-                                                    </span>
-                                                );
-                                            })()}
-                                            {acceptedAt && <div className="chef-initials-badge">{card.parentOrder.kitchen_tracking?.prepared_by_chef_id?.slice(0, 2).toUpperCase()}</div>}
+                                            <div className="card-bottom-info">
+                                                <span className={`status-badge ${orderStatusText.toLowerCase()}-badge`}>
+                                                    {orderStatusText}
+                                                </span>
+                                                {order.kitchen_tracking?.prepared_by_chef_id && (
+                                                    <div className="chef-initials-badge">
+                                                        {order.kitchen_tracking.prepared_by_chef_id.slice(0, 2).toUpperCase()}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            }) : <div className="empty-state">No pending items. Kitchen is clear!</div>}
-                        </div>
+                                    );
+                                }) : <div className="empty-state">No pending orders. Kitchen is clear!</div>}
+                            </div>
+                        )
                     )}
 
                     {currentView === 'COMPLETED' && (
                         <div className="kds-grid">
-                            {completedItems.length > 0 ? completedItems.map(card => {
-                                const createdAt = new Date(card.parentOrder.created_at);
-                                const acceptedAt = card.parentOrder.kitchen_tracking?.accepted_at
-                                    ? new Date(card.parentOrder.kitchen_tracking.accepted_at)
+                            {completedOrders.length > 0 ? completedOrders.map(order => {
+                                const createdAt = new Date(normalizeDate(order.created_at));
+                                const acceptedAt = order.kitchen_tracking?.accepted_at
+                                    ? new Date(normalizeDate(order.kitchen_tracking.accepted_at))
                                     : null;
-
-                                // Get served time for this specific item
-                                const servedAtTime = card.parentOrder.kitchen_tracking?.item_served_times?.[card.order_item_id]
-                                    || card.parentOrder.kitchen_tracking?.served_at
-                                    || card.parentOrder.updated_at;
-
-                                const servedAt = new Date(servedAtTime);
-
-                                // Time from Placement to Serving
-                                const totalCycleTime = Math.floor((servedAt - createdAt) / 60000);
-
-                                // Time from Acceptance to Serving (Active Prep Time)
-                                const activePrepTime = acceptedAt
-                                    ? Math.floor((servedAt - acceptedAt) / 60000)
-                                    : 0;
-
-                                const isTakeaway = !card.parentOrder.table_id || card.parentOrder.table_id === 0;
+                                const completedAt = new Date(normalizeDate(order.completedAt));
+                                const totalCycleMs = completedAt - createdAt;
+                                const activePrepMs = acceptedAt ? (completedAt - acceptedAt) : 0;
+                                const isTakeaway = !order.table_id || order.table_id === 0;
 
                                 return (
-                                    <div key={card.order_item_id} className="item-card history-card" onClick={() => setSelectedItem(card)}>
+                                    <div 
+                                        key={order.order_id} 
+                                        className="order-card-new history-card" 
+                                        onClick={() => {
+                                            setSelectedOrderId(order.order_id);
+                                            setCurrentView('DASHBOARD');
+                                        }}
+                                    >
                                         <div className="card-top-info">
-                                            <span className="order-num">#{card.parentOrder.order_id}</span>
-                                            <span className="table-badge">{isTakeaway ? 'TAKEAWAY' : `TABLE ${card.parentOrder.table_id}`}</span>
+                                            <span className="order-num">#{order.order_id}</span>
+                                            <span className="table-badge">{isTakeaway ? 'TAKEAWAY' : `TABLE ${order.table_id}`}</span>
                                         </div>
-                                        <h3 className="item-name-big">{card.item_name}</h3>
-                                        <div className="qty-tag">Quantity: {card.quantity}</div>
+
+                                        <div className="order-card-items-list">
+                                            {order.items.map(item => (
+                                                <div key={item.order_item_id} className="order-card-item served">
+                                                    <span className="item-name-qty">
+                                                        {item.item_name} <strong className="qty-tag-inline">x{item.quantity}</strong>
+                                                    </span>
+                                                    <span className="item-status-pill served">SERVED</span>
+                                                </div>
+                                            ))}
+                                        </div>
 
                                         <div className="timer-section history-timers">
                                             <div className="timer-row">
                                                 <span className="timer-label">Prep Time:</span>
                                                 <span className="timer-val timer-fixed">
-                                                    {activePrepTime < 0 ? 0 : activePrepTime}m
+                                                    {activePrepMs <= 0 ? "0m 0s" : formatDuration(activePrepMs)}
                                                 </span>
                                             </div>
                                             <div className="timer-row">
                                                 <span className="timer-label">Total Time:</span>
                                                 <span className="timer-val timer-fixed">
-                                                    {totalCycleTime < 0 ? 0 : totalCycleTime}m
+                                                    {totalCycleMs <= 0 ? "0m 0s" : formatDuration(totalCycleMs)}
                                                 </span>
                                             </div>
                                         </div>
@@ -396,30 +939,22 @@ const ChefDashboard = () => {
                                         <div className="card-bottom-info">
                                             <div className="history-served-row">
                                                 <span className="status-badge served-badge">SERVED</span>
-                                                <span className="served-time-stamp">{servedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                <span className="served-time-stamp">{completedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                             </div>
-                                            <div className="chef-initials-badge history-chef">
-                                                {card.parentOrder.kitchen_tracking?.prepared_by_chef_id?.slice(0, 2).toUpperCase()}
-                                            </div>
+                                            {order.kitchen_tracking?.prepared_by_chef_id && (
+                                                <div className="chef-initials-badge history-chef">
+                                                    {order.kitchen_tracking.prepared_by_chef_id.slice(0, 2).toUpperCase()}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );
-                            }) : <div className="empty-state">No completed items today.</div>}
+                            }) : <div className="empty-state">No completed orders today.</div>}
                         </div>
                     )}
 
                     {currentView === 'SESSION' && (
                         <div className="session-portal">
-                            <div className="session-join-card">
-                                <h3>Log as Chef</h3>
-                                <p>Enter your details to begin receiving orders at your station.</p>
-                                <form onSubmit={startSession} className="session-form">
-                                    <input type="text" placeholder="Your Name" required value={sessionInputs.chef_name} onChange={e => setSessionInputs({ ...sessionInputs, chef_name: e.target.value })} />
-                                    <input type="text" placeholder="Personnel ID" required value={sessionInputs.chef_id} onChange={e => setSessionInputs({ ...sessionInputs, chef_id: e.target.value })} />
-                                    <button type="submit">Start Shift</button>
-                                </form>
-                            </div>
-
                             <div className="active-chefs-section">
                                 <div className="section-header">
                                     <h4 className="section-title">Current Active Chefs</h4>
@@ -472,160 +1007,6 @@ const ChefDashboard = () => {
                     )}
                 </div>
             </main>
-
-            {selectedItem && (
-                <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
-                    <div className="product-modal" onClick={e => e.stopPropagation()}>
-                        <div className="modal-visual">
-                            <img src={selectedItem.menu_item?.image || 'https://via.placeholder.com/400x300?text=Food'} alt={selectedItem.item_name} className="product-img" />
-                            <div className="img-overlay" />
-                        </div>
-                        <div className="modal-body">
-                            <div className="m-header">
-                                <div className="m-title">
-                                    <h1>{selectedItem.item_name}</h1>
-                                    <div className="m-meta">
-                                        <span className="m-badge m-badge-table">{!selectedItem.parentOrder.table_id ? 'TAKEAWAY' : `TABLE ${selectedItem.parentOrder.table_id}`}</span>
-                                        <span className="m-badge m-badge-order">#{selectedItem.parentOrder.order_id}</span>
-                                    </div>
-                                </div>
-                                <div className="m-qty">x{selectedItem.quantity}</div>
-                            </div>
-
-                            <div className="m-details-grid">
-                                <div className="m-section">
-                                    <h4>SELECTED VARIANTS</h4>
-                                    <div className="v-list">
-                                        {selectedItem.selected_variants?.length > 0 ? selectedItem.selected_variants.map((v, i) => (
-                                            <div key={i} className="v-item">
-                                                <span className="v-key">{v.variant_name}:</span>
-                                                <span className="v-val">{v.option_name}</span>
-                                            </div>
-                                        )) : <p style={{ color: '#475569', fontSize: '0.9rem' }}>No variants selected.</p>}
-                                    </div>
-                                </div>
-
-                                <div className="m-section">
-                                    <h4>PREP METRICS</h4>
-                                    <div className="v-list">
-                                        <div className="v-item">
-                                            <span className="v-key">Placed:</span>
-                                            <span className="v-val">{new Date(selectedItem.parentOrder.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                        </div>
-                                        {selectedItem.parentOrder.kitchen_tracking?.accepted_at && (
-                                            <div className="v-item">
-                                                <span className="v-key">Started:</span>
-                                                <span className="v-val">{new Date(selectedItem.parentOrder.kitchen_tracking.accepted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                            </div>
-                                        )}
-                                        {(() => {
-                                            const kt = selectedItem.parentOrder.kitchen_tracking || {};
-                                            const itemId = selectedItem.order_item_id;
-
-                                            const placedAt = new Date(selectedItem.parentOrder.created_at);
-                                            const acceptedAt = kt.accepted_at ? new Date(kt.accepted_at) : null;
-                                            const readyAtTime = kt.item_ready_times?.[itemId] || kt.ready_at;
-                                            const readyAt = readyAtTime ? new Date(readyAtTime) : null;
-                                            const servedAtTime = kt.item_served_times?.[itemId] || kt.served_at || selectedItem.parentOrder.updated_at;
-                                            const servedAt = (kt.served_item_ids || []).includes(itemId) || ['SERVED', 'CLOSED', 'PAID'].includes(selectedItem.parentOrder.status)
-                                                ? new Date(servedAtTime) : null;
-
-                                            const activePrepTime = (acceptedAt && readyAt) ? Math.floor((readyAt - acceptedAt) / 60000) : null;
-                                            const pickupDelay = (readyAt && servedAt) ? Math.floor((servedAt - readyAt) / 60000) : null;
-                                            const totalCycle = servedAt ? Math.floor((servedAt - placedAt) / 60000) : null;
-
-                                            return (
-                                                <>
-                                                    {readyAt && (
-                                                        <div className="v-item">
-                                                            <span className="v-key">Ready At:</span>
-                                                            <span className="v-val" style={{ color: '#f59e0b' }}>{readyAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                        </div>
-                                                    )}
-
-                                                    {servedAt && (
-                                                        <div className="v-item">
-                                                            <span className="v-key">Served At:</span>
-                                                            <span className="v-val" style={{ color: '#34d399' }}>{servedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                        </div>
-                                                    )}
-
-                                                    {activePrepTime !== null && (
-                                                        <div className="v-item" style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                                                            <span className="v-key">Active Cooking Time:</span>
-                                                            <span className="v-val" style={{ color: '#10b981' }}>{activePrepTime < 0 ? 0 : activePrepTime} min</span>
-                                                        </div>
-                                                    )}
-
-                                                    {pickupDelay !== null && (
-                                                        <div className="v-item">
-                                                            <span className="v-key">Pickup Delay (Waiting):</span>
-                                                            <span className="v-val" style={{ color: '#f59e0b' }}>{pickupDelay < 0 ? 0 : pickupDelay} min</span>
-                                                        </div>
-                                                    )}
-
-                                                    {totalCycle !== null && (
-                                                        <div className="v-item">
-                                                            <span className="v-key">Total Journey:</span>
-                                                            <span className="v-val" style={{ color: '#10b981', fontWeight: 950 }}>{totalCycle < 0 ? 0 : totalCycle} min</span>
-                                                        </div>
-                                                    )}
-                                                </>
-                                            );
-                                        })()}
-                                    </div>
-                                </div>
-
-                                <div className="m-section">
-                                    <h4>CUSTOMER CONTACT</h4>
-                                    <p className="m-contact-val">{selectedItem.parentOrder.customer_phone || 'Customer contact not provided'}</p>
-                                </div>
-
-                                {selectedItem.note && (
-                                    <div className="m-section">
-                                        <h4>CHEF NOTES</h4>
-                                        <p className="m-note-val">{selectedItem.note}</p>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="m-chef-select">
-                                <h4>PREPARING CHEF</h4>
-                                <select value={selectedChefId} onChange={e => setSelectedChefId(e.target.value)} className="chef-dropdown">
-                                    {activeSessions.map(s => <option key={s.chef_id} value={s.chef_id}>{s.chef_name} ({s.chef_id})</option>)}
-                                    {activeSessions.length === 0 && <option value="">NO ACTIVE STAFF</option>}
-                                </select>
-                            </div>
-
-                            <div className="m-footer">
-                                {selectedItem.parentOrder.status === 'SERVED' || (selectedItem.parentOrder.kitchen_tracking?.served_item_ids || []).includes(selectedItem.order_item_id) ? (
-                                    <div className="m-completed-badge item-served">
-                                        <svg className="status-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        Item Delivered & Served
-                                    </div>
-                                ) : (
-                                    (selectedItem.parentOrder.kitchen_tracking?.ready_item_ids || []).includes(selectedItem.order_item_id) ? (
-                                        <div className="m-completed-badge waiter-waiting">
-                                            <svg className="status-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            Waiting for Waiter to Serve
-                                        </div>
-                                    ) : (
-                                        (selectedItem.parentOrder.kitchen_tracking?.preparing_item_ids || []).includes(selectedItem.order_item_id) ? (
-                                            <button className="m-btn m-btn-serve" onClick={() => handleStatusUpdate(selectedItem.parentOrder.order_id, 'READY', selectedItem.order_item_id)}>Mark Item as Ready to Serve</button>
-                                        ) : (
-                                            <button className="m-btn m-btn-start" onClick={() => handleStatusUpdate(selectedItem.parentOrder.order_id, 'PREPARING', selectedItem.order_item_id)}>Start Preparing</button>
-                                        )
-                                    )
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

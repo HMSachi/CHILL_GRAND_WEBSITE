@@ -16,6 +16,7 @@ const OrderSidebar = ({ isOpen, onClose }) => {
         activeOrder,
         assignedWaiter,
         activeCall,
+        pendingOrderRequest,
         refreshTableStatus,
         requestWaiter,
         billRequest,
@@ -120,6 +121,7 @@ const OrderSidebar = ({ isOpen, onClose }) => {
             case 'PREPARING': return { background: '#f39c1220', color: '#f39c12', border: '1px solid #f39c1240' };
             case 'SERVED': return { background: '#2ecc7120', color: '#2ecc71', border: '1px solid #2ecc7140' };
             case 'BILL_OPEN': return { background: '#e74c3c20', color: '#e74c3c', border: '1px solid #e74c3c40' };
+            case 'PENDING': return { background: '#f59e0b20', color: '#f59e0b', border: '1px solid #f59e0b40' };
             default: return { background: '#88820', color: '#888', border: '1px solid #88840' };
         }
     };
@@ -181,6 +183,51 @@ const OrderSidebar = ({ isOpen, onClose }) => {
                 )}
 
                 {/* 2. Show Active/Placed Orders (From Server) */}
+                {pendingOrderRequest && !activeOrder && (
+                    <div className="active-order-section">
+                        <div className="order-group-header">
+                            <span className="order-id">Pending Request • Table #{pendingOrderRequest.table_id}</span>
+                            <span className="order-status-badge" style={getStatusStyle('PENDING')}>
+                                WAITING APPROVAL
+                            </span>
+                        </div>
+
+                        <div className="bill-close-action" style={{ marginBottom: '12px' }}>
+                            <div className="bill-request-accepted-msg" style={{ borderColor: '#f59e0b40', color: '#f59e0b' }}>
+                                <span className="check-icon">⏳</span> Your request is sent. Please wait for cashier approval.
+                            </div>
+                        </div>
+
+                        <div className="active-items">
+                            {(pendingOrderRequest.items || []).map((item, index) => {
+                                const itemName = item.name || item.item_name || 'Item';
+                                const quantity = item.qty || item.quantity || 1;
+                                const price = item.price || item.item_price || 0;
+                                return (
+                                    <div key={`${itemName}-${index}`} className="active-item-row">
+                                        <div className="item-qty">{quantity}x</div>
+                                        <div className="item-name-group">
+                                            <div className="item-name">{itemName}</div>
+                                            {item.selectedVariants?.map((v, i) => (
+                                                <span key={i} className="variant-tag">{v.variantName || v.variant_name}: {v.optionName || v.option_name}</span>
+                                            ))}
+                                        </div>
+                                        <div className="item-price">Rs. {Number(price * quantity).toFixed(2)}</div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className="active-total">
+                            <span>Requested Total</span>
+                            <span>Rs. {(pendingOrderRequest.items || []).reduce((sum, item) => {
+                                const quantity = item.qty || item.quantity || 1;
+                                const price = item.price || item.item_price || 0;
+                                return sum + (Number(price) * Number(quantity));
+                            }, 0).toFixed(2)}</span>
+                        </div>
+                    </div>
+                )}
+
                 {activeOrder && (
                     <div className="active-order-section">
                         <div className="order-group-header">

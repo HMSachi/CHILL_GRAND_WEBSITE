@@ -110,7 +110,7 @@ const WaiterDashboard = () => {
                 // If it's a new ready item and the order belongs to this waiter
                 if (!prevReadyIds.has(id) && prevReadyIds.size > 0) {
                     const item = order.order_items.find(i => i.order_item_id === id);
-                    if (item && order.kitchen_tracking?.waiter_name === (user?.username || user?.name)) {
+                    if (item) {
                         newReadyNotifications.push({
                             id: Date.now() + Math.random(),
                             orderId: order.order_id,
@@ -127,7 +127,7 @@ const WaiterDashboard = () => {
             setServedItemNotifications(prev => [...prev, ...newReadyNotifications]);
         }
         setPrevReadyIds(currentReadyIds);
-    }, [orders, user, prevReadyIds]);
+    }, [orders, user]);
 
     const removeNotification = (id) => {
         setServedItemNotifications(prev => prev.filter(n => n.id !== id));
@@ -237,19 +237,22 @@ const WaiterDashboard = () => {
             const enrichedTables = (tablesRes.data || []).map(place => ({
                 ...place,
                 tables: place.tables.map(t => {
-                    const tableOrders = filteredOrders.filter(o =>
-                        String(o.table_id) === String(t.tableId) &&
-                        !['PAID', 'CLOSED', 'CANCELLED'].includes(o.status?.toUpperCase())
-                    );
+                    const tableOrders = filteredOrders.filter(o => {
+                        const match = String(o.table_id) === String(t.tableId);
+                        if (String(t.tableId) === '2' || String(t.tableId) === '4') {
+                            console.log(`[TABLE SYNC] Table ${t.tableId}: checking order #${o.order_id} table_id=${o.table_id} (${typeof o.table_id}) status=${o.status} -> match=${match}`);
+                        }
+                        return match && !['PAID', 'CLOSED', 'CANCELLED'].includes(o.status?.toUpperCase());
+                    });
 
                     if (tableOrders.length > 0) {
-                        // Check if ANY of the active orders for this table belong to the current waiter
-                        const isOwnOrder = tableOrders.some(o => String(o.staff_id) === currentUserId || o.isRequest);
+                        // All waiters can access all tables
+                        const isOwnOrder = true;
 
                         return {
                             ...t,
                             hasActiveOrder: true,
-                            isOwnOrder: isOwnOrder,
+                            isOwnOrder: true,
                             orderStatus: tableOrders.length > 1 ? 'MULTIPLE' : tableOrders[0].status,
                             totalAmount: tableOrders.reduce((sum, o) => sum + parseFloat(o.total_amount || 0), 0),
                             orderId: tableOrders.map(o => o.order_id).join(', #'),
@@ -268,10 +271,8 @@ const WaiterDashboard = () => {
                 })
             }));
 
-            // Dashboard queues should STILL only show the waiter's own orders
-            const waiterOwnOrders = filteredOrders.filter(o =>
-                String(o.staff_id) === currentUserId || o.isRequest
-            );
+            // Dashboard queues show all active orders (no waiter-specific filtering)
+            const waiterOwnOrders = filteredOrders;
 
             setOrders(waiterOwnOrders);
             setTables(enrichedTables);
@@ -549,10 +550,6 @@ const WaiterDashboard = () => {
                                 }
 
                                 if (table.hasActiveOrder) {
-                                    if (!table.isOwnOrder) {
-                                        alert("Access Denied: This table is currently being handled by another staff member.");
-                                        return;
-                                    }
                                     setSelectedTableForOrder(table);
                                     setActiveTab('MENU');
                                 } else {
@@ -911,12 +908,7 @@ const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQ
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <button
-                    className={`my-tables-toggle ${showMyTablesOnly ? 'active' : ''}`}
-                    onClick={() => setShowMyTablesOnly(!showMyTablesOnly)}
-                >
-                    <User2 size={16} /> <span>My Tables</span>
-                </button>
+
             </div>
 
             {!selectedPlace ? (
@@ -940,25 +932,19 @@ const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQ
                 <div className="tables-grid-view">
                     {selectedPlace.tables
                         .filter(t => !searchQuery || t.tableId.toString().includes(searchQuery))
-                        .filter(t => !showMyTablesOnly || t.waiterId === String(user.userId || user.id))
                         .map(table => {
-                            const isAssignedToMe = String(table.waiterId) === String(user.userId || user.id);
-                            const isAssignedToOther = table.waiterId && !isAssignedToMe;
+                            const isAssignedToMe = true;
+                            const isAssignedToOther = false;
 
                             return (
                                 <div
                                     key={table.tableId}
-                                    className={`tablet-table-card ${table.hasActiveOrder ? 'occupied' : 'available'} ${isAssignedToMe ? 'assigned-to-me' : ''} ${isAssignedToOther ? 'assigned-to-other' : ''}`}
+                                    className={`tablet-table-card ${table.hasActiveOrder ? 'occupied' : 'available'} assigned-to-me`}
                                     onClick={() => onTableSelect(table)}
                                 >
                                     <div className="table-top">
                                         <div className="flex-col">
                                             <span className="table-number">T-{table.tableId}</span>
-                                            {table.waiterName && (
-                                                <span className="assigned-waiter-badge">
-                                                    {isAssignedToMe ? 'Yours' : table.waiterName}
-                                                </span>
-                                            )}
                                         </div>
                                         <span className="capacity">{table.seats} Seats</span>
                                     </div>
@@ -998,29 +984,13 @@ const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQ
                                         )}
                                     </div>
                                     {table.hasActiveOrder && (
-                                        <div className="table-footer">
-                                            <div className="waiter-name">
-                                                <User2 size={12} /> {table.isOwnOrder ? (user.username || user.name || 'You') : 'Other Staff'}
-                                            </div>
+                                        <div className="table-footer" style={{ justifyContent: 'center' }}>
                                             <div className="order-time">#{table.orderId}</div>
                                         </div>
                                     )}
                                     {!table.hasActiveOrder && (
-                                        <div className="table-actions-row">
+                                        <div className="table-actions-row" style={{ justifyContent: 'center' }}>
                                             <div className="table-action">TAP TO OPEN</div>
-                                            {!isAssignedToMe && (
-                                                <button
-                                                    className="request-access-btn"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        if (window.confirm(`Request access to Table T-${table.tableId}?`)) {
-                                                            requestTableAccess(table.tableId);
-                                                        }
-                                                    }}
-                                                >
-                                                    <PlusCircle size={18} />
-                                                </button>
-                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -1138,6 +1108,9 @@ const OrdersView = ({ orders, onOrderDetail }) => {
 
     const filteredOrders = useMemo(() => {
         let result = orders.filter(order => {
+            if (['CLOSED', 'PAID', 'CANCELLED'].includes(order.status?.toUpperCase())) {
+                return false;
+            }
             const matchesSearch =
                 order.order_id.toString().includes(searchQuery) ||
                 (order.table_id && order.table_id.toString().includes(searchQuery)) ||
@@ -1243,7 +1216,6 @@ const OrdersView = ({ orders, onOrderDetail }) => {
 const KitchenStatusView = ({ orders, user, onMarkServed }) => {
     // Only show orders belonging to this waiter that are not yet closed
     const waiterOrders = orders.filter(o =>
-        o.kitchen_tracking?.waiter_name === (user?.username || user?.name) &&
         !['PAID', 'CLOSED', 'CANCELLED'].includes(o.status?.toUpperCase())
     );
 
@@ -1251,12 +1223,12 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
         <div className="view-container">
             <div className="kitchen-status-header">
                 <h3><CookingPot size={22} /> Kitchen Preparation Queue</h3>
-                <p>Tracking items for {user?.username || user?.name}</p>
+                <p>Tracking all active items</p>
             </div>
 
             <div className="kitchen-grid">
                 {waiterOrders.length === 0 ? (
-                    <div className="empty-state">No active kitchen orders for you.</div>
+                    <div className="empty-state">No active kitchen orders.</div>
                 ) : (
                     waiterOrders.map(order => (
                         <div key={order.order_id} className="order-kitchen-card">
