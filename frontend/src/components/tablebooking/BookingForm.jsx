@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { API_BASE_URL } from '../../config/api';
 import { useLocation } from 'react-router-dom';
 import { ReactPhotoSphereViewer } from 'react-photo-sphere-viewer';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
@@ -77,7 +78,7 @@ const BookingForm = () => {
         setStatus({ type: '', message: '' });
 
         try {
-            const response = await fetch("http://localhost:5000/api/website/reservations", {
+            const response = await fetch(`${API_BASE_URL}/website/reservations`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),

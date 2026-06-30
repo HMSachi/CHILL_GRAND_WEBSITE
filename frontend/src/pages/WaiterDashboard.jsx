@@ -34,9 +34,13 @@ import {
     CookingPot,
     BellRing,
     ArrowUpNarrowWide,
-    ArrowDownWideNarrow
+    ArrowDownWideNarrow,
+    FileText,
+    Eye
 } from 'lucide-react';
 import VariantModal from '../components/orders/VariantModal';
+import FinalBillModal from '../QRweb/components/FinalBillModal';
+import { API_BASE_URL } from '../config/api';
 
 const formatTime = (dateStr) => {
     if (!dateStr) return 'N/A';
@@ -57,6 +61,7 @@ const WaiterDashboard = () => {
     // UI specific states
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showMyTablesOnly, setShowMyTablesOnly] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [cart, setCart] = useState([]);
     const [selectedTableForOrder, setSelectedTableForOrder] = useState(null);
@@ -68,14 +73,21 @@ const WaiterDashboard = () => {
     const [showPhoneModal, setShowPhoneModal] = useState(false);
     const [pendingTable, setPendingTable] = useState(null);
     const [customerPhone, setCustomerPhone] = useState('');
+    const [waiterCalls, setWaiterCalls] = useState({});
+    const [billCloseRequests, setBillCloseRequests] = useState({});
+    const [finalBills, setFinalBills] = useState({});
+    const [previewBill, setPreviewBill] = useState(null);
 
-    const API_BASE_URL = 'http://localhost:5000/api';
+    // API_BASE_URL is imported from config/api.js
 
     useEffect(() => {
         if (user) {
+            startSession();
             fetchAllData();
             const interval = setInterval(fetchAllData, 15000);
-            return () => clearInterval(interval);
+            return () => {
+                clearInterval(interval);
+            };
         }
     }, [user]);
 
@@ -98,7 +110,7 @@ const WaiterDashboard = () => {
                 // If it's a new ready item and the order belongs to this waiter
                 if (!prevReadyIds.has(id) && prevReadyIds.size > 0) {
                     const item = order.order_items.find(i => i.order_item_id === id);
-                    if (item && order.kitchen_tracking?.waiter_name === (user?.username || user?.name)) {
+                    if (item) {
                         newReadyNotifications.push({
                             id: Date.now() + Math.random(),
                             orderId: order.order_id,
@@ -115,7 +127,7 @@ const WaiterDashboard = () => {
             setServedItemNotifications(prev => [...prev, ...newReadyNotifications]);
         }
         setPrevReadyIds(currentReadyIds);
-    }, [orders, user, prevReadyIds]);
+    }, [orders, user]);
 
     const removeNotification = (id) => {
         setServedItemNotifications(prev => prev.filter(n => n.id !== id));
@@ -134,17 +146,57 @@ const WaiterDashboard = () => {
         }
     };
 
+    const acceptWaiterCall = async (tableId) => {
+        try {
+            const token = sessionStorage.getItem('waiter_token');
+            await axios.patch(`${API_BASE_URL}/waiter/waiter-calls/${tableId}/accept`, {}, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            fetchAllData();
+        } catch (err) {
+            console.error('Failed to accept waiter call', err);
+        }
+    };
+
+    const acceptBillCloseRequest = async (tableId) => {
+        try {
+            const token = sessionStorage.getItem('waiter_token');
+            await axios.patch(`${API_BASE_URL}/waiter/bill-close-requests/${tableId}/accept`, {}, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            // Find the order for this table to navigate to details
+            const tableOrder = orders.find(o => String(o.table_id) === String(tableId));
+            if (tableOrder) {
+                setSelectedOrderDetail(tableOrder);
+                setActiveTab('ORDERS');
+            }
+
+            fetchAllData();
+        } catch (err) {
+            console.error('Failed to accept bill close request', err);
+        }
+    };
+
     const fetchAllData = async () => {
         try {
             const token = sessionStorage.getItem('waiter_token');
             const headers = { 'Authorization': `Bearer ${token}` };
 
-            const [ordersRes, requestsRes, tablesRes, menuRes] = await Promise.all([
+            const results = await Promise.all([
                 axios.get(`${API_BASE_URL}/orders`, { headers }),
                 axios.get(`${API_BASE_URL}/waiter/order-requests`, { headers }),
                 axios.get(`${API_BASE_URL}/cashier/tables`, { headers }),
-                axios.get(`${API_BASE_URL}/menu/live`, { headers })
+                axios.get(`${API_BASE_URL}/menu/live`, { headers }),
+                axios.get(`${API_BASE_URL}/waiter/waiter-calls`, { headers }),
+                axios.get(`${API_BASE_URL}/waiter/bill-close-requests`, { headers }),
+                axios.get(`${API_BASE_URL}/waiter/final-bills`, { headers })
             ]);
+
+            const [ordersRes, requestsRes, tablesRes, menuRes, callsRes, billRequestsRes, finalBillsRes] = results;
+            setWaiterCalls(callsRes.data || {});
+            setBillCloseRequests(billRequestsRes.data || {});
+            setFinalBills(finalBillsRes.data || {});
 
             const fetchedOrders = ordersRes.data;
             let filteredOrders = fetchedOrders;
@@ -185,19 +237,22 @@ const WaiterDashboard = () => {
             const enrichedTables = (tablesRes.data || []).map(place => ({
                 ...place,
                 tables: place.tables.map(t => {
-                    const tableOrders = filteredOrders.filter(o =>
-                        String(o.table_id) === String(t.tableId) &&
-                        !['PAID', 'CLOSED', 'CANCELLED'].includes(o.status?.toUpperCase())
-                    );
+                    const tableOrders = filteredOrders.filter(o => {
+                        const match = String(o.table_id) === String(t.tableId);
+                        if (String(t.tableId) === '2' || String(t.tableId) === '4') {
+                            console.log(`[TABLE SYNC] Table ${t.tableId}: checking order #${o.order_id} table_id=${o.table_id} (${typeof o.table_id}) status=${o.status} -> match=${match}`);
+                        }
+                        return match && !['PAID', 'CLOSED', 'CANCELLED'].includes(o.status?.toUpperCase());
+                    });
 
                     if (tableOrders.length > 0) {
-                        // Check if ANY of the active orders for this table belong to the current waiter
-                        const isOwnOrder = tableOrders.some(o => String(o.staff_id) === currentUserId || o.isRequest);
+                        // All waiters can access all tables
+                        const isOwnOrder = true;
 
                         return {
                             ...t,
                             hasActiveOrder: true,
-                            isOwnOrder: isOwnOrder,
+                            isOwnOrder: true,
                             orderStatus: tableOrders.length > 1 ? 'MULTIPLE' : tableOrders[0].status,
                             totalAmount: tableOrders.reduce((sum, o) => sum + parseFloat(o.total_amount || 0), 0),
                             orderId: tableOrders.map(o => o.order_id).join(', #'),
@@ -216,10 +271,8 @@ const WaiterDashboard = () => {
                 })
             }));
 
-            // Dashboard queues should STILL only show the waiter's own orders
-            const waiterOwnOrders = filteredOrders.filter(o =>
-                String(o.staff_id) === currentUserId || o.isRequest
-            );
+            // Dashboard queues show all active orders (no waiter-specific filtering)
+            const waiterOwnOrders = filteredOrders;
 
             setOrders(waiterOwnOrders);
             setTables(enrichedTables);
@@ -231,7 +284,31 @@ const WaiterDashboard = () => {
         }
     };
 
-    const handleLogout = () => {
+    const startSession = async () => {
+        try {
+            const token = sessionStorage.getItem('waiter_token');
+            await axios.post(`${API_BASE_URL}/waiter/session/start`, {
+                waiter_name: user?.username || user?.name || 'Waiter',
+                waiter_id: user?.userId || user?.id
+            }, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+        } catch (err) {
+            console.error('Failed to start waiter session', err);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            const token = sessionStorage.getItem('waiter_token');
+            await axios.post(`${API_BASE_URL}/waiter/session/end`, {
+                waiter_id: user?.userId || user?.id
+            }, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+        } catch (err) {
+            console.error('Failed to end waiter session', err);
+        }
         sessionStorage.removeItem('waiter_token');
         sessionStorage.removeItem('waiter_user');
         setUser(null);
@@ -361,6 +438,21 @@ const WaiterDashboard = () => {
         }
     };
 
+    const requestTableAccess = async (tableId) => {
+        try {
+            const token = sessionStorage.getItem('waiter_token');
+            const res = await axios.post(`${API_BASE_URL}/waiter/table-access-requests`,
+                { table_id: tableId },
+                { headers: { 'Authorization': `Bearer ${token}` } }
+            );
+            if (res.status === 201) {
+                alert('Request sent to cashier successfully!');
+            }
+        } catch (err) {
+            alert('Failed to send table request: ' + (err.response?.data?.error || err.message));
+        }
+    };
+
 
 
     if (!user) return <WaiterLogin onLogin={(userData) => setUser(userData)} />;
@@ -443,13 +535,21 @@ const WaiterDashboard = () => {
                             setSelectedPlace={setSelectedPlace}
                             searchQuery={searchQuery}
                             setSearchQuery={setSearchQuery}
+                            showMyTablesOnly={showMyTablesOnly}
+                            setShowMyTablesOnly={setShowMyTablesOnly}
+                            requestTableAccess={requestTableAccess}
                             user={user}
+                            waiterCalls={waiterCalls}
+                            billCloseRequests={billCloseRequests}
+                            finalBills={finalBills}
                             onTableSelect={(table) => {
+                                // 1. If there's a final bill, show preview immediately
+                                if (finalBills?.[table.tableId]) {
+                                    setPreviewBill(finalBills[table.tableId]);
+                                    return;
+                                }
+
                                 if (table.hasActiveOrder) {
-                                    if (!table.isOwnOrder) {
-                                        alert("Access Denied: This table is currently being handled by another staff member.");
-                                        return;
-                                    }
                                     setSelectedTableForOrder(table);
                                     setActiveTab('MENU');
                                 } else {
@@ -502,6 +602,11 @@ const WaiterDashboard = () => {
             {selectedOrderDetail && (
                 <OrderDetailModal
                     order={selectedOrderDetail}
+                    finalBill={finalBills[selectedOrderDetail.table_id]}
+                    onPreviewBill={(bill) => {
+                        setPreviewBill(bill);
+                        setSelectedOrderDetail(null);
+                    }}
                     onClose={() => setSelectedOrderDetail(null)}
                 />
             )}
@@ -514,6 +619,13 @@ const WaiterDashboard = () => {
                         setShowPhoneModal(false);
                         setActiveTab('MENU');
                     }}
+                />
+            )}
+
+            {previewBill && (
+                <FinalBillModal
+                    bill={previewBill}
+                    onClose={() => setPreviewBill(null)}
                 />
             )}
 
@@ -536,6 +648,73 @@ const WaiterDashboard = () => {
                             Mark Delivered
                         </button>
                     </div>
+                ))}
+
+                {/* Waiter Call Notifications */}
+                {Object.entries(waiterCalls).map(([tableId, call]) => (
+                    call.status === 'PENDING' && (
+                        <div key={`call-${tableId}`} className="served-notification call-alert animate-in slide-in-from-top duration-500" style={{ borderLeft: '4px solid #ef4444', display: 'flex', flexDirection: 'column', background: 'rgba(239, 68, 68, 0.15)', boxShadow: '0 0 20px rgba(239, 68, 68, 0.2)' }}>
+                            <div style={{ display: 'flex', width: '100%' }}>
+                                <div className="notif-icon"><BellRing className="text-red-500 animate-bounce" /></div>
+                                <div className="notif-body" style={{ flex: 1 }}>
+                                    <h5 style={{ color: '#ef4444', fontWeight: '800' }}>CUSTOMER CALLING!</h5>
+                                    <p><strong>Table T-{tableId}</strong> is requesting assistance.</p>
+                                </div>
+                            </div>
+                            <button
+                                style={{
+                                    marginTop: '0.75rem',
+                                    width: '100%',
+                                    background: '#ef4444',
+                                    color: '#fff',
+                                    padding: '0.5rem',
+                                    borderRadius: '6px',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    textTransform: 'uppercase',
+                                    transition: 'all 0.2s'
+                                }}
+                                onClick={() => acceptWaiterCall(tableId)}
+                            >
+                                Accept Call
+                            </button>
+                        </div>
+                    )
+                ))}
+
+                {/* Bill Close Requests */}
+                {Object.entries(billCloseRequests).map(([tableId, req]) => (
+                    req.status === 'PENDING' && (
+                        <div key={`bill-${tableId}`} className="served-notification bill-alert animate-in slide-in-from-top duration-500" style={{ borderLeft: '4px solid #f1c40f', display: 'flex', flexDirection: 'column', background: 'rgba(241, 196, 15, 0.15)', boxShadow: '0 0 20px rgba(241, 196, 15, 0.2)' }}>
+                            <div style={{ display: 'flex', width: '100%' }}>
+                                <div className="notif-icon"><ReceiptText className="text-yellow-500 animate-bounce" /></div>
+                                <div className="notif-body" style={{ flex: 1 }}>
+                                    <h5 style={{ color: '#f1c40f', fontWeight: '800' }}>BILL CLOSE REQUEST!</h5>
+                                    <p><strong>Table T-{tableId}</strong> wants to pay.</p>
+                                </div>
+                            </div>
+                            <button
+                                style={{
+                                    marginTop: '0.75rem',
+                                    width: '100%',
+                                    background: '#f1c40f',
+                                    color: '#000',
+                                    padding: '0.5rem',
+                                    borderRadius: '6px',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    textTransform: 'uppercase'
+                                }}
+                                onClick={() => acceptBillCloseRequest(tableId)}
+                            >
+                                Accept & Process
+                            </button>
+                        </div>
+                    )
                 ))}
             </div>
 
@@ -643,7 +822,43 @@ const DashboardView = ({ orders, onTabChange }) => {
     );
 };
 
-const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQuery, setSearchQuery, onTableSelect, user }) => {
+const CallAcceptedBadge = ({ acceptedAt }) => {
+    const [timeLeft, setTimeLeft] = React.useState('');
+    const [isVisible, setIsVisible] = React.useState(true);
+
+    React.useEffect(() => {
+        const update = () => {
+            const start = new Date(acceptedAt);
+            const now = new Date();
+            const diff = 120 - Math.floor((now - start) / 1000);
+            if (diff > 0) {
+                const mins = Math.floor(diff / 60);
+                const secs = diff % 60;
+                setTimeLeft(`${mins}:${secs.toString().padStart(2, '0')}`);
+            } else {
+                setIsVisible(false);
+            }
+        };
+        update();
+        const timer = setInterval(update, 1000);
+        return () => clearInterval(timer);
+    }, [acceptedAt]);
+
+    if (!isVisible) return null;
+
+    return (
+        <div className="client-call-status">
+            <span className="call-msg">Call Accepted</span>
+            <div className="call-countdown-badge">
+                <Clock size={12} />
+                <span>{timeLeft}</span>
+            </div>
+        </div>
+    );
+};
+
+const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQuery, setSearchQuery, onTableSelect, user, showMyTablesOnly, setShowMyTablesOnly, requestTableAccess, waiterCalls, billCloseRequests, finalBills }) => {
+
     const getStatusColor = (status) => {
         switch (status?.toUpperCase()) {
             case 'PLACED': return 'status-blue';
@@ -693,6 +908,7 @@ const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQ
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
+
             </div>
 
             {!selectedPlace ? (
@@ -716,39 +932,70 @@ const TablesManagementView = ({ tables, selectedPlace, setSelectedPlace, searchQ
                 <div className="tables-grid-view">
                     {selectedPlace.tables
                         .filter(t => !searchQuery || t.tableId.toString().includes(searchQuery))
-                        .map(table => (
-                            <div
-                                key={table.tableId}
-                                className={`tablet-table-card ${table.hasActiveOrder ? 'occupied' : 'available'}`}
-                                onClick={() => onTableSelect(table)}
-                            >
-                                <div className="table-top">
-                                    <span className="table-number">T-{table.tableId}</span>
-                                    <span className="capacity">{table.seats} Seats</span>
-                                </div>
-                                <div className="table-status">
-                                    {table.hasActiveOrder ? (
-                                        <div className={`status-badge ${getStatusColor(table.orderStatus)}`}>
-                                            {getStatusIcon(table.orderStatus)}
-                                            {table.orderStatus}
+                        .map(table => {
+                            const isAssignedToMe = true;
+                            const isAssignedToOther = false;
+
+                            return (
+                                <div
+                                    key={table.tableId}
+                                    className={`tablet-table-card ${table.hasActiveOrder ? 'occupied' : 'available'} assigned-to-me`}
+                                    onClick={() => onTableSelect(table)}
+                                >
+                                    <div className="table-top">
+                                        <div className="flex-col">
+                                            <span className="table-number">T-{table.tableId}</span>
                                         </div>
-                                    ) : (
-                                        <div className="status-badge available">AVAILABLE</div>
+                                        <span className="capacity">{table.seats} Seats</span>
+                                    </div>
+                                    <div className="table-status">
+                                        {table.hasActiveOrder ? (
+                                            <div className="status-with-call">
+                                                <div className={`status-badge ${getStatusColor(table.orderStatus)}`}>
+                                                    {getStatusIcon(table.orderStatus)}
+                                                    {table.orderStatus}
+                                                </div>
+                                                {waiterCalls?.[table.tableId]?.status === 'ACCEPTED' && (
+                                                    <CallAcceptedBadge acceptedAt={waiterCalls[table.tableId].accepted_at} />
+                                                )}
+                                                {billCloseRequests?.[table.tableId] && !finalBills?.[table.tableId] && (
+                                                    <div className={`bill-status-badge ${billCloseRequests[table.tableId].status.toLowerCase()}`}>
+                                                        {billCloseRequests[table.tableId].status === 'PENDING' ? 'Requesting Close Bill' : 'Closing Bill'}
+                                                    </div>
+                                                )}
+                                                {finalBills?.[table.tableId] && (
+                                                    <div className="bill-status-badge notified">
+                                                        CLOASED BILL
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="status-with-call">
+                                                <div className="status-badge available">AVAILABLE</div>
+                                                {waiterCalls?.[table.tableId]?.status === 'ACCEPTED' && (
+                                                    <CallAcceptedBadge acceptedAt={waiterCalls[table.tableId].accepted_at} />
+                                                )}
+                                                {billCloseRequests?.[table.tableId] && (
+                                                    <div className={`bill-status-badge ${billCloseRequests[table.tableId].status.toLowerCase()}`}>
+                                                        {billCloseRequests[table.tableId].status === 'PENDING' ? 'Requesting Close Bill' : 'Closing Bill'}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                    {table.hasActiveOrder && (
+                                        <div className="table-footer" style={{ justifyContent: 'center' }}>
+                                            <div className="order-time">#{table.orderId}</div>
+                                        </div>
+                                    )}
+                                    {!table.hasActiveOrder && (
+                                        <div className="table-actions-row" style={{ justifyContent: 'center' }}>
+                                            <div className="table-action">TAP TO OPEN</div>
+                                        </div>
                                     )}
                                 </div>
-                                {table.hasActiveOrder && (
-                                    <div className="table-footer">
-                                        <div className="waiter-name">
-                                            <User2 size={12} /> {table.isOwnOrder ? (user.username || user.name || 'You') : 'Other Staff'}
-                                        </div>
-                                        <div className="order-time">#{table.orderId}</div>
-                                    </div>
-                                )}
-                                {!table.hasActiveOrder && (
-                                    <div className="table-action">TAP TO OPEN</div>
-                                )}
-                            </div>
-                        ))}
+                            );
+                        })}
                 </div>
             )}
         </div>
@@ -861,6 +1108,9 @@ const OrdersView = ({ orders, onOrderDetail }) => {
 
     const filteredOrders = useMemo(() => {
         let result = orders.filter(order => {
+            if (['CLOSED', 'PAID', 'CANCELLED'].includes(order.status?.toUpperCase())) {
+                return false;
+            }
             const matchesSearch =
                 order.order_id.toString().includes(searchQuery) ||
                 (order.table_id && order.table_id.toString().includes(searchQuery)) ||
@@ -966,7 +1216,6 @@ const OrdersView = ({ orders, onOrderDetail }) => {
 const KitchenStatusView = ({ orders, user, onMarkServed }) => {
     // Only show orders belonging to this waiter that are not yet closed
     const waiterOrders = orders.filter(o =>
-        o.kitchen_tracking?.waiter_name === (user?.username || user?.name) &&
         !['PAID', 'CLOSED', 'CANCELLED'].includes(o.status?.toUpperCase())
     );
 
@@ -974,12 +1223,12 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
         <div className="view-container">
             <div className="kitchen-status-header">
                 <h3><CookingPot size={22} /> Kitchen Preparation Queue</h3>
-                <p>Tracking items for {user?.username || user?.name}</p>
+                <p>Tracking all active items</p>
             </div>
 
             <div className="kitchen-grid">
                 {waiterOrders.length === 0 ? (
-                    <div className="empty-state">No active kitchen orders for you.</div>
+                    <div className="empty-state">No active kitchen orders.</div>
                 ) : (
                     waiterOrders.map(order => (
                         <div key={order.order_id} className="order-kitchen-card">
@@ -1081,7 +1330,7 @@ const BillingView = ({ orders }) => (
     </div>
 );
 
-const OrderDetailModal = ({ order, onClose }) => {
+const OrderDetailModal = ({ order, onClose, finalBill, onPreviewBill }) => {
     if (!order) return null;
 
     const preparingIds = order.kitchen_tracking?.preparing_item_ids || [];
@@ -1165,6 +1414,48 @@ const OrderDetailModal = ({ order, onClose }) => {
                             })}
                         </div>
                     </div>
+
+                    {finalBill && (
+                        <div className="final-bill-summary-section animate-in slide-in-from-bottom duration-500">
+                            <div className="final-bill-notif-box">
+                                <div className="box-header">
+                                    <FileText size={18} />
+                                    <span>FINAL NOTIFIED BILL</span>
+                                    <span className="notif-pill">CUSTOMER VIEWING</span>
+                                </div>
+                                <div className="box-content">
+                                    <div className="summary-row">
+                                        <span>Subtotal</span>
+                                        <span>Rs. {finalBill.details.subtotal.toLocaleString()}</span>
+                                    </div>
+                                    <div className="summary-row">
+                                        <span>Service Charge ({finalBill.details.serviceChargePct || 10}%)</span>
+                                        <span>Rs. {finalBill.details.serviceCharge.toLocaleString()}</span>
+                                    </div>
+                                    {finalBill.details.extras > 0 && (
+                                        <div className="summary-row">
+                                            <span>{finalBill.details.extraLabel}</span>
+                                            <span>Rs. {finalBill.details.extras.toLocaleString()}</span>
+                                        </div>
+                                    )}
+                                    <div className="summary-row grand-total">
+                                        <span>GRAND TOTAL</span>
+                                        <span>Rs. {finalBill.details.grandTotal.toLocaleString()}</span>
+                                    </div>
+                                </div>
+                                <button
+                                    className="preview-bill-btn"
+                                    onClick={() => onPreviewBill(finalBill)}
+                                >
+                                    <Eye size={16} /> PREVIEW CUSTOMER VIEW
+                                </button>
+                                <p className="waiter-helper-text">
+                                    This breakdown is currently displayed on the customer's device.
+                                    Instruct client to pay this amount to the cashier.
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     {order.kitchen_tracking?.extra_charges?.length > 0 && (
                         <div className="detail-section">

@@ -6,19 +6,23 @@ import FloatingCart from '../components/FloatingCart';
 import OrderSidebar from '../components/OrderSidebar';
 import { useOrder } from './OrderContext';
 import QRFooter from '../components/QRFooter';
+import VariantModal from '../components/VariantModal';
+import { API_BASE_URL } from '../../config/api';
 import '../styles/MenuItemsPage.css';
 
 const MenuItemsPage = () => {
     const { categoryId } = useParams();
     const navigate = useNavigate();
-    const { addToOrder } = useOrder();
+    const { addToOrder, billRequest } = useOrder();
     const [searchTerm, setSearchTerm] = useState('');
     const [loadedImages, setLoadedImages] = useState({});
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [customizingItem, setCustomizingItem] = useState(null);
     const [items, setItems] = useState([]);
     const [categoryName, setCategoryName] = useState('Menu');
 
-    const API_BASE_URL = 'http://localhost:5000/api';
+    // Remove local API_BASE_URL
+
 
     useEffect(() => {
         // 1. Fetch Categories to find the name for this ID
@@ -41,6 +45,10 @@ const MenuItemsPage = () => {
                 setItems(itemsArray);
             })
             .catch(err => console.error('Error fetching menu items:', err));
+
+        const handleToggle = () => setIsSidebarOpen(prev => !prev);
+        window.addEventListener('toggleOrderSidebar', handleToggle);
+        return () => window.removeEventListener('toggleOrderSidebar', handleToggle);
     }, [categoryId]);
 
     // 3. Filter client-side by Category Name
@@ -54,7 +62,26 @@ const MenuItemsPage = () => {
     };
 
     const handleAddToOrder = (item) => {
-        addToOrder(item);
+        if (billRequest?.status === 'PENDING' || billRequest?.status === 'ACCEPTED' || finalBill) {
+            alert('Ordering is locked because you have requested to close your bill or your final bill is ready.');
+            return;
+        }
+
+        if (item.variants && item.variants.length > 0) {
+            setCustomizingItem(item);
+        } else {
+            addToOrder({
+                ...item,
+                unitPrice: typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.-]+/g, "")) : item.price,
+                selectedVariants: []
+            });
+            setIsSidebarOpen(true);
+        }
+    };
+
+    const handleConfirmCustomization = (customizedItem) => {
+        addToOrder(customizedItem);
+        setCustomizingItem(null);
         setIsSidebarOpen(true);
     };
 
@@ -95,10 +122,11 @@ const MenuItemsPage = () => {
                                 </div>
                                 <p className="item-description">{item.description}</p>
                                 <button
-                                    className="add-to-cart-btn"
+                                    className={`add-to-cart-btn ${(billRequest?.status === 'PENDING' || billRequest?.status === 'ACCEPTED' || finalBill) ? 'locked' : ''}`}
                                     onClick={() => handleAddToOrder(item)}
+                                    disabled={billRequest?.status === 'PENDING' || billRequest?.status === 'ACCEPTED' || finalBill}
                                 >
-                                    Add to Order
+                                    {(billRequest?.status === 'PENDING' || billRequest?.status === 'ACCEPTED' || finalBill) ? 'Locked' : 'Add to Order'}
                                 </button>
                             </div>
                         </div>
@@ -109,9 +137,17 @@ const MenuItemsPage = () => {
                     </div>
                 )}
             </div>
-            {!isSidebarOpen && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
+            {!isSidebarOpen && !customizingItem && <FloatingCart onClick={() => setIsSidebarOpen(true)} />}
             <OrderSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
             <QRFooter />
+
+            {customizingItem && (
+                <VariantModal
+                    item={customizingItem}
+                    onClose={() => setCustomizingItem(null)}
+                    onAddToCart={handleConfirmCustomization}
+                />
+            )}
         </div>
     );
 };
