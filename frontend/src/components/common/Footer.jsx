@@ -16,7 +16,7 @@ const Footer = () => {
                             <img src={logo} alt="Chill Grand Logo" style={{ height: '80px', width: 'auto' }} />
                         </Link>
                     </div>
-                    <p className="footer-hours">Monday - Sunday: 11:00 AM - 11:00 PM</p>
+                    <p className="footer-hours">Monday - Sunday: 11:00 AM to midnight</p>
                     <p className="footer-copyright">© 2025 Chill Grand Restaurant | All rights reserved</p>
                 </div>
 

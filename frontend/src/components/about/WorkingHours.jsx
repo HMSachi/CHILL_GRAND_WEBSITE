@@ -22,8 +22,8 @@ const WorkingHours = () => {
                         <div className="card-accent"></div>
                         <h3>Open Daily</h3>
                         <div className="time-display">
-                            <span className="days">Sunday to Monday</span>
-                            <span className="hours">11:00 AM - 11:30 PM</span>
+                            <span className="days">Monday - Sunday</span>
+                            <span className="hours">11:00 AM to midnight</span>
                         </div>
                         <div className="card-footer">
                             <p>Available for private events and late-night gatherings.</p>
