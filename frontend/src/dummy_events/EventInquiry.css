@@ -82,25 +82,23 @@
 }
 
 .inquiry-form {
-    background: rgba(10, 10, 10, 0.85);
+    background: rgba(8, 8, 8, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     padding: 4.5rem;
-    border-radius: 40px;
-    box-shadow:
-        0 40px 100px rgba(0, 0, 0, 0.8),
-        inset 0 1px 2px rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
-    background-image:
-        linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.85)),
-        linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(208, 0, 0, 0.2) 50%, rgba(255, 215, 0, 0.3) 100%);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 20px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(212, 175, 55, 0.15), /* Outer gold glow */
+                inset 0 1px 10px rgba(212, 175, 55, 0.1); /* Inner gold reflection */
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s ease;
 }
 
 .inquiry-form:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
+    box-shadow: 0 35px 70px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(212, 175, 55, 0.25),
+                inset 0 1px 15px rgba(212, 175, 55, 0.15);
 }
 
 /* SECTIONS */
@@ -115,16 +113,14 @@
 
 .inquiry-page .section-title {
     font-family: 'Playfair Display', serif;
-    /* Falling back to generic serif if not loaded */
-    font-size: 1.6rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 400;
     margin-bottom: 2.5rem;
-    color: var(--primary-yellow);
-    text-transform: none;
-    letter-spacing: 0.05em;
+    color: #ffffff;
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .section-title::after {
@@ -178,30 +174,45 @@ input:-webkit-autofill:active {
 .input-icon {
     position: absolute;
     left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--primary-yellow);
     font-size: 0.9rem;
     opacity: 0.5;
     transition: all 0.4s ease;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 16px 20px 16px 52px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    color: var(--text-light);
-    font-family: var(--font-main);
-    font-size: 0.9rem;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    letter-spacing: 0.03em;
+    padding: 14px 15px 14px 45px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    transition: all 0.4s ease;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .form-group textarea {
-    padding: 20px 20px 20px 52px;
+    padding: 20px 15px 20px 45px;
     min-height: 140px;
+}
+
+.input-wrapper.align-top {
+    align-items: flex-start;
+}
+
+.input-icon.textarea-icon {
+    top: 24px;
+    transform: none;
 }
 
 .form-group select {
@@ -225,17 +236,15 @@ input:-webkit-autofill:active {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: rgba(255, 215, 0, 0.5);
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 2px 10px rgba(0, 0, 0, 0.5);
     outline: none;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.08);
-    transform: scale(1.01);
 }
 
 .form-group:focus-within .input-icon {
     opacity: 1;
-    color: var(--primary-yellow);
-    transform: scale(1.1);
+    color: #d4af37;
 }
 
 /* Style native browser icons for date, time, and number spin buttons */
@@ -298,30 +307,31 @@ input[type="number"] {
 .guest-counter {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 8px;
+    transition: all 0.4s ease;
     margin-top: 5px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .guest-counter:focus-within {
-    border-color: rgba(255, 215, 0, 0.5);
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.08);
-    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .guest-counter input {
     border: none !important;
     background: transparent !important;
     text-align: center;
-    padding: 16px 0 !important;
+    padding: 12px 0 !important;
     flex: 1;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--primary-yellow);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #d4af37;
     box-shadow: none !important;
 }
 
@@ -365,19 +375,14 @@ input[type="number"] {
     font-weight: 400;
     color: var(--text-light);
     transition: all 0.4s ease;
-    font-size: 0.95rem;
-    padding: 12px 25px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 100px;
+    font-size: 0.85rem;
+    padding: 8px 0;
     letter-spacing: 0.05em;
 }
 
 .radio-label:hover,
 .checkbox-label:hover {
-    background: rgba(255, 215, 0, 0.08);
-    border-color: rgba(255, 215, 0, 0.3);
-    color: var(--primary-yellow);
+    color: #d4af37;
 }
 
 .radio-label input[type="radio"],
@@ -488,33 +493,29 @@ input[type="number"] {
 /* SERVICE ITEMS */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
-    margin-top: 2rem;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .service-item {
-    background: rgba(255, 255, 255, 0.02);
-    padding: 2.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 30px;
+    background: transparent;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
     gap: 20px;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.4s ease;
     position: relative;
 }
 
 .service-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-5px);
+    border-bottom-color: rgba(255, 255, 255, 0.3);
 }
 
 .service-item.selected {
-    border-color: rgba(255, 215, 0, 0.3);
-    background: rgba(255, 215, 0, 0.015);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+    border-bottom-color: #d4af37;
+    background: rgba(212, 175, 55, 0.02);
 }
 
 .service-item .checkbox-label {
@@ -647,9 +648,9 @@ input[type="number"] {
     background: linear-gradient(to right, var(--primary-yellow), #ffd700);
     color: #000;
     border: none;
-    padding: 20px 60px;
-    font-size: 0.85rem;
-    font-weight: 900;
+    padding: 16px 45px;
+    font-size: 0.8rem;
+    font-weight: 800;
     border-radius: 100px;
     cursor: pointer;
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);

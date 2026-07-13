@@ -28,9 +28,9 @@ const QRFooter = () => {
                     <div className="qr-footer-section">
                         <h4>Follow Us</h4>
                         <div className="qr-social-links">
-                            <a href="#" className="qr-social-icon"><img src={instagramIcon} alt="Instagram" /></a>
-                            <a href="#" className="qr-social-icon"><img src={facebookIcon} alt="Facebook" /></a>
-                            <a href="#" className="qr-social-icon"><img src={tiktokIcon} alt="TikTok" /></a>
+                            <a href="https://www.instagram.com/chill.grand?igsh=MWdjOWljZHR3Ym9ybA==" target="_blank" rel="noopener noreferrer" className="qr-social-icon"><img src={instagramIcon} alt="Instagram" /></a>
+                            <a href="https://www.facebook.com/share/1HGRAjQ2QZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="qr-social-icon"><img src={facebookIcon} alt="Facebook" /></a>
+                            <a href="https://www.tiktok.com/@chill.grand?_r=1&_t=ZS-980JgkC3ih6" target="_blank" rel="noopener noreferrer" className="qr-social-icon"><img src={tiktokIcon} alt="TikTok" /></a>
                         </div>
                     </div>
                 </div>

@@ -4,22 +4,24 @@ import SectionHeader from '../common/SectionHeader';
 import '../../styles/pages/PlanEvent.css';
 import { eventTypes } from '../../dummy/eventsData';
 import djImg from '../../assets/dj.jpg';
-import corporateImg from '../../assets/Corporate Events.jpg';
+import corporateImg from '../../assets/Corporate Events.png';
 import graduationImg from '../../assets/Graduation.jpg';
+import farewellImg from '../../assets/farewell.png';
 import engagementPhoto from '../../assets/Engagement.jpg';
-import anniversaryImg from '../../assets/Anniversaries.jpg';
-import familyGatheringImg from '../../assets/gathering.jpg';
+import meetupImg from '../../assets/meetup.png';
+import anniversaryImg from '../../assets/anniverssary.png';
+import familyGatheringImg from '../../assets/gathering.png';
 
 const EventTypes = () => {
     const types = [
-        { id: '01', title: '🎉 Birthday Parties', desc: 'Curated celebrations with vibrant energy and custom décor.', img: eventTypes[0].img },
-        { id: '02', title: '🍽️ Private Dining', desc: 'Exquisite fine dining journeys in complete privacy.', img: eventTypes[3].img },
-        { id: '03', title: '🎶 DJ / Live Music', desc: 'High-energy nights with the city’s best performers.', img: djImg },
-        { id: '04', title: '👨‍👩‍👧 Family Gatherings', desc: 'Warm and inviting spaces for cherished family moments.', img: familyGatheringImg },
-        { id: '05', title: '💼 Corporate Events', desc: 'Sleek, professional networking in an elite environment.', img: corporateImg },
-        { id: '06', title: '🎓 Graduation / Farewell', desc: 'Sophisticated parties to mark the end of an era.', img: graduationImg },
-        { id: '07', title: '💍 Engagement', desc: 'Timeless ceremonies and elegant receptions in our grand hall.', img: engagementPhoto },
-        { id: '08', title: '🎂 Anniversaries', desc: 'Intimate and romantic settings for your special milestones.', img: anniversaryImg },
+        { id: '01', title: 'Family Gatherings', desc: 'Warm and inviting spaces for cherished family moments.', img: familyGatheringImg },
+        { id: '02', title: 'Private Dining', desc: 'Exquisite fine dining journeys in complete privacy.', img: eventTypes[3].img },
+        { id: '03', title: 'DJ / Live Music', desc: 'High-energy nights with the city’s best performers.', img: djImg },
+        { id: '04', title: 'Birthday Parties', desc: 'Curated celebrations with vibrant energy and custom décor.', img: eventTypes[0].img },
+        { id: '05', title: 'Corporate Events', desc: 'Sleek, professional networking in an elite environment.', img: corporateImg },
+        { id: '06', title: 'Graduation & Farewell', desc: 'Sophisticated parties to mark the end of an era.', img: farewellImg },
+        { id: '07', title: 'Batch Meetup', desc: 'Reunite and relive memories with classmates in our grand spaces.', img: meetupImg },
+        { id: '08', title: 'Anniversaries', desc: 'Intimate and romantic settings for your special milestones.', img: anniversaryImg },
     ];
 
     return (
@@ -40,7 +42,6 @@ const EventTypes = () => {
                             <span className="mosaic-category">Experience</span>
                             <h3>{type.title}</h3>
                             <p className="mosaic-desc">{type.desc}</p>
-                            <Link to="/event-inquiry" className="mosaic-link">Plan Your Event</Link>
                         </div>
                     </div>
                 ))}

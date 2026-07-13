@@ -173,7 +173,7 @@ const EventInquiry = () => {
                                         <option value="Family Gatherings">Family Gatherings</option>
                                         <option value="Corporate Events">Corporate Events</option>
                                         <option value="Graduation / Farewell">Graduation / Farewell</option>
-                                        <option value="Engagement">Engagement</option>
+                                        <option value="Batch Meetup">Batch Meetup</option>
                                         <option value="Anniversaries">Anniversaries</option>
                                     </select>
                                 </div>
@@ -245,49 +245,11 @@ const EventInquiry = () => {
 
                     {/* Section 4: Venue & Services */}
                     <section className="form-section">
-                        <h2 className="section-title">Venue & Services</h2>
+                        <h2 className="section-title">Services</h2>
 
 
 
                         <div className="services-grid">
-                            <div className={`service-item ${formData.foodNeeded ? 'selected' : ''}`}>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="foodNeeded" checked={formData.foodNeeded} onChange={handleChange} />
-                                    Do you need Food & Catering menus?
-                                </label>
-                                {formData.foodNeeded && (
-                                    <div className="service-extra-content">
-                                        <div className="category-chips-container">
-                                            {menuCategories.length > 0 ? (
-                                                menuCategories.map(cat => (
-                                                    <button
-                                                        key={cat.id || cat.name}
-                                                        type="button"
-                                                        className={`category-chip ${selectedFoodCats.includes(cat.name) ? 'active' : ''}`}
-                                                        onClick={() => toggleFoodCat(cat.name)}
-                                                    >
-                                                        {cat.name}
-                                                    </button>
-                                                ))
-                                            ) : (
-                                                <span className="chips-loading">Loading menu categories...</span>
-                                            )}
-                                        </div>
-                                        <a href="/categories" target="_blank" rel="noopener noreferrer" className="qr-menu-link">
-                                            <span>View Full QR Menu</span>
-                                            <FaExternalLinkAlt className="qr-menu-icon" />
-                                        </a>
-                                        <textarea
-                                            name="foodDetails"
-                                            value={formData.foodDetails}
-                                            onChange={handleChange}
-                                            placeholder="Paste specific selections here or describe preferences..."
-                                            className="service-textarea"
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
                             <div className={`service-item ${formData.decorNeeded ? 'selected' : ''}`}>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="decorNeeded" checked={formData.decorNeeded} onChange={handleChange} />
@@ -337,7 +299,7 @@ const EventInquiry = () => {
                     {/* Section 5: Budget & Notes */}
                     <section className="form-section">
                         <h2 className="section-title">Budget & Additional Notes</h2>
-                        <div className="form-group">
+                        <div className="form-group" style={{ marginBottom: '2rem' }}>
                             <label>Estimated Budget (Rs.)</label>
                             <div className="input-wrapper">
                                 <FaMoneyBillWave className="input-icon" />
@@ -346,8 +308,8 @@ const EventInquiry = () => {
                         </div>
                         <div className="form-group">
                             <label>Additional Notes</label>
-                            <div className="input-wrapper">
-                                <FaPen className="input-icon" />
+                            <div className="input-wrapper align-top">
+                                <FaPen className="input-icon textarea-icon" />
                                 <textarea name="notes" value={formData.notes} onChange={handleChange} rows="4" placeholder="Any special requests or questions?" />
                             </div>
                         </div>

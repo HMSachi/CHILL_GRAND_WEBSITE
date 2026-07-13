@@ -1,61 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import '../../styles/components/Hero.css';
-import bar from '../../assets/bar.jpg';
-import imgDining from '../../assets/food copy.jpg';
-import bar2 from '../../assets/bar2.jpg';
+
+import video1 from '../../assets/1st.mp4';
+import video2 from '../../assets/2nd.mp4';
+import video3 from '../../assets/3rd.mp4';
+import video4 from '../../assets/4th.mp4';
+import video5 from '../../assets/5th.mp4';
+import video6 from '../../assets/6th.mp4';
 
 const Hero = () => {
-    const images = [bar, bar2, imgDining];
-    const [currentImage, setCurrentImage] = useState(0);
+    const videos = [video1, video2, video3, video4, video5, video6];
+    const [currentIdx, setCurrentIdx] = useState(0);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentImage((prev) => (prev + 1) % images.length);
-        }, 5000);
+        const timer = setTimeout(() => {
+            setCurrentIdx((prevIdx) => (prevIdx + 1) % videos.length);
+        }, 2500); // Swift switch every 2.5 seconds
+        return () => clearTimeout(timer);
+    }, [currentIdx, videos.length]);
 
-        return () => clearInterval(interval);
-    }, [images.length]);
+    const handleVideoEnded = () => {
+        setCurrentIdx((prevIdx) => (prevIdx + 1) % videos.length);
+    };
 
     return (
         <section className="hero" id="home">
-            <div className="hero-watermark">CHILL GRAND</div>
+
+            {/* Video Background - Playlist of 6 videos */}
+            <video
+                key={currentIdx}
+                className="hero-video-bg"
+                autoPlay
+                muted
+                playsInline
+                onEnded={handleVideoEnded}
+            >
+                <source src={videos[currentIdx]} type="video/mp4" />
+            </video>
+
             <div className="hero-overlay"></div>
 
-            {images.map((img, index) => (
-                <div
-                    key={index}
-                    className={`hero-bg-image ${index === currentImage ? 'active' : ''}`}
-                    style={{ backgroundImage: `url(${img})` }}
-                />
-            ))}
-
             <div className="hero-content">
-                <div className="hero-badge fade-up">
-                    <span className="badge-line"></span>
-                    <span className="badge-text">LUXURY DINING EXPERIENCE</span>
-                    <span className="badge-line"></span>
-                </div>
+                {/* Premium Glass Card */}
+                <div className="hero-glass-card fade-up">
+                    <div className="hero-top-line"></div>
 
-                <div className="hero-welcome-text fade-up-delay-1">Welcome to</div>
+                    <span className="hero-est">EST. 2024</span>
 
-                <h1 className="hero-main-title fade-up-delay-2">
-                    <span className="title-part-1">CHILL</span>
-                    <span className="title-part-2">GRAND</span>
-                </h1>
+                    <div className="hero-welcome-text fade-up-delay-1">Welcome to</div>
 
-                <div className="hero-subtitle-container fade-up-delay-3">
-                    <div className="tagline-row">
-                        <span className="tagline-dot"></span>
-                        <span className="tagline-text">RESTAURANT & PUB</span>
-                        <span className="tagline-dot"></span>
+                    <h1 className="hero-main-title fade-up-delay-2">
+                        <span className="title-part-1">CHILL</span>
+                        <span className="title-part-2">GRAND</span>
+                    </h1>
+
+                    <div className="hero-divider-line fade-up-delay-3">
+                        <span className="divider-diamond">◆</span>
                     </div>
+
+                    <div className="hero-subtitle-container fade-up-delay-3">
+                        <span className="tagline-text">PUB  &  RESTAURANT</span>
+                    </div>
+
+                    <div className="hero-bottom-line"></div>
                 </div>
 
                 <div className="hero-actions fade-up-delay-4">
                     <a href="#booking" className="btn-luxury">
                         <span className="btn-glow"></span>
-                        <span className="btn-label">BOOK A TABLE</span>
+                        <span className="btn-label">RESERVE YOUR TABLE</span>
+                    </a>
+                    <a href="/plan-event" className="btn-luxury-outline">
+                        <span className="btn-label">PLAN AN EVENT</span>
                     </a>
                 </div>
             </div>
