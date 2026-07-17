@@ -363,54 +363,113 @@
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
 }
 
-/* VISIONARIES REDESIGN: Side-by-Side */
-.about-team {
-    flex-direction: row !important;
-    text-align: left !important;
-    gap: 6rem;
+/* ══════════════════════════════════════
+   TEAM / VISIONARIES — Side by Side Layout
+══════════════════════════════════════ */
+.team-gallery-section {
+    padding: 6rem 5%;
+    background-color: var(--bg-dark);
+}
+
+.team-gallery-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
     align-items: center;
+    gap: 5rem;
 }
 
-.about-team .about-image-left {
-    flex: 0.8 !important;
-    /* Smaller image */
-    max-width: 500px;
-}
-
-.about-team .about-content-right {
+.team-gallery-image-frame {
     flex: 1.2;
-    align-items: flex-start !important;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255, 215, 0, 0.15);
 }
 
-.about-team .section-subtitle {
-    margin-inline: 0 !important;
-    margin-bottom: 2rem !important;
+.tg-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* No object-fit cover, so the entire image is strictly preserved */
 }
 
-.about-team .section-description {
-    margin-inline: 0 !important;
-    max-width: 100%;
+.team-gallery-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tg-title-area {
+    margin-bottom: 2.5rem;
+}
+
+.tg-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: var(--primary-yellow);
+    margin-bottom: 1rem;
+}
+
+.tg-title-area h2 {
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    text-transform: uppercase;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.tg-title-area h2 span {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--primary-yellow);
+    background: linear-gradient(90deg, var(--primary-yellow), #e8b400);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.tg-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.05rem;
+    max-width: 500px;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+}
+
+.tg-desc {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.95rem;
+    max-width: 500px;
+    line-height: 1.8;
 }
 
 @media (max-width: 1024px) {
-    .about-team {
-        flex-direction: column !important;
-        text-align: center !important;
+    .team-gallery-container {
+        flex-direction: column;
         gap: 3rem;
     }
-
-    .about-team .about-content-right {
-        align-items: center !important;
+    
+    .team-gallery-image-frame,
+    .team-gallery-content {
+        flex: none;
+        width: 100%;
     }
-
-    .about-team .section-subtitle {
-        margin-inline: auto !important;
+    
+    .tg-subtitle {
+        max-width: 100%;
     }
 }
 
-.about-section:nth-of-type(even) {
-    background-color: #0f172a;
-}
+
+
+
+
 
 /* WHY CHOOSE US */
 .why-choose-us {
