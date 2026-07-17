@@ -1,7 +1,7 @@
 // eventsData.js - Contains all dummy data for Events page components
 
 import heroBg from '../assets/event.png';
-import djImg from '../assets/dj.jpg';
+import djImg from '../assets/karaoke_pub.png';
 import corporateImg from '../assets/Corporate Events.png';
 import graduationImg from '../assets/Graduation.jpg';
 import farewellImg from '../assets/farewell.png';
@@ -36,25 +36,11 @@ export const eventTypesData = [
         tag: "FORMAL"
     },
     {
-        id: 3,
-        title: "GRADUATION PARTIES",
-        desc: "Celebrate your achievements in style.",
-        image: graduationImg,
-        tag: "CELEBRATION"
-    },
-    {
         id: 4,
         title: "FAREWELL PARTIES",
         desc: "A grand send-off for your loved ones.",
         image: farewellImg,
         tag: "MEMORIES"
-    },
-    {
-        id: 5,
-        title: "ENGAGEMENTS",
-        desc: "Romantic and elegant settings.",
-        image: engagementPhoto,
-        tag: "ROMANCE"
     },
     {
         id: 6,
