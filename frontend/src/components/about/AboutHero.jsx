@@ -1,10 +1,10 @@
 import React from 'react';
 import '../../styles/pages/About.css';
-import heroBg from '../../assets/bar.jpg';
+import { aboutHeroData } from '../../data/aboutData';
 
 const AboutHero = () => {
     return (
-        <div className="about-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+        <div className="about-hero" style={{ backgroundImage: `url(${aboutHeroData.heroBg})` }}>
             <div className="about-hero-overlay">
                 <div className="hero-watermark">CHILL GRAND</div>
                 <div className="about-hero-content">

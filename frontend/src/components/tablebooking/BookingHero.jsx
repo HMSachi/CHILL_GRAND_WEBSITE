@@ -1,11 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import '../../styles/pages/TableBooking.css';
-import heroBg from '../../assets/restaurants.jpg';
+import { bookingHeroData } from '../../data/bookingData';
 
 const BookingHero = () => {
     return (
-        <div className="booking-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+        <div className="tb-hero" style={{ backgroundImage: `url(${bookingHeroData.heroBg})` }}>
             <div className="hero-overlay">
                 <div className="container hero-centered-content fade-up">
                     <p className="hero-subtitle">Reserve table using 360° View</p>

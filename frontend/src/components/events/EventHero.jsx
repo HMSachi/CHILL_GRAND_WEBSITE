@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Sparkles, CalendarHeart } from 'lucide-react';
 import '../../styles/pages/PlanEvent.css';
-import heroBg from '../../assets/event.png';
+import { eventsHeroData } from '../../data/eventsData';
 
 const EventHero = () => {
     return (
-        <div className="event-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+        <section className="event-hero" style={{ backgroundImage: `url(${eventsHeroData.heroBg})` }}>
             <div className="event-hero-overlay">
                 <div className="hero-content-minimal">
                     <span className="minimal-tagline">Exquisite Experiences</span>
@@ -21,7 +22,7 @@ const EventHero = () => {
                 <span>SCROLL</span>
                 <div className="scroll-line"></div>
             </div>
-        </div>
+        </section>
     );
 };
 

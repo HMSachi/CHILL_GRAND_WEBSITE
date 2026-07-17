@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import '../../styles/pages/About.css';
-import chefImage from '../../assets/private_dining.jpg'; // Placeholder
+import { aboutIntroData } from '../../data/aboutData';
 
 const AboutIntro = () => {
     return (

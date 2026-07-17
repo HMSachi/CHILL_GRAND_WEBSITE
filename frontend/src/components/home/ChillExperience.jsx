@@ -1,40 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import "../../styles/components/ChillExperience.css";
-import bar1 from "../../assets/bar.jpg";
-import bar2 from "../../assets/bar2.jpg";
-import party1 from "../../assets/private_dining.jpg";
-import scene1 from "../../assets/restaurants.jpg";
-
-const experienceItems = [
-    {
-        id: 1,
-        title: "LIVE MUSIC & DJs",
-        subtitle: "VIBRANT NIGHTLIFE",
-        image: bar1
-    },
-    {
-        id: 2,
-        title: "SIGNATURE COCKTAILS",
-        subtitle: "ARTISANAL MIXOLOGY",
-        image: bar2
-    },
-    {
-        id: 3,
-        title: "PRIVATE PARTIES",
-        subtitle: "EXCLUSIVE CELEBRATIONS",
-        image: party1
-    },
-    {
-        id: 4,
-        title: "PREMIUM SPIRITS",
-        subtitle: "CURATED COLLECTION",
-        image: scene1
-    }
-];
+import { chillExperienceItems } from "../../data/homeData";
 
 const ChillExperience = () => {
     const scrollRef = useRef(null);
-    const items = experienceItems;
+    const items = chillExperienceItems;
     const infiniteItems = [...items, ...items, ...items];
 
     useEffect(() => {

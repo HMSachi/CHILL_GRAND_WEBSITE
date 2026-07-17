@@ -1,28 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import SectionHeader from '../common/SectionHeader';
+import { ArrowUpRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/PlanEvent.css';
-import { eventTypes } from '../../dummy/eventsData';
-import djImg from '../../assets/dj.jpg';
-import corporateImg from '../../assets/Corporate Events.png';
-import graduationImg from '../../assets/Graduation.jpg';
-import farewellImg from '../../assets/farewell.png';
-import engagementPhoto from '../../assets/Engagement.jpg';
-import meetupImg from '../../assets/meetup.png';
-import anniversaryImg from '../../assets/anniverssary.png';
-import familyGatheringImg from '../../assets/gathering.png';
+import { eventTypesData } from '../../data/eventsData';
 
 const EventTypes = () => {
-    const types = [
-        { id: '01', title: 'Family Gatherings', desc: 'Warm and inviting spaces for cherished family moments.', img: familyGatheringImg },
-        { id: '02', title: 'Private Dining', desc: 'Exquisite fine dining journeys in complete privacy.', img: eventTypes[3].img },
-        { id: '03', title: 'DJ / Live Music', desc: 'High-energy nights with the city’s best performers.', img: djImg },
-        { id: '04', title: 'Birthday Parties', desc: 'Curated celebrations with vibrant energy and custom décor.', img: eventTypes[0].img },
-        { id: '05', title: 'Corporate Events', desc: 'Sleek, professional networking in an elite environment.', img: corporateImg },
-        { id: '06', title: 'Graduation & Farewell', desc: 'Sophisticated parties to mark the end of an era.', img: farewellImg },
-        { id: '07', title: 'Batch Meetup', desc: 'Reunite and relive memories with classmates in our grand spaces.', img: meetupImg },
-        { id: '08', title: 'Anniversaries', desc: 'Intimate and romantic settings for your special milestones.', img: anniversaryImg },
-    ];
+    const navigate = useNavigate();
+    const categories = eventTypesData;
 
     return (
         <section className="event-types-section">
@@ -33,9 +17,9 @@ const EventTypes = () => {
             </div>
 
             <div className="events-mosaic">
-                {types.map((type, idx) => (
-                    <div key={idx} className="mosaic-item">
-                        <img src={type.img} alt={type.title} />
+                {categories.map((type, idx) => (
+                    <div key={idx} className="mosaic-item" onClick={() => navigate(`/events/${type.id}`)}>
+                        <img src={type.image} alt={type.title} />
                         <div className="mosaic-light-leak"></div>
                         <div className="mosaic-overlay">
                             <span className="mosaic-number">{type.id}</span>

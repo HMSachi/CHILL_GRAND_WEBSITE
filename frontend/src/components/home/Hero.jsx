@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/components/Hero.css';
-
-import video1 from '../../assets/1st.mp4';
-import video2 from '../../assets/2nd.mp4';
-import video3 from '../../assets/3rd.mp4';
-import video4 from '../../assets/4th.mp4';
-import video5 from '../../assets/5th.mp4';
-import video6 from '../../assets/6th.mp4';
+import { heroVideos } from '../../data/homeData';
 
 const Hero = () => {
-    const videos = [video1, video2, video3, video4, video5, video6];
+    const videos = heroVideos;
     const [currentIdx, setCurrentIdx] = useState(0);
 
     useEffect(() => {

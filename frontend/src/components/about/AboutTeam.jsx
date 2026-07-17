@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/pages/About.css';
-import teamImage from '../../assets/team.png';
+import { aboutTeamData } from '../../data/aboutData';
 
 const AboutTeam = () => {
     return (
@@ -9,7 +9,7 @@ const AboutTeam = () => {
                 
                 {/* Image is fully visible, no crop, no text overlay */}
                 <div className="team-gallery-image-frame">
-                    <img src={teamImage} alt="The Chill Grand Team" className="tg-image" />
+                    <img src={aboutTeamData.teamImage} alt="Our Team" className="team-image" />
                 </div>
 
                 {/* Minimal, shortened text below the image */}

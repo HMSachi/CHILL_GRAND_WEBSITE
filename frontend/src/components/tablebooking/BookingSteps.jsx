@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/pages/TableBooking.css';
-import diningImg from '../../assets/virtual_booking_360_concept.png';
+import { bookingStepsData } from '../../data/bookingData';
 
 const BookingSteps = () => {
     return (

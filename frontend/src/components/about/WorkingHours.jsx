@@ -1,13 +1,14 @@
 import React from 'react';
+import { Clock, MapPin, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/About.css';
-import bgImage from '../../assets/about.png';
+import { workingHoursData } from '../../data/aboutData';
 
 const WorkingHours = () => {
     const navigate = useNavigate();
 
     return (
-        <section className="wh-modern-section" style={{ backgroundImage: `url(${bgImage})` }}>
+        <section className="wh-modern-section" style={{ backgroundImage: `url(${workingHoursData.bgImage})` }}>
             <div className="wh-modern-overlay">
                 <div className="wh-modern-container">
                     
