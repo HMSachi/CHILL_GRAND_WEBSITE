@@ -1,10 +1,10 @@
 import React from 'react';
 import '../../styles/pages/About.css';
 import dining1 from '../../assets/about.jpg';
-import bar1 from '../../assets/bar.jpg';
-import bar2 from '../../assets/bar2.jpg';
-import aboutImg from '../../assets/about2.jpg';
-import dining2 from '../../assets/restaurants.jpg';
+import bar1 from '../../assets/a3.png';
+import bar2 from '../../assets/a2.png';
+import aboutImg from '../../assets/a4.png';
+import dining2 from '../../assets/a5.png';
 
 const AboutStory = () => {
     return (

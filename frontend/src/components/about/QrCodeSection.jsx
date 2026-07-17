@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/About.css';
-import qrBg from '../../assets/restaurants.jpg'; // Placeholder
+import qrBg from '../../assets/restaurants.jpg';
 import qrCode from '../../assets/qr_premium.png';
 
 const QrCodeSection = () => {
