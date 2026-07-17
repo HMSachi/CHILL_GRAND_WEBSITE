@@ -449,4 +449,5 @@
     .mosaic-item:nth-child(n) {
         grid-column: span 1 !important;
     }
+}
 

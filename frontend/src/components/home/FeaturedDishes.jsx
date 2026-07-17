@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/components/FeaturedDishes.css';
 
-import { featuredDishes } from '../../dummy/dishesData';
+import { featuredDishes } from '../../data/dishesData';
 
 const FeaturedDishes = () => {
     const dishes = featuredDishes;

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/components/ServiceCards.css';
-import { services } from '../../dummy/mainData';
+import { services } from '../../data/mainData';
 
 const ServiceCards = () => {
     const servicesData = services;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './Events.css';
+import '../../styles/pages/Events.css';
 
-import happeningsData from '../dummy/happening/happeningsData';
+import happeningsData from '../../data/happening/happeningsData';
 
 const galleryItems = happeningsData;
 

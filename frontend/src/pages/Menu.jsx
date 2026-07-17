@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { categories } from '../dummy/categories';
+import { categories } from '../data/categories';
 import '../styles/pages/Menu.css';
 import qrPng from '../assets/qr.png';
 import dishPng from '../assets/dish.png';

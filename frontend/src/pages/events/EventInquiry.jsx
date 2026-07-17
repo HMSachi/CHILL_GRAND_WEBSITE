@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL } from '../../config/api';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaChild, FaMoneyBillWave, FaPen, FaPlus, FaMinus, FaExternalLinkAlt } from 'react-icons/fa';
-import './EventInquiry.css';
-import heroBg from '../assets/bar.jpg';
+import '../../styles/pages/EventInquiry.css';
+import heroBg from '../../assets/bar.jpg';
 
 const EventInquiry = () => {
     const [formData, setFormData] = useState({

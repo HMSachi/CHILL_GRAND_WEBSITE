@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import './EventDetail.css';
+import '../../styles/pages/EventDetail.css';
 
-import { allEvents, uiLabels } from '../dummy/eventsData';
+import { allEvents, uiLabels } from '../../data/eventsData';
 
 const EventDetail = () => {
     const { id } = useParams();
