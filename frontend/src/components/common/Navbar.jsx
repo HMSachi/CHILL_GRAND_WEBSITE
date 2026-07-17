@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../../styles/components/Navbar.css';
 import logo from '../../assets/logo.png';
 
@@ -16,29 +16,38 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900) setMobileMenuOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
 
         {/* Desktop Links - Left */}
         <div className="navbar-links left">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/plan-event" className="nav-link">Plan Event</Link>
-          <Link to="/events" className="nav-link">Happenings</Link>
+          <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Home</NavLink>
+          <NavLink to="/plan-event" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Plan Event</NavLink>
+          <NavLink to="/events" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Happenings</NavLink>
         </div>
 
         {/* Logo - Centered */}
         <div className="navbar-logo">
-          <Link to="/">
+          <NavLink to="/">
             <img src={logo} alt="Chill Grand Logo" className="logo-img" />
-          </Link>
+          </NavLink>
         </div>
 
         {/* Desktop Links - Right */}
         <div className="navbar-links right">
-          <Link to="/table-booking" className="nav-link">Reservations</Link>
-          <Link to="/about" className="nav-link">About</Link>
-          <Link to="/contact" className="nav-link">Contact</Link>
+          <NavLink to="/table-booking" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Reservations</NavLink>
+          <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>About</NavLink>
+          <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Contact</NavLink>
         </div>
 
         {/* Mobile Toggle */}
@@ -46,6 +55,7 @@ const Navbar = () => {
           <div
             className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
           >
             <span className="bar"></span>
             <span className="bar"></span>
@@ -56,12 +66,12 @@ const Navbar = () => {
         {/* Mobile Menu (Overlay) */}
         <div className={`navbar-mobile-overlay ${mobileMenuOpen ? 'active' : ''}`}>
           <div className="mobile-links">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-            <Link to="/plan-event" onClick={() => setMobileMenuOpen(false)}>Plan Event</Link>
-            <Link to="/events" onClick={() => setMobileMenuOpen(false)}>Happenings</Link>
-            <Link to="/table-booking" onClick={() => setMobileMenuOpen(false)}>Reservations</Link>
-            <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
-            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            <NavLink to="/" end onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
+            <NavLink to="/plan-event" onClick={() => setMobileMenuOpen(false)}>Plan Event</NavLink>
+            <NavLink to="/events" onClick={() => setMobileMenuOpen(false)}>Happenings</NavLink>
+            <NavLink to="/table-booking" onClick={() => setMobileMenuOpen(false)}>Reservations</NavLink>
+            <NavLink to="/about" onClick={() => setMobileMenuOpen(false)}>About</NavLink>
+            <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
           </div>
         </div>
       </div>

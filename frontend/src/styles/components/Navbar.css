@@ -1,31 +1,40 @@
+/* ============================================
+   NAVBAR — Premium Modern Design
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    height: 120px;
+    height: 110px;
     padding: 0 2rem;
     background: transparent;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
 }
 
-/* FLOATING PREMIUM STATE */
+/* ── Scrolled / Floating State ── */
 .navbar.scrolled {
-    height: 85px;
-    top: 15px;
-    width: calc(100% - 40px);
-    left: 20px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 1px solid rgba(255, 215, 0, 0.15);
-    border-radius: 100px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    height: 72px;
+    top: 12px;
+    width: calc(100% - 48px);
+    left: 24px;
+    background: rgba(8, 6, 3, 0.55);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgba(255, 215, 0, 0.12);
+    border-radius: 999px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255,255,255,0.03) inset;
 }
 
+/* ── Container ── */
 .navbar-container {
     height: 100%;
     width: 100%;
@@ -38,7 +47,7 @@
     padding: 0 2rem;
 }
 
-/* LOGO ENHANCEMENT */
+/* ── Logo ── */
 .navbar-logo {
     order: 2;
     display: flex;
@@ -47,25 +56,25 @@
 }
 
 .logo-img {
-    height: 100px;
+    height: 90px;
     width: auto;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.15));
 }
 
 .navbar-logo:hover .logo-img {
-    transform: scale(1.1) rotate(2deg);
-    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5));
+    transform: scale(1.08) rotate(2deg);
+    filter: drop-shadow(0 0 28px rgba(255, 215, 0, 0.55));
 }
 
 .navbar.scrolled .logo-img {
-    height: 70px;
+    height: 54px;
 }
 
-/* NAVIGATION LINKS */
+/* ── Navigation Links ── */
 .navbar-links {
     display: flex;
-    gap: 3.5rem;
+    gap: 2.8rem;
     flex: 1;
     align-items: center;
 }
@@ -73,50 +82,91 @@
 .navbar-links.left {
     order: 1;
     justify-content: flex-end;
-    padding-right: 2rem;
+    padding-right: 2.5rem;
 }
 
 .navbar-links.right {
     order: 3;
     justify-content: flex-start;
-    padding-left: 2rem;
+    padding-left: 2.5rem;
 }
 
+/* ── Nav Link Base ── */
 .nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 800;
-    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 3px;
+    transition:
+        color 0.35s ease,
+        letter-spacing 0.35s ease,
+        text-shadow 0.35s ease;
     position: relative;
-    padding: 10px 0;
+    padding: 8px 0;
     text-decoration: none;
+    white-space: nowrap;
 }
 
-.nav-link:hover {
-    color: var(--primary-yellow);
-    letter-spacing: 6px;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-}
-
+/* Animated underline */
 .nav-link::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
-    height: 1px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--primary-yellow), transparent);
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+/* Dot indicator */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    width: 4px;
+    height: 4px;
     background: var(--primary-yellow);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 10px var(--primary-yellow);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--primary-yellow);
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #fff;
+    letter-spacing: 4px;
+    text-shadow: 0 0 18px rgba(255, 215, 0, 0.25);
 }
 
 .nav-link:hover::after {
-    width: 100%;
+    width: 110%;
 }
 
-/* MOBILE TOGGLE */
+/* Active state */
+.nav-link.active {
+    color: var(--primary-yellow);
+    letter-spacing: 4px;
+    text-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
+}
+
+.nav-link.active::after {
+    width: 110%;
+}
+
+.nav-link.active::before {
+    transform: translateX(-50%) scale(1);
+}
+
+/* ══════════════════════════════════════
+   MOBILE TOGGLE
+══════════════════════════════════════ */
 .navbar-mobile-toggle {
     display: none;
     position: absolute;
@@ -130,15 +180,24 @@
 .mobile-menu-toggle {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background: rgba(255, 215, 0, 0.08);
 }
 
 .bar {
-    width: 28px;
-    height: 2px;
-    background-color: #fff;
-    transition: 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+    width: 26px;
+    height: 1.5px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 999px;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
 }
 
 .mobile-menu-toggle.active .bar {
@@ -146,46 +205,50 @@
 }
 
 .mobile-menu-toggle.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+    transform: translateY(6.5px) rotate(45deg);
 }
 
 .mobile-menu-toggle.active .bar:nth-child(2) {
     opacity: 0;
+    transform: scaleX(0);
 }
 
 .mobile-menu-toggle.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+    transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* MOBILE OVERLAY */
+/* ══════════════════════════════════════
+   MOBILE OVERLAY
+══════════════════════════════════════ */
 .navbar-mobile-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 0;
-    background: rgba(0, 0, 0, 0.98);
-    backdrop-filter: blur(20px);
+    background: rgba(5, 4, 2, 0.97);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     z-index: 1001;
     overflow: hidden;
-    transition: height 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+    transition: height 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .navbar-mobile-overlay.active {
-    height: 100vh;
+    height: 100dvh;
 }
 
 .mobile-links {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
+    gap: 2.2rem;
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.4s ease 0.3s;
+    transform: translateY(24px);
+    transition: all 0.45s ease 0.3s;
 }
 
 .navbar-mobile-overlay.active .mobile-links {
@@ -194,19 +257,43 @@
 }
 
 .mobile-links a {
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 800;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 6px;
-    transition: color 0.3s ease;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-bottom: 4px;
 }
 
-.mobile-links a:hover {
+.mobile-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background: var(--primary-yellow);
+    transition: width 0.35s ease;
+}
+
+.mobile-links a:hover,
+.mobile-links a.active {
     color: var(--primary-yellow);
 }
 
-/* RESPONSIVE */
+.mobile-links a:hover::after,
+.mobile-links a.active::after {
+    width: 100%;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
 @media (max-width: 1100px) {
     .navbar-links {
         gap: 2rem;
@@ -224,25 +311,29 @@
 
     .navbar-container {
         justify-content: flex-start;
-        padding: 0 2rem;
+        padding: 0 1.5rem;
     }
 
     .navbar-logo {
         padding: 0;
         order: 1;
     }
+
+    .navbar.scrolled {
+        width: calc(100% - 32px);
+        left: 16px;
+    }
 }
 
-/* Remove global gap under navbar */
+/* ── Spacing helpers ── */
 :root {
     --navbar-height: 96px;
 }
 
-.app>main {
+.app > main {
     padding-top: 0;
 }
 
-/* If any elements add margin-top, reset for hero section */
 .menu-page {
     padding-top: 0 !important;
 }
