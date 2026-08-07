@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock } from 'lucide-react';
 import '../styles/pages/ChefDashboard.css';
+import PortalLoginCard from '../components/portals/PortalLoginCard';
 import logo from '../assets/logo.png';
 import { API_BASE_URL as BASE } from '../config/api';
 
@@ -703,18 +704,20 @@ const ChefDashboard = () => {
 
     if (!isAuthenticated) {
         return (
-            <div className="kds-login-overlay">
-                <div className="kds-login-card">
-                    <img src={logo} alt="Logo" className="kds-login-logo" />
-                    <h2>KITCHEN PORTAL</h2>
-                    <form onSubmit={handlePinSubmit}>
-                        <input type="text" placeholder="Username" value={pinInput} onChange={e => setPinInput(e.target.value)} autoFocus style={{ marginBottom: '10px' }} />
-                        <input type="password" placeholder="Password" value={passwordInput} onChange={e => setPasswordInput(e.target.value)} />
-                        {error && <div className="kds-error-message">{error}</div>}
-                        <button type="submit">Log In</button>
-                    </form>
-                </div>
-            </div>
+            <PortalLoginCard
+                title="Kitchen Portal"
+                subtitle="Chill Grand — Kitchen Station"
+                accentColor="#3b82f6"
+                footerLabel="kds-portal-9922"
+                usernameValue={pinInput}
+                passwordValue={passwordInput}
+                onUsernameChange={e => setPinInput(e.target.value)}
+                onPasswordChange={e => setPasswordInput(e.target.value)}
+                onSubmit={handlePinSubmit}
+                error={error}
+                loading={false}
+                submitLabel="Sign In to Kitchen Portal"
+            />
         );
     }
 

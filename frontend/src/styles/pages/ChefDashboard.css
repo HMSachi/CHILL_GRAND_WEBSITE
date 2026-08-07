@@ -34,26 +34,30 @@ body {
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
 }
 
 .sidebar-brand {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0rem;
     margin-bottom: 3rem;
-    padding: 0 0.5rem;
+    margin-left: 0rem;
+    padding: 0.5 0.5rem;
 }
 
 .sidebar-brand img {
-    height: 32px;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
 }
 
 .sidebar-brand h3 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: px;
     margin: 0;
+    color: var(--bev-text-main);
 }
 
 .sidebar-nav {
