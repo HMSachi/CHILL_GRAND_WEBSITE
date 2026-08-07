@@ -16,6 +16,7 @@ import MenuItemsPage from './QRweb/QRPages/MenuItemsPage';
 import MyOrdersPage from './QRweb/QRPages/MyOrdersPage';
 import ChefDashboard from './pages/ChefDashboard';
 import WaiterDashboard from './pages/WaiterDashboard';
+import BeverageDashboard from './pages/BeverageDashboard';
 import VirtualTour from './pages/VirtualTour';
 import FinalBillModal from './QRweb/components/FinalBillModal';
 import { useOrder } from './QRweb/QRPages/OrderContext';
@@ -29,11 +30,12 @@ function App() {
   );
   const isKDS = location.pathname === '/kds-portal-9922';
   const isWaiter = location.pathname === '/waiter-portal-4421';
+  const isBeverage = location.pathname === '/beverage-portal-7731';
   const { finalBill } = useOrder();
 
   return (
     <div className="app">
-      {!isKDS && !isWaiter && (isQRweb ? <QRNavbar /> : <Navbar />)}
+      {!isKDS && !isWaiter && !isBeverage && (isQRweb ? <QRNavbar /> : <Navbar />)}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -51,9 +53,10 @@ function App() {
           <Route path="/virtual-tour" element={<VirtualTour />} />
           <Route path="/kds-portal-9922" element={<ChefDashboard />} />
           <Route path="/waiter-portal-4421" element={<WaiterDashboard />} />
+          <Route path="/beverage-portal-7731" element={<BeverageDashboard />} />
         </Routes>
       </main>
-      {!isQRweb && !isKDS && !isWaiter && <Footer />}
+      {!isQRweb && !isKDS && !isWaiter && !isBeverage && <Footer />}
       {isQRweb && <FinalBillModal bill={finalBill} />}
     </div>
   );
