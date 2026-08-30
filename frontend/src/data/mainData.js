@@ -5,7 +5,7 @@ import imgKaraoke from '../assets/vip_karaoke_room.png';
 import imgHall from '../assets/function_hall_alt.png';
 import imgPub from '../assets/karaoke_pub.png';
 import imgBYOB from '../assets/byob_facilities.png';
-import imgTakeaway from '../assets/dining copy.png';
+import imgTakeaway from '../assets/dining.png';
 
 export const services = [
     {
