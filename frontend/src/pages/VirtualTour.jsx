@@ -1,9 +1,32 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ReactPhotoSphereViewer } from 'react-photo-sphere-viewer';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
 import '@photo-sphere-viewer/core/index.css';
 import '@photo-sphere-viewer/markers-plugin/index.css';
 import { useNavigate } from 'react-router-dom';
+
+const exitFullscreenIfActive = () => {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+        if (document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+};
+
+const getFullscreenTarget = () => {
+    return document.fullscreenElement ||
+           document.webkitFullscreenElement ||
+           document.mozFullScreenElement ||
+           document.msFullscreenElement ||
+           document.body;
+};
 
 const SCENES = {
     entrance: {
@@ -20,7 +43,7 @@ const SCENES = {
         ]
     },
     inside: {
-        panorama: '/360-images/scene2.jpg', // Put your second image in frontend/public/360-images/scene2.jpg
+        panorama: '/360-images/scene2.jpg',
         markers: [
             {
                 id: 'nav-entrance',
@@ -76,7 +99,6 @@ const VirtualTour = () => {
     // Update viewer when scene changes
     useEffect(() => {
         if (psvRef.current) {
-            // Wait slightly for the panorama change triggered by the src prop to start
             setTimeout(() => {
                 const markersPlugin = psvRef.current.getPlugin(MarkersPlugin);
                 if (markersPlugin) {
@@ -89,12 +111,14 @@ const VirtualTour = () => {
 
     const handleConfirmBooking = () => {
         setIsPopupOpen(false);
+        exitFullscreenIfActive();
         navigate(`/table-booking?tableId=${selectedTable}`);
     };
 
     const handleCancelOptions = () => {
         setIsPopupOpen(false);
         setSelectedTable(null);
+        exitFullscreenIfActive();
     };
 
     return (
@@ -107,25 +131,26 @@ const VirtualTour = () => {
                 onReady={handleReady}
             />
 
-            {isPopupOpen && (
+            {isPopupOpen && createPortal(
                 <div style={{
-                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    background: 'white', padding: '24px', borderRadius: '12px', zIndex: 10,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)', textAlign: 'center'
+                    position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    background: '#141414', border: '1px solid #e5c158', padding: '28px', borderRadius: '16px', zIndex: 999999,
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.9)', textAlign: 'center', color: '#fff', minWidth: '320px'
                 }}>
-                    <h3 style={{ color: '#333', marginBottom: '16px' }}>Book Table {selectedTable}?</h3>
-                    <p style={{ color: '#666', marginBottom: '24px' }}>Would you like to proceed and book this table?</p>
+                    <h3 style={{ color: '#e5c158', marginBottom: '12px', fontSize: '1.4rem' }}>Book Table {selectedTable}?</h3>
+                    <p style={{ color: '#ccc', marginBottom: '24px', fontSize: '0.9rem' }}>Would you like to proceed and book this table?</p>
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                         <button onClick={handleCancelOptions} style={{
-                            padding: '8px 16px', border: '1px solid #ccc', background: 'transparent',
-                            borderRadius: '4px', cursor: 'pointer', color: '#333'
+                            padding: '10px 20px', border: '1px solid #666', background: 'transparent',
+                            borderRadius: '8px', cursor: 'pointer', color: '#ccc', fontWeight: 'bold'
                         }}>Cancel</button>
                         <button onClick={handleConfirmBooking} style={{
-                            padding: '8px 16px', border: 'none', background: '#e1a657',
-                            borderRadius: '4px', cursor: 'pointer', color: 'white', fontWeight: 'bold'
-                        }}>Confirm</button>
+                            padding: '10px 24px', border: 'none', background: '#e5c158',
+                            borderRadius: '8px', cursor: 'pointer', color: '#000', fontWeight: '900'
+                        }}>Confirm Booking</button>
                     </div>
-                </div>
+                </div>,
+                getFullscreenTarget()
             )}
         </div>
     );

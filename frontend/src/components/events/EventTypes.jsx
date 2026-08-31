@@ -1,26 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import SectionHeader from '../common/SectionHeader';
+import { ArrowUpRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/PlanEvent.css';
-import { eventTypes } from '../../dummy/eventsData';
-import djImg from '../../assets/dj.jpg';
-import corporateImg from '../../assets/Corporate Events.jpg';
-import graduationImg from '../../assets/Graduation.jpg';
-import engagementPhoto from '../../assets/Engagement.jpg';
-import anniversaryImg from '../../assets/Anniversaries.jpg';
-import familyGatheringImg from '../../assets/gathering.jpg';
+import { eventTypesData } from '../../data/eventsData';
 
 const EventTypes = () => {
-    const types = [
-        { id: '01', title: '🎉 Birthday Parties', desc: 'Curated celebrations with vibrant energy and custom décor.', img: eventTypes[0].img },
-        { id: '02', title: '🍽️ Private Dining', desc: 'Exquisite fine dining journeys in complete privacy.', img: eventTypes[3].img },
-        { id: '03', title: '🎶 DJ / Live Music', desc: 'High-energy nights with the city’s best performers.', img: djImg },
-        { id: '04', title: '👨‍👩‍👧 Family Gatherings', desc: 'Warm and inviting spaces for cherished family moments.', img: familyGatheringImg },
-        { id: '05', title: '💼 Corporate Events', desc: 'Sleek, professional networking in an elite environment.', img: corporateImg },
-        { id: '06', title: '🎓 Graduation / Farewell', desc: 'Sophisticated parties to mark the end of an era.', img: graduationImg },
-        { id: '07', title: '💍 Engagement', desc: 'Timeless ceremonies and elegant receptions in our grand hall.', img: engagementPhoto },
-        { id: '08', title: '🎂 Anniversaries', desc: 'Intimate and romantic settings for your special milestones.', img: anniversaryImg },
-    ];
+    const navigate = useNavigate();
+    const categories = eventTypesData;
 
     return (
         <section className="event-types-section">
@@ -31,16 +17,15 @@ const EventTypes = () => {
             </div>
 
             <div className="events-mosaic">
-                {types.map((type, idx) => (
-                    <div key={idx} className="mosaic-item">
-                        <img src={type.img} alt={type.title} />
+                {categories.map((type, idx) => (
+                    <div key={idx} className="mosaic-item" onClick={() => navigate(`/events/${type.id}`)}>
+                        <img src={type.image} alt={type.title} />
                         <div className="mosaic-light-leak"></div>
                         <div className="mosaic-overlay">
                             <span className="mosaic-number">{type.id}</span>
                             <span className="mosaic-category">Experience</span>
                             <h3>{type.title}</h3>
                             <p className="mosaic-desc">{type.desc}</p>
-                            <Link to="/event-inquiry" className="mosaic-link">Plan Your Event</Link>
                         </div>
                     </div>
                 ))}

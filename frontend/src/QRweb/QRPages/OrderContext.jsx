@@ -19,6 +19,7 @@ export const OrderProvider = ({ children }) => {
     const [activeCall, setActiveCall] = useState(null);
     const [billRequest, setBillRequest] = useState(null);
     const [finalBill, setFinalBill] = useState(null);
+    const [pendingOrderRequest, setPendingOrderRequest] = useState(null);
 
     useEffect(() => {
         localStorage.setItem('chill_grand_order', JSON.stringify(orderItems));
@@ -44,6 +45,7 @@ export const OrderProvider = ({ children }) => {
                 setActiveOrder(data.activeOrder);
                 setAssignedWaiter(data.assignedWaiter);
                 setActiveCall(data.activeCall);
+                setPendingOrderRequest(data.pendingOrderRequest || null);
                 setBillRequest(data.billRequest);
                 setFinalBill(data.finalBill);
             }
@@ -179,6 +181,7 @@ export const OrderProvider = ({ children }) => {
             activeOrder,
             assignedWaiter,
             activeCall,
+            pendingOrderRequest,
             billRequest,
             refreshTableStatus,
             requestWaiter,

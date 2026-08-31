@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/About.css';
-import qrBg from '../../assets/restaurants.jpg'; // Placeholder
-import qrCode from '../../assets/qr_premium.png';
+import { qrCodeSectionData } from '../../data/aboutData';
 
 const QrCodeSection = () => {
     const navigate = useNavigate();
@@ -12,7 +11,7 @@ const QrCodeSection = () => {
     };
 
     return (
-        <section className="qr-section" style={{ backgroundImage: `url(${qrBg})` }}>
+        <section className="qr-premium-section" style={{ backgroundImage: `url(${qrCodeSectionData.qrBg})` }}>
             <div className="qr-overlay">
                 <div className="qr-container">
                     <div className="qr-card-premium">
@@ -22,7 +21,7 @@ const QrCodeSection = () => {
                         <div className="qr-visual-wrapper" onClick={handleGetStarted}>
                             <div className="qr-floating-bg"></div>
                             <div className="qr-code-frame">
-                                <img src={qrCode} alt="Scan QR Code" className="qr-image" />
+                                <img src={qrCodeSectionData.qrCode} alt="Scan for Menu" className="qr-premium-img" />
                             </div>
                         </div>
 

@@ -1,10 +1,6 @@
 import React from 'react';
 import '../../styles/pages/About.css';
-import dining1 from '../../assets/about.jpg';
-import bar1 from '../../assets/bar.jpg';
-import bar2 from '../../assets/bar2.jpg';
-import aboutImg from '../../assets/about2.jpg';
-import dining2 from '../../assets/restaurants.jpg';
+import { aboutStoryData } from '../../data/aboutData';
 
 const AboutStory = () => {
     return (
@@ -12,7 +8,7 @@ const AboutStory = () => {
             <div className="about-story-grid">
                 {/* Row 1 */}
                 <div className="story-image-item">
-                    <img src={dining1} alt="Chill Grand Burger" />
+                    <img src={aboutStoryData.dining1} alt="Chill Grand Burger" />
                 </div>
 
                 <div className="story-content-item">
@@ -31,20 +27,20 @@ const AboutStory = () => {
                 </div>
 
                 <div className="story-image-item">
-                    <img src={aboutImg} alt="Chill Grand Dining" />
+                    <img src={aboutStoryData.aboutImg} alt="Chill Grand Dining" />
                 </div>
 
                 {/* Row 2 */}
                 <div className="story-image-item">
-                    <img src={bar1} alt="Chill Grand Cocktail" />
+                    <img src={aboutStoryData.bar1} alt="Chill Grand Bar" />
+                </div>
+
+                <div className="story-image-item middle-story">
+                    <img src={aboutStoryData.dining2} alt="Chill Grand Experience" />
                 </div>
 
                 <div className="story-image-item">
-                    <img src={dining2} alt="Chill Grand Private Dining" />
-                </div>
-
-                <div className="story-image-item">
-                    <img src={bar2} alt="Chill Grand Bartender" />
+                    <img src={aboutStoryData.bar2} alt="Chill Grand Bartender" />
                 </div>
             </div>
         </section>

@@ -1,34 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 import '../../styles/pages/PlanEvent.css';
-import heroBg from '../../assets/hero_restaurant_lounge.jpg';
-
-
-// This component is likely where the h1 tag would be rendered.
-// Since the original document only provided imports and an export,
-// and the instruction provided a specific line to change/add,
-// I'm placing the h1 tag where it would logically appear within a component's render.
-// Given the export default EventHero, I'm assuming this file *is* EventHero.
+import { eventsHeroData } from '../../data/eventsData';
 
 const EventHero = () => {
     return (
-        <div className="event-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+        <section className="event-hero" style={{ backgroundImage: `url(${eventsHeroData.heroBg})` }}>
             <div className="event-hero-overlay">
-                <div className="hero-content">
-                    <h1 className="event-hero-title">
-                        Celebrate Your
-                        <span>Dream Event</span>
-                    </h1>
-                    <div className="hero-divider"></div>
-                    <p className="event-hero-subtitle">We create the perfect experience for your special events. From fun parties to elegant dinners, we make every moment unforgettable.</p>
-                    <div className="hero-btns">
-                        <Link to="/event-inquiry" className="btn-fill-form">
+                <div className="hero-content-minimal">
+                    <span className="minimal-tagline">Exquisite Experiences</span>
+                    <h1 className="minimal-title">Plan Your Event</h1>
+                    <div className="hero-btn-container">
+                        <Link to="/event-inquiry" className="btn-minimal-gold">
                             Fill The Form
+                        </Link>
+                        <Link to="/event-inquiry?track=true" className="btn-minimal-gold">
+                            <FaSearch /> Track / View Your Booking Status
                         </Link>
                     </div>
                 </div>
             </div>
-        </div>
+            
+            {/* Minimal Scroll indicator */}
+            <div className="scroll-indicator">
+                <span>SCROLL</span>
+                <div className="scroll-line"></div>
+            </div>
+        </section>
     );
 };
 

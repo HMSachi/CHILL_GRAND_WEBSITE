@@ -1,28 +1,10 @@
 import React from 'react';
 import '../../styles/components/GalleryWall.css';
-
-// Import images
-import bar1 from '../../assets/bar.jpg';
-import bar2 from '../../assets/bar2.jpg';
-import dj from '../../assets/dj.jpg';
-import private_dining from '../../assets/private_dining.jpg';
-import restaurants from '../../assets/restaurants.jpg';
-import cocktail from '../../assets/cocktail.jpg';
-import food from '../../assets/food.jpg';
-import back from '../../assets/back.jpg';
-import bg from '../../assets/bg.jpg';
-import beef from '../../assets/beef.jpg';
-import starters from '../../assets/starters.jpg';
-import soup from '../../assets/soup.jpg';
+import { galleryImages } from '../../data/homeData';
 
 const GalleryWall = () => {
-    // Array of images for the grid (repeating for density)
-    const images = [
-        bar1, dj, bar2, private_dining, restaurants, cocktail,
-        food, back, starters, beef, soup, bg,
-        dj, bar1, cocktail, restaurants, private_dining, bar2,
-        soup, beef, food, starters, back, bar1
-    ];
+    // Array of images for the grid
+    const images = galleryImages;
 
     return (
         <section className="gallery-wall" id="gallery">

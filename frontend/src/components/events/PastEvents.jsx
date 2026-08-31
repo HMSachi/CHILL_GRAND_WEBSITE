@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeader from '../common/SectionHeader';
 import '../../styles/pages/PlanEvent.css';
-import { pastEvents } from '../../dummy/eventsData';
+import { pastEvents } from '../../data/eventsData';
 
 const PastEvents = () => {
     const events = pastEvents;

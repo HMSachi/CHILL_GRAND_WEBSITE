@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/components/ServiceCards.css';
-import { services } from '../../dummy/mainData';
+import { services } from '../../data/mainData';
 
 const ServiceCards = () => {
     const servicesData = services;
@@ -9,8 +9,9 @@ const ServiceCards = () => {
         <section className="service-cards-section">
             <div className="container">
                 <div className="section-header-warehouse">
-                    <div className="header-accent">Main Parts</div>
-                    <h2 className="header-title">OUR CORE FEATURES</h2>
+                    <div className="header-accent">EXPERIENCE EXCELLENCE</div>
+                    <h2 className="header-title">DISCOVER OUR SPACES</h2>
+                    <div className="header-line"></div>
                 </div>
 
                 <div className="service-cards-grid">
@@ -23,8 +24,18 @@ const ServiceCards = () => {
                                     className="service-card-image"
                                 />
 
-                                <div className="service-card-title">
-                                    {service.title}
+                                {/* Vertical title for collapsed state */}
+                                <div className="service-card-title-vertical">
+                                    <span>{service.title}</span>
+                                </div>
+                                
+                                {/* Full content for expanded state */}
+                                <div className="service-card-content">
+                                    <div className="service-card-accent">CHILL GRAND</div>
+                                    <div className="service-card-title-row">
+                                        <h3 className="service-card-title">{service.title}</h3>
+                                        <span className="service-card-arrow">→</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

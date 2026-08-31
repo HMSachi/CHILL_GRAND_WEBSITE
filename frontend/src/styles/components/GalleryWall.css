@@ -1,7 +1,7 @@
 .gallery-wall {
     background-color: #000;
     overflow: hidden;
-    height: 700px;
+    height: 650px;
     display: flex;
 }
 
@@ -15,10 +15,12 @@
 /* BRANDING SIDE */
 .gallery-branding {
     position: relative;
-    padding: 4rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
     background-image: url('../../assets/bar.jpg');
     background-size: cover;
     background-position: center;
@@ -63,7 +65,7 @@
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     height: 100%;
     background: #000;
 }

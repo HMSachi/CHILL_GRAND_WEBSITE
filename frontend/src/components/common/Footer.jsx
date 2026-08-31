@@ -16,7 +16,7 @@ const Footer = () => {
                             <img src={logo} alt="Chill Grand Logo" style={{ height: '80px', width: 'auto' }} />
                         </Link>
                     </div>
-                    <p className="footer-hours">Monday - Sunday: 11:00 AM - 11:00 PM</p>
+                    <p className="footer-hours">Monday - Sunday: 11:00 AM to midnight</p>
                     <p className="footer-copyright">© 2025 Chill Grand Restaurant | All rights reserved</p>
                 </div>
 
@@ -45,9 +45,9 @@ const Footer = () => {
                 <div className="footer-newsletter">
                     <div className="social-icons">
                         <span>Follow us</span>
-                        <a href="#" className="icon"><img src={instagramIcon} alt="Instagram" /></a>
-                        <a href="#" className="icon"><img src={facebookIcon} alt="Facebook" /></a>
-                        <a href="#" className="icon"><img src={tiktokIcon} alt="TikTok" /></a>
+                        <a href="https://www.instagram.com/chill.grand?igsh=MWdjOWljZHR3Ym9ybA==" target="_blank" rel="noopener noreferrer" className="icon"><img src={instagramIcon} alt="Instagram" /></a>
+                        <a href="https://www.facebook.com/share/1HGRAjQ2QZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="icon"><img src={facebookIcon} alt="Facebook" /></a>
+                        <a href="https://www.tiktok.com/@chill.grand?_r=1&_t=ZS-980JgkC3ih6" target="_blank" rel="noopener noreferrer" className="icon"><img src={tiktokIcon} alt="TikTok" /></a>
                     </div>
 
                     <h4>Newsletter</h4>
