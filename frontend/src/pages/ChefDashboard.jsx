@@ -23,6 +23,17 @@ const formatDuration = (ms) => {
     return `${mins}m ${secs}s`;
 };
 
+const formatTime = (dateStr) => {
+    if (!dateStr) return '';
+    try {
+        const d = new Date(normalizeDate(dateStr));
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch {
+        return '';
+    }
+};
+
 const LiveTimer = ({ placedAtStr, servedAtStr, className = "" }) => {
     const [elapsedStr, setElapsedStr] = useState("");
     const [timerClass, setTimerClass] = useState("timer-ok");
@@ -100,7 +111,8 @@ const ItemDetailView = ({ orderId, itemId, orders, activeSessions, selectedChefI
 
     const placedAt = new Date(normalizeDate(order.created_at));
     const kt = order.kitchen_tracking || {};
-    const acceptedAt = kt.accepted_at ? new Date(normalizeDate(kt.accepted_at)) : null;
+    const acceptedAtTime = kt.item_preparing_times?.[item.order_item_id] || kt.accepted_at;
+    const acceptedAt = acceptedAtTime ? new Date(normalizeDate(acceptedAtTime)) : null;
     const readyAtTime = kt.item_ready_times?.[item.order_item_id] || kt.ready_at;
     const readyAt = readyAtTime ? new Date(normalizeDate(readyAtTime)) : null;
     const servedAtTime = kt.item_served_times?.[item.order_item_id] || kt.served_at || order.updated_at;
@@ -347,6 +359,24 @@ const OrderDetailView = ({ orderId, orders, activeSessions, selectedChefId, setS
                                 <span className="info-label">Placed At:</span>
                                 <span className="info-value">{new Date(normalizeDate(order.created_at)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
+                            {order.kitchen_tracking?.accepted_at && (
+                                <div className="info-row">
+                                    <span className="info-label">Prep Started:</span>
+                                    <span className="info-value" style={{ color: '#f59e0b', fontWeight: 'bold' }}>{formatTime(order.kitchen_tracking.accepted_at)}</span>
+                                </div>
+                            )}
+                            {order.kitchen_tracking?.ready_at && (
+                                <div className="info-row">
+                                    <span className="info-label">Ready At:</span>
+                                    <span className="info-value" style={{ color: '#34d399', fontWeight: 'bold' }}>{formatTime(order.kitchen_tracking.ready_at)}</span>
+                                </div>
+                            )}
+                            {order.kitchen_tracking?.served_at && (
+                                <div className="info-row">
+                                    <span className="info-label">Served At:</span>
+                                    <span className="info-value" style={{ color: '#60a5fa', fontWeight: 'bold' }}>{formatTime(order.kitchen_tracking.served_at)}</span>
+                                </div>
+                            )}
                             <div className="info-row">
                                 <span className="info-label">Waiting Time:</span>
                                 <span className="info-value">
@@ -837,6 +867,26 @@ const ChefDashboard = () => {
                                                 <span className="order-num">#{order.order_id}</span>
                                                 <span className="table-badge">{isTakeaway ? 'TAKEAWAY' : `TABLE ${order.table_id}`}</span>
                                             </div>
+
+                                            <div className="card-timing-strip">
+                                                <div className="timing-chip placed">
+                                                    <Clock size={11} />
+                                                    <span className="timing-chip-label">Placed:</span>
+                                                    <span className="timing-chip-val">{formatTime(order.created_at)}</span>
+                                                </div>
+                                                {order.kitchen_tracking?.accepted_at && (
+                                                    <div className="timing-chip prep">
+                                                        <span className="timing-chip-label">Started:</span>
+                                                        <span className="timing-chip-val">{formatTime(order.kitchen_tracking.accepted_at)}</span>
+                                                    </div>
+                                                )}
+                                                {order.kitchen_tracking?.ready_at && (
+                                                    <div className="timing-chip ready">
+                                                        <span className="timing-chip-label">Ready:</span>
+                                                        <span className="timing-chip-val">{formatTime(order.kitchen_tracking.ready_at)}</span>
+                                                    </div>
+                                                )}
+                                            </div>
                                             
                                             <div className="order-card-items-list">
                                                 {order.items.map(item => {
@@ -850,14 +900,26 @@ const ChefDashboard = () => {
                                                     else if (readyIds.includes(itemId)) itemStatus = 'READY';
                                                     else if (preparingIds.includes(itemId)) itemStatus = 'PREPARING';
 
+                                                    const itemPrepTime = order.kitchen_tracking?.item_preparing_times?.[item.order_item_id] || order.kitchen_tracking?.accepted_at;
+                                                    const itemReadyTime = order.kitchen_tracking?.item_ready_times?.[item.order_item_id] || order.kitchen_tracking?.ready_at;
+                                                    const itemServedTime = order.kitchen_tracking?.item_served_times?.[item.order_item_id] || order.kitchen_tracking?.served_at;
+
+                                                    let itemTimeStr = '';
+                                                    if (itemStatus === 'PREPARING' && itemPrepTime) itemTimeStr = formatTime(itemPrepTime);
+                                                    else if (itemStatus === 'READY' && itemReadyTime) itemTimeStr = formatTime(itemReadyTime);
+                                                    else if (itemStatus === 'SERVED' && itemServedTime) itemTimeStr = formatTime(itemServedTime);
+
                                                     return (
                                                         <div key={item.order_item_id} className={`order-card-item ${itemStatus.toLowerCase()}`}>
                                                             <span className="item-name-qty">
                                                                 {item.item_name} <strong className="qty-tag-inline">x{item.quantity}</strong>
                                                             </span>
-                                                            <span className={`item-status-pill ${itemStatus.toLowerCase()}`}>
-                                                                {itemStatus}
-                                                            </span>
+                                                            <div className="item-status-pill-group">
+                                                                {itemTimeStr && <span className="item-status-time">{itemTimeStr}</span>}
+                                                                <span className={`item-status-pill ${itemStatus.toLowerCase()}`}>
+                                                                    {itemStatus}
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     );
                                                 })}

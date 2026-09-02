@@ -1162,6 +1162,54 @@ body {
     color: #94a3b8;
 }
 
+/* Timing strip on KDS cards */
+.card-timing-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    padding: 0.35rem 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+}
+
+.timing-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--text-muted);
+}
+
+.timing-chip.placed .timing-chip-val {
+    color: #93c5fd;
+    font-weight: 700;
+}
+
+.timing-chip.prep .timing-chip-val {
+    color: #f59e0b;
+    font-weight: 700;
+}
+
+.timing-chip.ready .timing-chip-val {
+    color: #34d399;
+    font-weight: 700;
+}
+
+.item-status-pill-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.item-status-time {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
 .status-badge.placed-badge {
     background: rgba(59, 130, 246, 0.1);
     color: #60a5fa;
