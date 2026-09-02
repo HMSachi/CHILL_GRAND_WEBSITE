@@ -3465,3 +3465,127 @@
     font-size: 0.68rem;
     font-weight: 600;
 }
+
+/* Prep card timeline chips */
+.prep-card-timelines {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+}
+
+.waiter-time-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.waiter-time-chip.prep {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.waiter-time-chip.ready {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.waiter-time-chip.served {
+    background: rgba(59, 130, 246, 0.12);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+/* Kitchen card header timing badges */
+.kitchen-card-header-main {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.order-num-tag {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.kitchen-card-timing-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.time-badge.placed {
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.time-badge.prep {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.time-badge.ready {
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.item-stage-time-tag {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-left: 0.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Orders table time rows */
+.time-col .time-display {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.time-row-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.time-row-item.status-time-tag.prep {
+    color: #f59e0b;
+    font-weight: 700;
+}
+
+.time-row-item.status-time-tag.ready {
+    color: #34d399;
+    font-weight: 700;
+}
+
+/* Order detail modal item status column */
+.item-status-col-pro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+}
+
+.item-time-stamp-pro {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}

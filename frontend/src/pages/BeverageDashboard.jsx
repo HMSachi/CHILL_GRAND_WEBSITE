@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-react';
+import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock } from 'lucide-react';
 import '../styles/pages/BeverageDashboard.css';
 import PortalLoginCard from '../components/portals/PortalLoginCard';
 import logo from '../assets/logo.png';
@@ -25,6 +25,17 @@ const formatDuration = (ms) => {
     const mins = Math.floor(totalSecs / 60);
     const secs = totalSecs % 60;
     return `${mins}m ${secs}s`;
+};
+
+const formatTime = (dateStr) => {
+    if (!dateStr) return '';
+    try {
+        const d = new Date(normalizeDate(dateStr));
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch {
+        return '';
+    }
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,6 +147,30 @@ const OrderDetailView = ({
                                     )}
                                 </span>
                             </div>
+                            {order.juice_tracking?.accepted_at && (
+                                <div className="bev-info-row">
+                                    <span className="bev-info-label">Prep Started:</span>
+                                    <span className="bev-info-value" style={{ color: '#f59e0b', fontWeight: 'bold' }}>
+                                        {formatTime(order.juice_tracking.accepted_at)}
+                                    </span>
+                                </div>
+                            )}
+                            {order.juice_tracking?.ready_at && (
+                                <div className="bev-info-row">
+                                    <span className="bev-info-label">Ready At:</span>
+                                    <span className="bev-info-value" style={{ color: '#2dd4bf', fontWeight: 'bold' }}>
+                                        {formatTime(order.juice_tracking.ready_at)}
+                                    </span>
+                                </div>
+                            )}
+                            {order.juice_tracking?.served_at && (
+                                <div className="bev-info-row">
+                                    <span className="bev-info-label">Served At:</span>
+                                    <span className="bev-info-value" style={{ color: '#60a5fa', fontWeight: 'bold' }}>
+                                        {formatTime(order.juice_tracking.served_at)}
+                                    </span>
+                                </div>
+                            )}
                             <div className="bev-info-row">
                                 <span className="bev-info-label">Waiting Time:</span>
                                 <span className="bev-info-value">
@@ -752,9 +787,38 @@ const BeverageDashboard = () => {
                                                     </span>
                                                 </div>
 
+                                                <div className="bev-card-timing-strip">
+                                                    <div className="bev-timing-chip placed">
+                                                        <Clock size={11} />
+                                                        <span className="bev-timing-chip-label">Placed:</span>
+                                                        <span className="bev-timing-chip-val">{formatTime(order.created_at)}</span>
+                                                    </div>
+                                                    {jt.accepted_at && (
+                                                        <div className="bev-timing-chip prep">
+                                                            <span className="bev-timing-chip-label">Started:</span>
+                                                            <span className="bev-timing-chip-val">{formatTime(jt.accepted_at)}</span>
+                                                        </div>
+                                                    )}
+                                                    {jt.ready_at && (
+                                                        <div className="bev-timing-chip ready">
+                                                            <span className="bev-timing-chip-label">Ready:</span>
+                                                            <span className="bev-timing-chip-val">{formatTime(jt.ready_at)}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+
                                                 <div className="bev-items-list">
                                                     {order.items.map(item => {
                                                         const s = getItemStatus(order, item.order_item_id);
+                                                        const itemPrepTime = jt.item_preparing_times?.[item.order_item_id] || jt.accepted_at;
+                                                        const itemReadyTime = jt.item_ready_times?.[item.order_item_id] || jt.ready_at;
+                                                        const itemServedTime = jt.item_served_times?.[item.order_item_id] || jt.served_at;
+
+                                                        let itemTimeStr = '';
+                                                        if (s === 'PREPARING' && itemPrepTime) itemTimeStr = formatTime(itemPrepTime);
+                                                        else if (s === 'READY' && itemReadyTime) itemTimeStr = formatTime(itemReadyTime);
+                                                        else if (s === 'SERVED' && itemServedTime) itemTimeStr = formatTime(itemServedTime);
+
                                                         return (
                                                             <div
                                                                 key={item.order_item_id}
@@ -766,9 +830,12 @@ const BeverageDashboard = () => {
                                                                         {' '}x{item.quantity}
                                                                     </strong>
                                                                 </span>
-                                                                <span className={`bev-item-status-pill ${s.toLowerCase()}`}>
-                                                                    {s}
-                                                                </span>
+                                                                <div className="bev-item-status-pill-group">
+                                                                    {itemTimeStr && <span className="bev-item-status-time">{itemTimeStr}</span>}
+                                                                    <span className={`bev-item-status-pill ${s.toLowerCase()}`}>
+                                                                        {s}
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         );
                                                     })}

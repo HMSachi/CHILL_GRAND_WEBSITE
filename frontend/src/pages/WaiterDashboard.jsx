@@ -860,7 +860,19 @@ const DashboardView = ({ orders, onTabChange }) => {
                                     <div className="prep-card-body">
                                         <div className="order-meta">
                                             <span className="o-num">#{order.order_id}</span>
-                                            <div className="o-time"><Clock size={10} /> {formatTime(order.created_at)}</div>
+                                            <div className="o-time"><Clock size={11} /> Placed: {formatTime(order.created_at)}</div>
+                                        </div>
+                                        <div className="prep-card-timelines">
+                                            {(order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at) && (
+                                                <span className="waiter-time-chip prep">
+                                                    <Flame size={11} /> Prep: {formatTime(order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at)}
+                                                </span>
+                                            )}
+                                            {(order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at || hasReadyItems) && (
+                                                <span className="waiter-time-chip ready">
+                                                    <CheckCircle2 size={11} /> Ready: {formatTime(order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at || (order.kitchen_tracking?.item_ready_times && Object.values(order.kitchen_tracking.item_ready_times)[0]) || (order.juice_tracking?.item_ready_times && Object.values(order.juice_tracking.item_ready_times)[0]))}
+                                                </span>
+                                            )}
                                         </div>
                                         <div className="item-count">
                                             <strong>{order.order_items.length}</strong> {order.order_items.length === 1 ? 'Item' : 'Items'} ordered
@@ -1242,8 +1254,17 @@ const OrdersView = ({ orders, onOrderDetail }) => {
                                 </td>
                                 <td className="time-col">
                                     <div className="time-display">
-                                        <Clock size={12} />
-                                        {formatTime(order.created_at)}
+                                        <span className="time-row-item"><Clock size={11} /> Placed: {formatTime(order.created_at)}</span>
+                                        {(order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at) && (
+                                            <span className="time-row-item status-time-tag prep">
+                                                Prep: {formatTime(order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at)}
+                                            </span>
+                                        )}
+                                        {(order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at) && (
+                                            <span className="time-row-item status-time-tag ready">
+                                                Ready: {formatTime(order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at)}
+                                            </span>
+                                        )}
                                     </div>
                                 </td>
                                 <td className="align-center">
@@ -1291,11 +1312,28 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
                 {waiterOrders.length === 0 ? (
                     <div className="empty-state">No active kitchen orders.</div>
                 ) : (
-                    waiterOrders.map(order => (
+                    waiterOrders.map(order => {
+                        const kt = order.kitchen_tracking || {};
+                        const jt = order.juice_tracking || {};
+                        const acceptedTime = kt.accepted_at || jt.accepted_at;
+                        const readyTime = kt.ready_at || jt.ready_at;
+
+                        return (
                         <div key={order.order_id} className="order-kitchen-card">
                             <div className="order-card-header">
-                                <span className="table-badge">Table T-{order.table_id}</span>
-                                <span className="time-badge">{formatTime(order.created_at)}</span>
+                                <div className="kitchen-card-header-main">
+                                    <span className="table-badge">Table T-{order.table_id}</span>
+                                    <span className="order-num-tag">#{order.order_id}</span>
+                                </div>
+                                <div className="kitchen-card-timing-badges">
+                                    <span className="time-badge placed">Placed: {formatTime(order.created_at)}</span>
+                                    {acceptedTime && (
+                                        <span className="time-badge prep">Prep: {formatTime(acceptedTime)}</span>
+                                    )}
+                                    {readyTime && (
+                                        <span className="time-badge ready">Ready: {formatTime(readyTime)}</span>
+                                    )}
+                                </div>
                             </div>
                             <div className="order-items-stages">
                                 {order.order_items.map(item => {
@@ -1318,6 +1356,15 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
                                     else if (preparingIds.includes(item.order_item_id)) status = 'PREPARING';
 
                                     const isReady = status === 'READY';
+                                    const itemPrepTime = kt.item_preparing_times?.[item.order_item_id] || jt.item_preparing_times?.[item.order_item_id] || acceptedTime;
+                                    const itemReadyTime = kt.item_ready_times?.[item.order_item_id] || jt.item_ready_times?.[item.order_item_id] || readyTime;
+                                    const itemServedTime = kt.item_served_times?.[item.order_item_id] || jt.item_served_times?.[item.order_item_id] || kt.served_at || jt.served_at;
+
+                                    let itemStatusLabel = '';
+                                    if (status === 'PREPARING' && itemPrepTime) itemStatusLabel = `Started: ${formatTime(itemPrepTime)}`;
+                                    else if (status === 'READY' && itemReadyTime) itemStatusLabel = `Ready: ${formatTime(itemReadyTime)}`;
+                                    else if (status === 'SERVED' && itemServedTime) itemStatusLabel = `Served: ${formatTime(itemServedTime)}`;
+                                    else if (status === 'PLACED') itemStatusLabel = `Placed: ${formatTime(order.created_at)}`;
 
                                     return (
                                         <div key={item.order_item_id} className={`item-stage-row ${status.toLowerCase()} ${isReady ? 'ready-blink-row' : ''}`}>
@@ -1326,6 +1373,7 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
                                                     <div className="item-name-wrap">
                                                         <span className="qty">{item.quantity}x</span>
                                                         <span className="name">{item.item_name}</span>
+                                                        {itemStatusLabel && <span className="item-stage-time-tag">{itemStatusLabel}</span>}
                                                     </div>
                                                     <div className="stage-badges-horizontal">
                                                         <span className={`mini-stage ${status === 'PLACED' ? 'active placed' : ''}`}>PLACED</span>
@@ -1339,7 +1387,7 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
                                                     {isReady ? (
                                                         <div className="action-ready-container">
                                                             <div className="ready-text-msg">
-                                                                <BellRing size={14} /> <span>Order is ready!</span>
+                                                                <BellRing size={14} /> <span>Ready since {itemReadyTime ? formatTime(itemReadyTime) : 'now'}!</span>
                                                             </div>
                                                             <button
                                                                 className="mark-served-btn-large"
@@ -1350,12 +1398,12 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
                                                         </div>
                                                     ) : status === 'SERVED' ? (
                                                         <div className="served-marker">
-                                                            <CheckCircle2 size={18} /> <span>DELIVERED</span>
+                                                            <CheckCircle2 size={18} /> <span>DELIVERED ({itemServedTime ? formatTime(itemServedTime) : 'done'})</span>
                                                         </div>
                                                     ) : (
                                                         <div className="prep-waiting">
-                                                            <Clock3 size={16} className="spin-slow" />
-                                                            <span>{status === 'PLACED' ? 'WAITING' : 'COOKING'}</span>
+                                                            <Clock3 size={16} className={status === 'PREPARING' ? 'spin-slow' : ''} />
+                                                            <span>{status === 'PLACED' ? `WAITING (${formatTime(order.created_at)})` : `COOKING (${itemPrepTime ? formatTime(itemPrepTime) : 'in progress'})`}</span>
                                                         </div>
                                                     )}
                                                 </div>
@@ -1365,7 +1413,8 @@ const KitchenStatusView = ({ orders, user, onMarkServed }) => {
                                 })}
                             </div>
                         </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
         </div>
@@ -1439,10 +1488,26 @@ const OrderDetailModal = ({ order, onClose, finalBill, onPreviewBill }) => {
                             <span className="s-label">Overall Status</span>
                             <span className={`status-pill ${order.status.toLowerCase()}`}>{order.status}</span>
                         </div>
-                        <div className="status-label-group align-right">
-                            <span className="s-label">Ordered Time</span>
+                        <div className="status-label-group">
+                            <span className="s-label">Placed Time</span>
                             <span className="order-time">{formatTime(order.created_at)}</span>
                         </div>
+                        {(order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at) && (
+                            <div className="status-label-group">
+                                <span className="s-label">Prep Started</span>
+                                <span className="order-time" style={{ color: '#f59e0b' }}>
+                                    {formatTime(order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at)}
+                                </span>
+                            </div>
+                        )}
+                        {(order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at) && (
+                            <div className="status-label-group">
+                                <span className="s-label">Ready At</span>
+                                <span className="order-time" style={{ color: '#10b981' }}>
+                                    {formatTime(order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at)}
+                                </span>
+                            </div>
+                        )}
                     </div>
 
                     {order.customer_phone && (
@@ -1470,6 +1535,16 @@ const OrderDetailModal = ({ order, onClose, finalBill, onPreviewBill }) => {
                                 else if (preparingIds.includes(item.order_item_id)) itemStatus = 'PREPARING';
                                 else if (order.status === 'PLACED') itemStatus = 'PLACED';
 
+                                const itemPrepTime = order.kitchen_tracking?.item_preparing_times?.[item.order_item_id] || order.juice_tracking?.item_preparing_times?.[item.order_item_id] || order.kitchen_tracking?.accepted_at || order.juice_tracking?.accepted_at;
+                                const itemReadyTime = order.kitchen_tracking?.item_ready_times?.[item.order_item_id] || order.juice_tracking?.item_ready_times?.[item.order_item_id] || order.kitchen_tracking?.ready_at || order.juice_tracking?.ready_at;
+                                const itemServedTime = order.kitchen_tracking?.item_served_times?.[item.order_item_id] || order.juice_tracking?.item_served_times?.[item.order_item_id] || order.kitchen_tracking?.served_at || order.juice_tracking?.served_at;
+
+                                let itemTimeStr = '';
+                                if (itemStatus === 'PREPARING' && itemPrepTime) itemTimeStr = formatTime(itemPrepTime);
+                                else if (itemStatus === 'READY' && itemReadyTime) itemTimeStr = formatTime(itemReadyTime);
+                                else if (itemStatus === 'SERVED' && itemServedTime) itemTimeStr = formatTime(itemServedTime);
+                                else if (itemStatus === 'PLACED') itemTimeStr = formatTime(order.created_at);
+
                                 return (
                                     <div key={idx} className="order-item-row-pro">
                                         <div className="item-main-content">
@@ -1486,8 +1561,11 @@ const OrderDetailModal = ({ order, onClose, finalBill, onPreviewBill }) => {
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className={`item-status-tag-pro ${itemStatus.toLowerCase()}`}>
-                                                {itemStatus}
+                                            <div className="item-status-col-pro">
+                                                {itemTimeStr && <span className="item-time-stamp-pro">{itemTimeStr}</span>}
+                                                <div className={`item-status-tag-pro ${itemStatus.toLowerCase()}`}>
+                                                    {itemStatus}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
