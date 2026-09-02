@@ -383,6 +383,55 @@ body {
 .bev-item-status-pill.ready     { background: #78350f; color: #fbbf24; }
 .bev-item-status-pill.served    { background: #064e3b; color: #34d399; }
 
+/* Timing strip on Beverage cards */
+.bev-card-timing-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.7rem;
+    padding: 0.35rem 0.5rem;
+    background: rgba(13, 148, 136, 0.07);
+    border: 1px solid rgba(13, 148, 136, 0.15);
+    border-radius: 8px;
+    font-size: 0.75rem;
+}
+
+.bev-timing-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--bev-text-muted);
+}
+
+.bev-timing-chip.placed .bev-timing-chip-val {
+    color: #93c5fd;
+    font-weight: 700;
+}
+
+.bev-timing-chip.prep .bev-timing-chip-val {
+    color: #2dd4bf;
+    font-weight: 700;
+}
+
+.bev-timing-chip.ready .bev-timing-chip-val {
+    color: #fbbf24;
+    font-weight: 700;
+}
+
+.bev-item-status-pill-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.bev-item-status-time {
+    font-size: 0.72rem;
+    color: var(--bev-text-muted);
+    font-weight: 600;
+}
+
 /* ── Timer ───────────────────────────────────────────────────────────────── */
 .bev-timer-section {
     margin: 1rem 0;
