@@ -5,6 +5,7 @@ import '../styles/pages/BeverageDashboard.css';
 import PortalLoginCard from '../components/portals/PortalLoginCard';
 import logo from '../assets/logo.png';
 import { API_BASE_URL as BASE } from '../config/api';
+import { getSocket } from '../services/socket';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Utility Helpers  (mirrors ChefDashboard.jsx exactly)
@@ -387,6 +388,37 @@ const BeverageDashboard = () => {
         };
 
         init();
+
+        const socket = getSocket(pin);
+        if (socket) {
+            const handleOrderCreated = () => fetchOrders();
+            const handleItemStatusChanged = () => { fetchOrders(); fetchCompleted(); };
+            const handleOrderStatusChanged = () => { fetchOrders(); fetchCompleted(); };
+            const handleSessionUpdated = () => fetchSessions();
+            const handleConnect = () => { fetchOrders(); fetchCompleted(); fetchSessions(); };
+
+            socket.on('order:created', handleOrderCreated);
+            socket.on('order:item_status_changed', handleItemStatusChanged);
+            socket.on('order:status_changed', handleOrderStatusChanged);
+            socket.on('session:updated', handleSessionUpdated);
+            socket.on('connect', handleConnect);
+
+            const iv = setInterval(() => {
+                fetchOrders();
+                fetchCompleted();
+                fetchSessions();
+            }, 8000);
+
+            return () => {
+                clearInterval(iv);
+                socket.off('order:created', handleOrderCreated);
+                socket.off('order:item_status_changed', handleItemStatusChanged);
+                socket.off('order:status_changed', handleOrderStatusChanged);
+                socket.off('session:updated', handleSessionUpdated);
+                socket.off('connect', handleConnect);
+            };
+        }
+
         const iv = setInterval(() => {
             fetchOrders();
             fetchCompleted();
