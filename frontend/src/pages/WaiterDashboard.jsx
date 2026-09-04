@@ -41,6 +41,7 @@ import {
 import VariantModal from '../components/orders/VariantModal';
 import FinalBillModal from '../QRweb/components/FinalBillModal';
 import { API_BASE_URL } from '../config/api';
+import { getSocket } from '../services/socket';
 
 const formatTime = (dateStr) => {
     if (!dateStr) return 'N/A';
@@ -116,6 +117,26 @@ const WaiterDashboard = () => {
         if (user) {
             startSession();
             fetchAllData();
+
+            const token = sessionStorage.getItem('waiter_token');
+            const socket = getSocket(token);
+            if (socket) {
+                const handleUpdate = () => fetchAllData();
+                socket.on('order:created', handleUpdate);
+                socket.on('order:item_status_changed', handleUpdate);
+                socket.on('order:status_changed', handleUpdate);
+                socket.on('connect', handleUpdate);
+
+                const interval = setInterval(fetchAllData, 15000);
+                return () => {
+                    clearInterval(interval);
+                    socket.off('order:created', handleUpdate);
+                    socket.off('order:item_status_changed', handleUpdate);
+                    socket.off('order:status_changed', handleUpdate);
+                    socket.off('connect', handleUpdate);
+                };
+            }
+
             const interval = setInterval(fetchAllData, 15000);
             return () => {
                 clearInterval(interval);

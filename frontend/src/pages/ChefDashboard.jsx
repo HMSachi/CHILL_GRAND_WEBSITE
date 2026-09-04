@@ -5,6 +5,7 @@ import '../styles/pages/ChefDashboard.css';
 import PortalLoginCard from '../components/portals/PortalLoginCard';
 import logo from '../assets/logo.png';
 import { API_BASE_URL as BASE } from '../config/api';
+import { getSocket } from '../services/socket';
 
 const normalizeDate = (dateStr) => {
     if (!dateStr) return null;
@@ -516,6 +517,37 @@ const ChefDashboard = () => {
             };
 
             initDashboard();
+
+            // Setup Socket.IO real-time event listeners
+            const socket = getSocket(pin);
+            if (socket) {
+                const handleOrderCreated = () => fetchOrders();
+                const handleItemStatusChanged = () => { fetchOrders(); fetchCompletedItems(); };
+                const handleOrderStatusChanged = () => { fetchOrders(); fetchCompletedItems(); };
+                const handleSessionUpdated = () => fetchSessions();
+                const handleConnect = () => { fetchOrders(); fetchCompletedItems(); fetchSessions(); };
+
+                socket.on('order:created', handleOrderCreated);
+                socket.on('order:item_status_changed', handleItemStatusChanged);
+                socket.on('order:status_changed', handleOrderStatusChanged);
+                socket.on('session:updated', handleSessionUpdated);
+                socket.on('connect', handleConnect);
+
+                const interval = setInterval(() => {
+                    fetchOrders();
+                    fetchCompletedItems();
+                    fetchSessions();
+                }, 8000);
+
+                return () => {
+                    clearInterval(interval);
+                    socket.off('order:created', handleOrderCreated);
+                    socket.off('order:item_status_changed', handleItemStatusChanged);
+                    socket.off('order:status_changed', handleOrderStatusChanged);
+                    socket.off('session:updated', handleSessionUpdated);
+                    socket.off('connect', handleConnect);
+                };
+            }
 
             const interval = setInterval(() => {
                 fetchOrders();
