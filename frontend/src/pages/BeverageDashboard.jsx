@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock } from 'lucide-react';
+import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock, Menu } from 'lucide-react';
 import '../styles/pages/BeverageDashboard.css';
 import PortalLoginCard from '../components/portals/PortalLoginCard';
 import logo from '../assets/logo.png';
@@ -347,6 +347,7 @@ const BeverageDashboard = () => {
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState('');
     const [selectedStaffId, setSelectedStaffId] = useState('');
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     // Live clock in top bar
     const [clockStr, setClockStr] = useState(
@@ -620,51 +621,74 @@ const BeverageDashboard = () => {
     // ─────────────────────────────────────────────────────────────────────────
 
     return (
-        <div className="bev-layout">
+        <div className={`bev-layout ${sidebarCollapsed ? 'sidebar-hidden' : ''}`}>
             {/* ── Sidebar ── */}
-            <aside className="bev-sidebar">
-                <div className="bev-sidebar-brand">
-                    <img src={logo} alt="Chill Grand" />
-                    <h3>CHILL GRAND</h3>
-                </div>
-                <div className="bev-station-badge"> Beverage Station</div>
-
-                <nav className="bev-sidebar-nav">
-                    <button
-                        className={currentView === 'DASHBOARD' ? 'active' : ''}
-                        onClick={goToDashboard}
-                    >
-                        Live Queue
-                    </button>
-                    <button
-                        className={currentView === 'COMPLETED' ? 'active' : ''}
-                        onClick={() => { setCurrentView('COMPLETED'); setSelectedOrderId(null); setSelectedItemId(null); }}
-                    >
-                        Completed
-                    </button>
-                    <button
-                        className={currentView === 'SESSION' ? 'active' : ''}
-                        onClick={() => { setCurrentView('SESSION'); setSelectedOrderId(null); setSelectedItemId(null); }}
-                    >
-                        My Session
-                    </button>
-                </nav>
-
-                <div className="bev-sidebar-footer">
-                    <div className="bev-active-count-bubble">
-                        {activeSessions.length} Staff Online
+            {!sidebarCollapsed && (
+                <aside className="bev-sidebar animate-in fade-in duration-200">
+                    <div className="bev-sidebar-brand">
+                        <img src={logo} alt="Chill Grand" />
+                        <h3>CHILL GRAND</h3>
                     </div>
-                    <button className="bev-logout-btn" onClick={handleLogout}>
-                        Logout Portal
-                    </button>
-                </div>
-            </aside>
+                    <div className="bev-station-badge"> Beverage Station</div>
+
+                    <nav className="bev-sidebar-nav">
+                        <button
+                            className={currentView === 'DASHBOARD' ? 'active' : ''}
+                            onClick={goToDashboard}
+                        >
+                            Live Queue
+                        </button>
+                        <button
+                            className={currentView === 'COMPLETED' ? 'active' : ''}
+                            onClick={() => { setCurrentView('COMPLETED'); setSelectedOrderId(null); setSelectedItemId(null); }}
+                        >
+                            Completed
+                        </button>
+                        <button
+                            className={currentView === 'SESSION' ? 'active' : ''}
+                            onClick={() => { setCurrentView('SESSION'); setSelectedOrderId(null); setSelectedItemId(null); }}
+                        >
+                            My Session
+                        </button>
+                    </nav>
+
+                    <div className="bev-sidebar-footer">
+                        <div className="bev-active-count-bubble">
+                            {activeSessions.length} Staff Online
+                        </div>
+                        <button className="bev-logout-btn" onClick={handleLogout}>
+                            Logout Portal
+                        </button>
+                    </div>
+                </aside>
+            )}
 
             {/* ── Main Area ── */}
             <main className="bev-main">
                 {/* Top Bar */}
                 <header className="bev-top-bar">
-                    <div className="bev-view-title">
+                    <div className="bev-view-title" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <button
+                            className="bev-sidebar-toggle-btn"
+                            onClick={() => setSidebarCollapsed(prev => !prev)}
+                            title={sidebarCollapsed ? "Show Navigation Sidebar" : "Hide Navigation Sidebar"}
+                            aria-label="Toggle Sidebar"
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.06)',
+                                border: '1px solid rgba(255, 255, 255, 0.12)',
+                                color: '#fff',
+                                borderRadius: '10px',
+                                width: '40px',
+                                height: '40px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                flexShrink: 0
+                            }}
+                        >
+                            <Menu size={20} />
+                        </button>
                         <h2>
                             {currentView === 'DASHBOARD'
                                 ? 'Live Beverage Queue'

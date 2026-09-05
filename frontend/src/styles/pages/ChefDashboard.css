@@ -24,17 +24,33 @@ body {
 .kds-layout {
     display: flex;
     height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    position: relative;
 }
 
 /* Sidebar Refined */
 .kds-sidebar {
     width: 240px;
+    min-width: 240px;
     background: #000;
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     padding: 1rem 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.kds-layout.sidebar-collapsed .kds-sidebar {
+    margin-left: -260px !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border-right: none !important;
+    overflow: hidden !important;
 }
 
 .sidebar-brand {
@@ -1796,9 +1812,15 @@ body {
 
     .kds-main {
         flex: 1;
-        width: calc(100vw - 80px);
+        width: 100%;
+        min-width: 0;
         height: 100vh;
         overflow-y: auto;
+    }
+
+    .kds-layout.sidebar-hidden .kds-main {
+        width: 100vw !important;
+        max-width: 100vw !important;
     }
 
     .kds-header {
