@@ -18,7 +18,7 @@ const QrCodeSection = () => {
                         <div className="qr-card-badge">SMART MENU</div>
                         <h2 className="qr-card-title">INSTANT <br /><span>ORDERING</span></h2>
 
-                        <div className="qr-visual-wrapper" onClick={handleGetStarted}>
+                        <div className="qr-visual-wrapper">
                             <div className="qr-floating-bg"></div>
                             <div className="qr-code-frame">
                                 <img src={qrCodeSectionData.qrCode} alt="Scan for Menu" className="qr-premium-img" />
@@ -32,10 +32,7 @@ const QrCodeSection = () => {
                                 directly from your table.
                             </p>
 
-                            <button className="btn-premium-explore" onClick={handleGetStarted}>
-                                <span className="btn-text">EXPLORE THE MENU</span>
-                                <span className="btn-icon">→</span>
-                            </button>
+
                         </div>
                     </div>
                 </div>

@@ -33,17 +33,33 @@ body {
 .bev-layout {
     display: flex;
     height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    position: relative;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────────────────────── */
 .bev-sidebar {
     width: 240px;
+    min-width: 240px;
     background: #020c0a;
     border-right: 1px solid var(--bev-border);
     display: flex;
     flex-direction: column;
     padding: 0.5rem 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.bev-layout.sidebar-collapsed .bev-sidebar {
+    margin-left: -260px !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border-right: none !important;
+    overflow: hidden !important;
 }
 
 .bev-sidebar-brand {
@@ -1078,4 +1094,147 @@ body {
 .bev-login-droplet-inner {
     transform: rotate(45deg);
     font-size: 1.8rem;
+}
+
+/* ============================================================
+   BEVERAGE PORTAL TABLET & IPAD RESPONSIVE STYLING
+   ============================================================ */
+
+@media (max-width: 1024px) and (min-width: 641px) {
+    .bev-layout {
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .bev-sidebar {
+        width: 80px;
+        min-width: 80px;
+        padding: 1rem 0.35rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bev-sidebar-brand {
+        margin-bottom: 1.5rem;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bev-sidebar-brand img {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .bev-sidebar-brand h3,
+    .bev-station-badge {
+        display: none;
+    }
+
+    .bev-sidebar-nav {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .bev-sidebar-nav button {
+        width: 100%;
+        padding: 0.7rem 0.2rem;
+        font-size: 0.65rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        border-radius: 10px;
+    }
+
+    .bev-sidebar-nav button span {
+        display: block !important;
+        font-size: 0.62rem;
+        max-width: 70px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .bev-sidebar-footer {
+        width: 100%;
+        padding: 0.75rem 0 0;
+    }
+
+    .bev-main {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .bev-layout.sidebar-hidden .bev-main {
+        width: 100vw !important;
+        max-width: 100vw !important;
+    }
+
+    .bev-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .bev-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .bev-layout {
+        flex-direction: column;
+    }
+
+    .bev-sidebar {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        padding: 0 0.75rem;
+        justify-content: space-between;
+    }
+
+    .bev-sidebar-brand img {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .bev-sidebar-brand h3,
+    .bev-station-badge {
+        display: none;
+    }
+
+    .bev-sidebar-nav {
+        flex-direction: row;
+        gap: 0.35rem;
+    }
+
+    .bev-sidebar-nav button {
+        padding: 0.4rem;
+        font-size: 0.7rem;
+    }
+
+    .bev-sidebar-footer {
+        display: none;
+    }
+
+    .bev-grid {
+        grid-template-columns: 1fr !important;
+        padding: 1rem;
+    }
 }

@@ -60,7 +60,7 @@ const Hero = () => {
                 </div>
 
                 <div className="hero-actions fade-up-delay-4">
-                    <a href="#booking" className="btn-luxury">
+                    <a href="/table-booking" className="btn-luxury">
                         <span className="btn-glow"></span>
                         <span className="btn-label">RESERVE YOUR TABLE</span>
                     </a>

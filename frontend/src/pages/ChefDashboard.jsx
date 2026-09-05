@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock } from 'lucide-react';
+import { Search, ArrowDownWideNarrow, ArrowUpNarrowWide, Clock, Menu } from 'lucide-react';
 import '../styles/pages/ChefDashboard.css';
 import PortalLoginCard from '../components/portals/PortalLoginCard';
 import logo from '../assets/logo.png';
 import { API_BASE_URL as BASE } from '../config/api';
+import { getSocket } from '../services/socket';
 
 const normalizeDate = (dateStr) => {
     if (!dateStr) return null;
@@ -521,6 +522,7 @@ const ChefDashboard = () => {
     const [selectedChefId, setSelectedChefId] = useState('');
     const [historySearch, setHistorySearch] = useState('');
     const [historySort, setHistorySort] = useState('latest'); // 'latest' or 'oldest'
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     const API_BASE_URL = `${BASE}/kds`;
 
@@ -546,6 +548,37 @@ const ChefDashboard = () => {
             };
 
             initDashboard();
+
+            // Setup Socket.IO real-time event listeners
+            const socket = getSocket(pin);
+            if (socket) {
+                const handleOrderCreated = () => fetchOrders();
+                const handleItemStatusChanged = () => { fetchOrders(); fetchCompletedItems(); };
+                const handleOrderStatusChanged = () => { fetchOrders(); fetchCompletedItems(); };
+                const handleSessionUpdated = () => fetchSessions();
+                const handleConnect = () => { fetchOrders(); fetchCompletedItems(); fetchSessions(); };
+
+                socket.on('order:created', handleOrderCreated);
+                socket.on('order:item_status_changed', handleItemStatusChanged);
+                socket.on('order:status_changed', handleOrderStatusChanged);
+                socket.on('session:updated', handleSessionUpdated);
+                socket.on('connect', handleConnect);
+
+                const interval = setInterval(() => {
+                    fetchOrders();
+                    fetchCompletedItems();
+                    fetchSessions();
+                }, 8000);
+
+                return () => {
+                    clearInterval(interval);
+                    socket.off('order:created', handleOrderCreated);
+                    socket.off('order:item_status_changed', handleItemStatusChanged);
+                    socket.off('order:status_changed', handleOrderStatusChanged);
+                    socket.off('session:updated', handleSessionUpdated);
+                    socket.off('connect', handleConnect);
+                };
+            }
 
             const interval = setInterval(() => {
                 fetchOrders();
@@ -752,26 +785,49 @@ const ChefDashboard = () => {
     }
 
     return (
-        <div className="kds-layout">
-            <aside className="kds-sidebar">
-                <div className="sidebar-brand">
-                    <img src={logo} alt="Logo" />
-                    <h3>CHILL GRAND</h3>
-                </div>
-                <nav className="sidebar-nav">
-                    <button className={currentView === 'DASHBOARD' ? 'active' : ''} onClick={() => { setCurrentView('DASHBOARD'); setSelectedOrderId(null); setSelectedItemId(null); }}>Dashboard</button>
-                    <button className={currentView === 'COMPLETED' ? 'active' : ''} onClick={() => { setCurrentView('COMPLETED'); setSelectedOrderId(null); setSelectedItemId(null); }}>Completed Items</button>
-                    <button className={currentView === 'SESSION' ? 'active' : ''} onClick={() => { setCurrentView('SESSION'); setSelectedOrderId(null); setSelectedItemId(null); }}>My Session</button>
-                </nav>
-                <div className="sidebar-footer">
-                    <div className="active-count-bubble">{activeSessions.length} Chefs Online</div>
-                    <button className="logout-btn" onClick={handleLogout}>Logout Portal</button>
-                </div>
-            </aside>
+        <div className={`kds-layout ${sidebarCollapsed ? 'sidebar-hidden' : ''}`}>
+            {!sidebarCollapsed && (
+                <aside className="kds-sidebar animate-in fade-in duration-200">
+                    <div className="sidebar-brand">
+                        <img src={logo} alt="Logo" />
+                        <h3>CHILL GRAND</h3>
+                    </div>
+                    <nav className="sidebar-nav">
+                        <button className={currentView === 'DASHBOARD' ? 'active' : ''} onClick={() => { setCurrentView('DASHBOARD'); setSelectedOrderId(null); setSelectedItemId(null); }}>Dashboard</button>
+                        <button className={currentView === 'COMPLETED' ? 'active' : ''} onClick={() => { setCurrentView('COMPLETED'); setSelectedOrderId(null); setSelectedItemId(null); }}>Completed Items</button>
+                        <button className={currentView === 'SESSION' ? 'active' : ''} onClick={() => { setCurrentView('SESSION'); setSelectedOrderId(null); setSelectedItemId(null); }}>My Session</button>
+                    </nav>
+                    <div className="sidebar-footer">
+                        <div className="active-count-bubble">{activeSessions.length} Chefs Online</div>
+                        <button className="logout-btn" onClick={handleLogout}>Logout Portal</button>
+                    </div>
+                </aside>
+            )}
 
             <main className="kds-main">
                 <header className="kds-top-bar">
-                    <div className="view-title">
+                    <div className="view-title" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <button
+                            className="kds-sidebar-toggle-btn"
+                            onClick={() => setSidebarCollapsed(prev => !prev)}
+                            title={sidebarCollapsed ? "Show Navigation Sidebar" : "Hide Navigation Sidebar"}
+                            aria-label="Toggle Sidebar"
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.06)',
+                                border: '1px solid rgba(255, 255, 255, 0.12)',
+                                color: '#fff',
+                                borderRadius: '10px',
+                                width: '40px',
+                                height: '40px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                flexShrink: 0
+                            }}
+                        >
+                            <Menu size={20} />
+                        </button>
                         <h2>{currentView === 'DASHBOARD' ? 'Live Prep Queue' : currentView === 'COMPLETED' ? 'Completed Tasks' : 'Kitchen Sessions'}</h2>
                     </div>
                     {currentView === 'DASHBOARD' && (

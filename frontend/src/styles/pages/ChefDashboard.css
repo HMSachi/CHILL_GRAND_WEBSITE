@@ -24,17 +24,33 @@ body {
 .kds-layout {
     display: flex;
     height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    position: relative;
 }
 
 /* Sidebar Refined */
 .kds-sidebar {
     width: 240px;
+    min-width: 240px;
     background: #000;
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     padding: 1rem 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.kds-layout.sidebar-collapsed .kds-sidebar {
+    margin-left: -260px !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border-right: none !important;
+    overflow: hidden !important;
 }
 
 .sidebar-brand {
@@ -1718,4 +1734,145 @@ body {
 .status-note.served-note {
     background: rgba(16, 185, 129, 0.05);
     color: #10b981;
+}
+
+/* ============================================================
+   CHEF KDS TABLET & IPAD RESPONSIVE STYLING
+   ============================================================ */
+
+@media (max-width: 1024px) and (min-width: 641px) {
+    .kds-layout {
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .kds-sidebar {
+        width: 80px;
+        min-width: 80px;
+        padding: 1rem 0.35rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar-brand {
+        margin-bottom: 1.5rem;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar-brand img {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .sidebar-brand h3 {
+        display: none;
+    }
+
+    .sidebar-nav {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .sidebar-nav button {
+        width: 100%;
+        padding: 0.7rem 0.2rem;
+        font-size: 0.65rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        border-radius: 10px;
+    }
+
+    .sidebar-nav button span {
+        display: block !important;
+        font-size: 0.62rem;
+        max-width: 70px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sidebar-footer {
+        width: 100%;
+        padding: 0.75rem 0 0;
+    }
+
+    .kds-main {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .kds-layout.sidebar-hidden .kds-main {
+        width: 100vw !important;
+        max-width: 100vw !important;
+    }
+
+    .kds-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .kds-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .kds-layout {
+        flex-direction: column;
+    }
+
+    .kds-sidebar {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        padding: 0 0.75rem;
+        justify-content: space-between;
+    }
+
+    .sidebar-brand img {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .sidebar-brand h3 {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        gap: 0.35rem;
+    }
+
+    .sidebar-nav button {
+        padding: 0.4rem;
+        font-size: 0.7rem;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .kds-grid {
+        grid-template-columns: 1fr !important;
+        padding: 1rem;
+    }
 }

@@ -1,4 +1,5 @@
-// API Configuration for Website Frontend
+// Centralized API & Socket.IO Configuration for Website Frontend
+
 const getHostname = () => {
     if (typeof window !== 'undefined') return window.location.hostname;
     return 'localhost';
@@ -6,25 +7,18 @@ const getHostname = () => {
 
 const hostname = getHostname();
 
-// Treat localhost, loopback, local network IPs, and local domains as local environment
-const isLocal = typeof window !== 'undefined' && (
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '[::1]' ||
-    hostname.endsWith('.local') ||
-    /^192\.168\./.test(hostname) ||
-    /^10\./.test(hostname) ||
-    /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(hostname)
-);
+// Primary HTTP API Base URL (Default: http://localhost:5000/api)
+const defaultApiUrl = `http://${hostname}:5000/api`;
+const envApiUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL;
+const rawApiUrl = envApiUrl || defaultApiUrl;
 
-const PROD_URL = 'https://chillgrand-restaurant-api-1.onrender.com/api';
-// Dynamically route to the host server running the frontend so mobile/tablet testing works
-const LOCAL_URL = `http://${hostname}:5000/api`;
+// Normalize to ensure exactly one trailing '/api'
+const cleanApiUrl = rawApiUrl.replace(/\/+$/, '');
+export const API_BASE_URL = cleanApiUrl.endsWith('/api') ? cleanApiUrl : `${cleanApiUrl}/api`;
 
-const base = import.meta.env.VITE_API_URL || (isLocal ? LOCAL_URL : PROD_URL);
-
-// Ensure we don't accidentally bake in localhost into production builds if VITE_API_URL is set locally
-const finalBase = (!isLocal && base.includes('localhost')) ? PROD_URL : base;
-
-export const API_BASE_URL = finalBase.endsWith('/api') ? finalBase : `${finalBase}/api`;
-
+// Socket.IO Server URL (Default: http://localhost:5000)
+// Uses VITE_SOCKET_URL if defined, otherwise strips '/api' from API_BASE_URL
+const envSocketUrl = import.meta.env.VITE_SOCKET_URL;
+export const SOCKET_URL = envSocketUrl
+    ? envSocketUrl.replace(/\/+$/, '')
+    : API_BASE_URL.replace(/\/api\/?$/, '');

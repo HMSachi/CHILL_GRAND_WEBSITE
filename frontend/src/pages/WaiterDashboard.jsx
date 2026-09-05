@@ -36,11 +36,13 @@ import {
     ArrowUpNarrowWide,
     ArrowDownWideNarrow,
     FileText,
-    Eye
+    Eye,
+    Menu
 } from 'lucide-react';
 import VariantModal from '../components/orders/VariantModal';
 import FinalBillModal from '../QRweb/components/FinalBillModal';
 import { API_BASE_URL } from '../config/api';
+import { getSocket } from '../services/socket';
 
 const formatTime = (dateStr) => {
     if (!dateStr) return 'N/A';
@@ -109,6 +111,7 @@ const WaiterDashboard = () => {
     const [billCloseRequests, setBillCloseRequests] = useState({});
     const [finalBills, setFinalBills] = useState({});
     const [previewBill, setPreviewBill] = useState(null);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     // API_BASE_URL is imported from config/api.js
 
@@ -116,6 +119,26 @@ const WaiterDashboard = () => {
         if (user) {
             startSession();
             fetchAllData();
+
+            const token = sessionStorage.getItem('waiter_token');
+            const socket = getSocket(token);
+            if (socket) {
+                const handleUpdate = () => fetchAllData();
+                socket.on('order:created', handleUpdate);
+                socket.on('order:item_status_changed', handleUpdate);
+                socket.on('order:status_changed', handleUpdate);
+                socket.on('connect', handleUpdate);
+
+                const interval = setInterval(fetchAllData, 15000);
+                return () => {
+                    clearInterval(interval);
+                    socket.off('order:created', handleUpdate);
+                    socket.off('order:item_status_changed', handleUpdate);
+                    socket.off('order:status_changed', handleUpdate);
+                    socket.off('connect', handleUpdate);
+                };
+            }
+
             const interval = setInterval(fetchAllData, 15000);
             return () => {
                 clearInterval(interval);
@@ -512,60 +535,72 @@ const WaiterDashboard = () => {
 
 
     return (
-        <div className="waiter-layout">
-            <aside className="waiter-sidebar">
-                <div className="sidebar-brand">
-                    <img src={logo} alt="Chill Grand" />
-                    <h3>CHILL GRAND</h3>
-                </div>
-
-                <nav className="sidebar-nav">
-                    <button className={activeTab === 'DASHBOARD' ? 'active' : ''} onClick={() => { setActiveTab('DASHBOARD'); setSearchQuery(''); }}>
-                        <LayoutDashboard size={22} /> <span>Dashboard</span>
-                    </button>
-                    <button className={activeTab === 'TABLES' ? 'active' : ''} onClick={() => { setActiveTab('TABLES'); setSearchQuery(''); }}>
-                        <Grid2X2 size={22} /> <span>Tables</span>
-                    </button>
-                    <button className={activeTab === 'ORDERS' ? 'active' : ''} onClick={() => { setActiveTab('ORDERS'); setSearchQuery(''); }}>
-                        <ClipboardList size={22} /> <span>Orders</span>
-                    </button>
-                    <button className={activeTab === 'KITCHEN' ? 'active' : ''} onClick={() => { setActiveTab('KITCHEN'); setSearchQuery(''); }}>
-                        <CookingPot size={22} /> <span>Kitchen Status</span>
-                    </button>
-                    <button className={activeTab === 'MENU' ? 'active' : ''} onClick={() => { setActiveTab('MENU'); setSearchQuery(''); }}>
-                        <UtensilsCrossed size={22} /> <span>Menu View</span>
-                    </button>
-                </nav>
-
-                <div className="sidebar-footer">
-                    <div className="user-info">
-                        <div className="avatar">{user.username[0].toUpperCase()}</div>
-                        <div className="name-role">
-                            <span className="username">{user.username}</span>
-                            <span className="role">{user.role}</span>
-                        </div>
+        <div className={`waiter-layout ${sidebarCollapsed ? 'sidebar-hidden' : ''}`}>
+            {!sidebarCollapsed && (
+                <aside className="waiter-sidebar animate-in fade-in duration-200">
+                    <div className="sidebar-brand">
+                        <img src={logo} alt="Chill Grand" />
+                        <h3>CHILL GRAND</h3>
                     </div>
-                    <button onClick={handleLogout} className="logout-btn">
-                        <LogOut size={18} /> <span>Logout</span>
-                    </button>
-                </div>
-            </aside>
+
+                    <nav className="sidebar-nav">
+                        <button className={activeTab === 'DASHBOARD' ? 'active' : ''} onClick={() => { setActiveTab('DASHBOARD'); setSearchQuery(''); }}>
+                            <LayoutDashboard size={22} /> <span>Dashboard</span>
+                        </button>
+                        <button className={activeTab === 'TABLES' ? 'active' : ''} onClick={() => { setActiveTab('TABLES'); setSearchQuery(''); }}>
+                            <Grid2X2 size={22} /> <span>Tables</span>
+                        </button>
+                        <button className={activeTab === 'ORDERS' ? 'active' : ''} onClick={() => { setActiveTab('ORDERS'); setSearchQuery(''); }}>
+                            <ClipboardList size={22} /> <span>Orders</span>
+                        </button>
+                        <button className={activeTab === 'KITCHEN' ? 'active' : ''} onClick={() => { setActiveTab('KITCHEN'); setSearchQuery(''); }}>
+                            <CookingPot size={22} /> <span>Kitchen Status</span>
+                        </button>
+                        <button className={activeTab === 'MENU' ? 'active' : ''} onClick={() => { setActiveTab('MENU'); setSearchQuery(''); }}>
+                            <UtensilsCrossed size={22} /> <span>Menu View</span>
+                        </button>
+                    </nav>
+
+                    <div className="sidebar-footer">
+                        <div className="user-info">
+                            <div className="avatar">{user.username[0].toUpperCase()}</div>
+                            <div className="name-role">
+                                <span className="username">{user.username}</span>
+                                <span className="role">{user.role}</span>
+                            </div>
+                        </div>
+                        <button onClick={handleLogout} className="logout-btn">
+                            <LogOut size={18} /> <span>Logout</span>
+                        </button>
+                    </div>
+                </aside>
+            )}
 
             <main className="waiter-content">
                 <header className="content-header">
-                    <div className="header-title">
-                        <h2>
-                            {activeTab === 'MENU'
-                                ? (selectedTableForOrder ? `Order for Table T-${selectedTableForOrder.tableId}` : 'Menu Explorer')
-                                : activeTab.charAt(0) + activeTab.slice(1).toLowerCase()}
-                        </h2>
-                        {selectedTableForOrder && activeTab === 'MENU' ? (
-                            <span className="live-badge active-ordering">
-                                <span className="dot pulse"></span> ACIVE ORDERING MODE
-                            </span>
-                        ) : (
-                            <span className="live-badge"><span className="dot"></span> Staff Portal</span>
-                        )}
+                    <div className="header-left-group">
+                        <button
+                            className="sidebar-toggle-btn"
+                            onClick={() => setSidebarCollapsed(prev => !prev)}
+                            title={sidebarCollapsed ? "Show Navigation Sidebar" : "Hide Navigation Sidebar"}
+                            aria-label="Toggle Navigation Sidebar"
+                        >
+                            <Menu size={22} />
+                        </button>
+                        <div className="header-title">
+                            <h2>
+                                {activeTab === 'MENU'
+                                    ? (selectedTableForOrder ? `Order for Table T-${selectedTableForOrder.tableId}` : 'Menu Explorer')
+                                    : activeTab.charAt(0) + activeTab.slice(1).toLowerCase()}
+                            </h2>
+                            {selectedTableForOrder && activeTab === 'MENU' ? (
+                                <span className="live-badge active-ordering">
+                                    <span className="dot pulse"></span> ACTIVE ORDERING MODE
+                                </span>
+                            ) : (
+                                <span className="live-badge"><span className="dot"></span> Staff Portal</span>
+                            )}
+                        </div>
                     </div>
                     <div className="header-actions">
                         {selectedTableForOrder && activeTab === 'MENU' && (
