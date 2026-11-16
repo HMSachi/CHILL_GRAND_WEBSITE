@@ -181,3 +181,20 @@
 /* Chef   → --portal-accent: #3b82f6  (blue)  */
 /* Waiter → --portal-accent: #8b5cf6  (violet) */
 /* Juice  → --portal-accent: #0d9488  (teal)  */
+
+@media (max-width: 480px) {
+    .portal-login-overlay {
+        padding: 1rem;
+    }
+
+    .portal-login-card {
+        padding: 2rem 1.25rem 1.5rem;
+        border-radius: 20px;
+    }
+
+    .portal-login-logo {
+        width: 65px !important;
+        height: 65px !important;
+        margin-bottom: 1rem;
+    }
+}

@@ -449,6 +449,29 @@
 
     .mosaic-item:nth-child(n) {
         grid-column: span 1 !important;
+        min-height: 300px;
+    }
+
+    .mosaic-desc {
+        opacity: 0.9;
+        transform: translateY(0);
+        margin-top: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mosaic-item:nth-child(n) {
+        min-height: 260px;
+        padding: 1.5rem;
+    }
+
+    .mosaic-item h3 {
+        font-size: 1.35rem;
+    }
+
+    .mosaic-category {
+        letter-spacing: 2px;
+        font-size: 0.7rem;
     }
 }
 

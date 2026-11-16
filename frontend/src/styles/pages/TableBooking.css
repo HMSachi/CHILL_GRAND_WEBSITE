@@ -1628,4 +1628,101 @@
     background: rgba(255, 255, 255, 0.15);
     color: #fff;
 }
+
+/* ==========================================
+   MOBILE & TABLET RESPONSIVE REFINEMENTS
+   ========================================== */
+@media (max-width: 768px) {
+    .booking-split-container {
+        padding: 0 1rem;
+    }
+
+    .form-wrapper-v2 {
+        padding: 1.8rem 1.2rem;
+        border-radius: 18px;
+    }
+
+    .booking-steps-box {
+        padding: 2rem 1.2rem;
+        border-radius: 18px;
+    }
+
+    .booking-reference-badge {
+        padding: 12px 14px;
+    }
+
+    .ref-id-number {
+        font-size: 1.7rem;
+    }
+
+    .success-booking-modal-card,
+    .lookup-modal-card {
+        max-width: 95vw;
+        width: 95vw;
+        margin: 10px;
+        border-radius: 18px;
+    }
+
+    .modal-header-luxury {
+        padding: 18px 20px;
+    }
+
+    .modal-header-luxury h3 {
+        font-size: 1.15rem;
+    }
+
+    .modal-body-luxury {
+        padding: 18px 20px;
+    }
+
+    .modal-footer-luxury {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-luxury-primary,
+    .btn-luxury-secondary {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .contact-pills-row {
+        flex-direction: column;
+    }
+
+    .contact-pill-item {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-wrapper-v2 {
+        padding: 1.4rem 0.9rem;
+        border-radius: 14px;
+    }
+
+    .booking-hero {
+        min-height: 40vh;
+        height: auto;
+        padding: 80px 1rem 40px;
+    }
+
+    .hero-title {
+        font-size: clamp(1.8rem, 7vw, 2.3rem);
+    }
+
+    .ref-id-number {
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+    }
+
+    .modal-header-luxury,
+    .modal-body-luxury,
+    .modal-footer-luxury {
+        padding: 14px 14px;
+    }
+}
 

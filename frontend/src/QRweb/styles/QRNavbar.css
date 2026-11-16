@@ -43,10 +43,20 @@
 
 @media (max-width: 768px) {
     .qr-navbar {
-        height: 100px;
+        height: 75px;
     }
 
     .qr-logo-img {
-        height: 85px;
+        height: 55px;
+    }
+}
+
+@media (max-width: 480px) {
+    .qr-navbar {
+        height: 65px;
+    }
+
+    .qr-logo-img {
+        height: 46px;
     }
 }

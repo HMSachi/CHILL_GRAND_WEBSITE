@@ -226,19 +226,29 @@
     left: 0;
     width: 100%;
     height: 0;
-    background: rgba(5, 4, 2, 0.97);
+    background: rgba(5, 4, 2, 0.98);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     z-index: 1001;
     overflow: hidden;
-    transition: height 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: height 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, visibility 0.4s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .navbar-mobile-overlay.active {
     height: 100dvh;
+    padding: 2rem 1rem;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-links {
@@ -294,40 +304,113 @@
 /* ══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════ */
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     .navbar-links {
-        gap: 2rem;
+        gap: 1.8rem;
+    }
+    .navbar-links.left {
+        padding-right: 1.5rem;
+    }
+    .navbar-links.right {
+        padding-left: 1.5rem;
+    }
+    .nav-link {
+        font-size: 0.68rem;
+        letter-spacing: 2px;
     }
 }
 
 @media (max-width: 900px) {
+    .navbar {
+        height: 80px;
+        padding: 0 1rem;
+    }
+
+    .navbar.scrolled {
+        height: 62px;
+        top: 8px;
+        width: calc(100% - 24px);
+        left: 12px;
+    }
+
+    .logo-img {
+        height: 56px;
+    }
+
+    .navbar.scrolled .logo-img {
+        height: 44px;
+    }
+
     .navbar-links {
         display: none;
     }
 
     .navbar-mobile-toggle {
         display: block;
+        right: 1.5rem;
     }
 
     .navbar-container {
         justify-content: flex-start;
-        padding: 0 1.5rem;
+        padding: 0 1rem;
     }
 
     .navbar-logo {
         padding: 0;
         order: 1;
     }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 70px;
+        padding: 0 0.75rem;
+    }
 
     .navbar.scrolled {
-        width: calc(100% - 32px);
-        left: 16px;
+        height: 54px;
+        top: 6px;
+        width: calc(100% - 16px);
+        left: 8px;
+    }
+
+    .logo-img {
+        height: 46px;
+    }
+
+    .navbar.scrolled .logo-img {
+        height: 38px;
+    }
+
+    .navbar-mobile-toggle {
+        right: 1rem;
+    }
+
+    .mobile-links {
+        gap: 1.6rem;
+    }
+
+    .mobile-links a {
+        font-size: 1.15rem;
+        letter-spacing: 4px;
     }
 }
 
 /* ── Spacing helpers ── */
 :root {
     --navbar-height: 96px;
+}
+
+@media (max-width: 900px) {
+    :root {
+        --navbar-height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --navbar-height: 70px;
+    }
 }
 
 .app > main {

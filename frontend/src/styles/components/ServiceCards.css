@@ -21,10 +21,10 @@
 
 .section-header-warehouse .header-title {
     font-family: 'Playfair Display', serif;
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 3rem);
     font-weight: 400;
     color: #fff;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 1.5rem;
 }
@@ -232,23 +232,26 @@
    RESPONSIVE
  ========================= */
 @media (max-width: 1024px) {
+    .service-cards-section {
+        padding: 5rem 0;
+    }
+
     .service-cards-grid {
         flex-direction: column;
         height: auto;
     }
     
     .service-card {
-        height: 120px;
+        height: 140px;
         flex: none !important;
         transition: height 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
     
     .service-card:hover {
-        height: 350px;
+        height: 260px;
     }
     
     .service-card-title-vertical {
-        /* Complex to handle vertical on mobile properly, so just hide and show simple content */
         display: none;
     }
     
@@ -256,5 +259,41 @@
         opacity: 1;
         transform: translateY(0);
         padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-cards-section {
+        padding: 3.5rem 0;
+    }
+
+    .service-cards-grid {
+        padding: 0 10px;
+        gap: 12px;
+    }
+
+    .service-card {
+        height: 170px !important;
+        border-radius: 16px;
+    }
+
+    .service-card:hover {
+        height: 170px !important;
+    }
+
+    .service-card-title {
+        font-size: 1.35rem;
+        letter-spacing: 1px;
+    }
+
+    .service-card-accent {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        margin-bottom: 6px;
+    }
+
+    .service-card-arrow {
+        font-size: 1.2rem;
+        margin-right: 10px;
     }
 }
