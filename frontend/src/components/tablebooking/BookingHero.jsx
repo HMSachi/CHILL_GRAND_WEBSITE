@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../styles/pages/TableBooking.css';
-import { bookingHeroData } from '../../data/bookingData';
+import heroBg from '../../assets/luxury_dining_hero.jpg';
 
 const BookingHero = () => {
     return (
-        <div className="tb-hero" style={{ backgroundImage: `url(${bookingHeroData.heroBg})` }}>
-            <div className="hero-overlay">
-                <div className="container hero-centered-content fade-up">
-                    <p className="hero-subtitle">Reserve table using 360° View</p>
-                    <h1 className="hero-title">RESERVE YOUR TABLE</h1>
-                    <div className="hero-buttons">
-                        <a href="#reservation-form" className="btn-book">BOOK A TABLE</a>
+        <section className="tb-hero-section">
+            {/* Top Cinematic Hero Banner */}
+            <div className="tb-hero-banner" style={{ backgroundImage: `url(${heroBg})` }}>
+                <div className="tb-hero-overlay">
+                    <div className="tb-hero-content">
+                        <h1 className="tb-hero-title">
+                            Reserve your table <em>in seconds</em>
+                        </h1>
+                        <a href="#reservation-form" className="btn-hero-gold">
+                            Book Table
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 
