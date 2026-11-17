@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../../config/api';
 import { Link, useLocation } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaMoneyBillWave, FaSearch, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUtensils, FaTimes } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaClock, FaUsers, FaMoneyBillWave, FaSearch, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUtensils, FaTimes, FaChevronDown } from 'react-icons/fa';
 import '../../styles/pages/EventInquiry.css';
 import heroBg from '../../assets/bar.jpg';
 
@@ -409,7 +409,9 @@ const EventInquiry = () => {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label>Event Type</label>
-                                <div className="input-wrapper">
+                                <div className="input-wrapper select-wrapper">
+                                    <span className="selected-value-text">{formData.eventType}</span>
+                                    <FaChevronDown className="select-dropdown-arrow" />
                                     <select name="eventType" value={formData.eventType} onChange={handleChange} required>
                                         <option value="Birthday Parties">Birthday Parties</option>
                                         <option value="Private Dining">Private Dining</option>

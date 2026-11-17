@@ -7,24 +7,26 @@ const EventHero = () => {
     return (
         <section className="event-hero" style={{ backgroundImage: `url(${eventsHeroData.heroBg})` }}>
             <div className="event-hero-overlay">
-                <div className="hero-content-minimal">
-                    <span className="minimal-tagline">Exquisite Experiences</span>
-                    <h1 className="minimal-title">Plan Your Event</h1>
-                    <div className="hero-btn-container">
-                        <Link to="/event-inquiry" className="btn-minimal-gold">
-                            Fill The Form
+                <div className="event-hero-content">
+                    <h1 className="event-hero-title fade-up">
+                        PLAN YOUR <span className="title-gold">EVENT</span>
+                    </h1>
+                    <div className="event-divider-line fade-up-delay-2">
+                        <span className="divider-diamond">◆</span>
+                    </div>
+                    <p className="event-hero-description fade-up-delay-2">
+                        From vibrant celebrations and cocktail nights to corporate gatherings, craft unforgettable memories at Chill Grand.
+                    </p>
+                    <div className="event-hero-actions fade-up-delay-3">
+                        <Link to="/event-inquiry" className="btn-event-primary">
+                            <span className="btn-event-shine"></span>
+                            <span className="btn-event-text">Fill The Form</span>
                         </Link>
-                        <Link to="/event-inquiry?track=true" className="btn-minimal-gold">
-                            Track / View Your Booking Status
+                        <Link to="/event-inquiry?track=true" className="btn-event-secondary">
+                            <span className="btn-event-text">Track Booking Status</span>
                         </Link>
                     </div>
                 </div>
-            </div>
-            
-            {/* Minimal Scroll indicator */}
-            <div className="scroll-indicator">
-                <span>SCROLL</span>
-                <div className="scroll-line"></div>
             </div>
         </section>
     );
