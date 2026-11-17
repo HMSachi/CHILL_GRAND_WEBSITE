@@ -2,6 +2,9 @@
 .table-booking-page {
     font-family: var(--font-main);
     width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
     background-color: var(--bg-dark);
     min-height: 100vh;
 }
@@ -34,6 +37,8 @@
         rgba(10, 10, 10, 0.75) 70%,
         #0a0a0c 100%
     );
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,7 +63,7 @@
     line-height: 1.2;
     text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
     margin: 0;
-    white-space: nowrap;
+    text-wrap: balance;
 }
 
 .tb-hero-title em {
@@ -1154,6 +1159,9 @@
     padding: 0.85rem 1rem;
     margin-bottom: 0.8rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .filter-title-box {
@@ -1201,25 +1209,35 @@
     flex-wrap: wrap;
     gap: 12px;
     align-items: flex-end;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .filter-inputs-grid > .filter-field {
-    flex: 1 1 140px;
-    min-width: 120px;
+    flex: 1 1 130px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .filter-time-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    flex: 2 1 260px;
-    min-width: 240px;
+    flex: 2 1 240px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .filter-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .filter-field label {
@@ -1242,6 +1260,9 @@
     font-weight: 600;
     outline: none;
     transition: all 0.25s ease;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .filter-field input[type="time"]::-webkit-calendar-picker-indicator {
@@ -1267,7 +1288,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: clamp(10px, 3vw, 20px);
+    box-sizing: border-box;
     animation: modal-fade-in 0.3s ease;
 }
 
@@ -1279,11 +1301,14 @@
 .table-modal-card {
     position: relative;
     width: 100%;
-    max-width: 540px;
+    max-width: 480px;
+    box-sizing: border-box;
     background: #141414;
     border: 1px solid rgba(255, 204, 0, 0.3);
-    border-radius: 24px;
-    padding: 2.2rem;
+    border-radius: 20px;
+    padding: clamp(1.2rem, 3.5vw, 1.8rem);
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 204, 0, 0.15);
     color: #ffffff;
     animation: modal-slide-up 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1439,7 +1464,9 @@
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    padding: 1.2rem;
+    padding: clamp(0.9rem, 3vw, 1.2rem);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal-fields-grid {
@@ -1447,18 +1474,25 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal-time-group {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal-field label {
@@ -1473,12 +1507,15 @@
     border: 1px solid rgba(255, 204, 0, 0.3);
     border-radius: 8px;
     height: 42px;
-    padding: 0 12px;
+    padding: 0 10px;
+    min-width: 0;
+    width: 100%;
     box-sizing: border-box;
     color: #ffffff;
     font-size: 0.85rem;
     font-weight: 700;
     outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .modal-field input[type="time"]::-webkit-calendar-picker-indicator {
@@ -1624,11 +1661,29 @@
 
 @media (max-width: 576px) {
     .modal-time-group {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
     .filter-time-group {
         width: 100%;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+        gap: 8px;
+        min-width: 0;
+    }
+    .tour-filter-bar {
+        padding: 0.75rem 0.65rem;
+    }
+    .filter-inputs-grid {
+        gap: 8px;
+    }
+    .filter-field input {
+        height: 38px;
+        padding: 0 8px;
+        font-size: 0.8rem;
+    }
+    .filter-field input[type="time"] {
+        padding: 0 4px;
+        font-size: 0.78rem;
     }
 }
 
@@ -1669,7 +1724,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: clamp(12px, 3vw, 24px);
+    box-sizing: border-box;
     animation: fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1678,14 +1734,101 @@
     background: #141414;
     border: 1px solid rgba(229, 193, 88, 0.4);
     border-radius: 24px;
-    max-width: 620px;
+    max-width: 580px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
+    box-sizing: border-box;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(229, 193, 88, 0.15);
     color: #ffffff;
     position: relative;
     padding: 0;
+}
+
+/* UNIFIED LOOKUP MODAL SEARCH */
+.lookup-search-form {
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.lookup-search-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #e5c158;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+.lookup-search-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+.lookup-search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    box-sizing: border-box;
+    padding: 11px 14px;
+    background: #202020;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lookup-search-input::placeholder {
+    font-size: clamp(0.72rem, 2vw, 0.8rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.2px;
+}
+
+.lookup-search-input:focus {
+    border-color: #e5c158;
+    box-shadow: 0 0 14px rgba(229, 193, 88, 0.25);
+    background: #262626;
+}
+
+.lookup-search-btn {
+    flex-shrink: 0;
+    width: auto;
+    padding: 12px 24px;
+    white-space: nowrap;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 520px) {
+    .lookup-search-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .lookup-search-btn {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+.summary-detail-item.full-span {
+    grid-column: 1 / -1;
 }
 
 .modal-header-luxury {
@@ -1794,9 +1937,11 @@
 }
 
 .contact-pills-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
     margin-bottom: 10px;
 }
 
@@ -1810,7 +1955,11 @@
     border-radius: 10px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .contact-hours-note {
@@ -1873,6 +2022,13 @@
    MOBILE & TABLET RESPONSIVE REFINEMENTS
    ========================================== */
 @media (max-width: 768px) {
+    .table-booking-page {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+
     .tb-hero-banner {
         height: 38vh;
         min-height: 280px;
@@ -1881,18 +2037,29 @@
     .tb-capsule-stepper-container {
         margin: -20px auto 1.4rem;
         padding: 0 16px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        box-sizing: border-box;
     }
 
     .tb-capsule-stepper {
-        width: 100%;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 8px 16px;
+        display: inline-flex;
+        width: auto;
+        max-width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(8px, 2.2vw, 16px);
+        padding: 8px clamp(14px, 3.5vw, 24px);
         border-radius: 30px;
     }
 
     .tb-capsule-step-item {
+        display: flex;
+        align-items: center;
         gap: 6px;
+        flex-shrink: 0;
     }
 
     .tb-capsule-step-badge {
@@ -1902,20 +2069,53 @@
     }
 
     .tb-capsule-step-text {
-        font-size: 0.78rem;
+        font-size: clamp(0.72rem, 1.8vw, 0.8rem);
+        white-space: nowrap;
     }
 
     .tb-capsule-step-arrow {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        color: rgba(212, 175, 55, 0.55);
+        user-select: none;
+    }
+
+    .table-booking-main-content {
+        padding: 0 8px;
+        margin: 0 auto 3rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .table-booking-inner {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .booking-form-section {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .booking-form-section .container {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .booking-split-container {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
     }
 
     .form-wrapper-v2 {
-        padding: 1.8rem 1.2rem;
-        border-radius: 18px;
+        padding: 1.5rem 1rem;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .booking-steps-box {
@@ -1933,9 +2133,9 @@
 
     .success-booking-modal-card,
     .lookup-modal-card {
-        max-width: 95vw;
-        width: 95vw;
-        margin: 10px;
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
         border-radius: 18px;
     }
 
@@ -1957,15 +2157,15 @@
         gap: 10px;
     }
 
-    .btn-luxury-primary,
-    .btn-luxury-secondary {
+    .modal-footer-luxury .btn-luxury-primary,
+    .modal-footer-luxury .btn-luxury-secondary {
         width: 100%;
         text-align: center;
         justify-content: center;
     }
 
     .contact-pills-row {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
     .contact-pill-item {
@@ -1975,16 +2175,48 @@
 }
 
 @media (max-width: 480px) {
+    .table-booking-main-content {
+        padding: 0 4px;
+    }
+
+    .form-wrapper-v2 {
+        padding: 1.2rem 0.75rem;
+        border-radius: 14px;
+    }
+
+    .table-modal-card {
+        padding: 1.2rem 1rem;
+        border-radius: 16px;
+    }
+
+    .modal-booking-box {
+        padding: 0.9rem 0.8rem;
+    }
+
+    .tour-filter-bar {
+        padding: 0.7rem 0.55rem;
+    }
+
+    .filter-time-group {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 6px;
+    }
+
+    .filter-field input {
+        height: 38px;
+        font-size: 0.78rem;
+    }
+
+    .filter-field input[type="time"] {
+        padding: 0 4px;
+        font-size: 0.75rem;
+    }
+
     .btn-confirm-v2 {
         padding: 0.6rem 1.8rem;
         font-size: 0.8rem;
         letter-spacing: 0.5px;
         white-space: nowrap;
-    }
-
-    .form-wrapper-v2 {
-        padding: 1.4rem 0.9rem;
-        border-radius: 14px;
     }
 
     .booking-hero {
@@ -2006,6 +2238,17 @@
     .modal-body-luxury,
     .modal-footer-luxury {
         padding: 14px 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .filter-time-group {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .tb-capsule-step-text {
+        font-size: 0.68rem;
     }
 }
 

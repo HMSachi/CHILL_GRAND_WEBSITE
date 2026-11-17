@@ -79,7 +79,7 @@ const Menu = () => {
 
 
             <form className="menu-hero-newsletter" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Your email address" aria-label="Email" />
+              <input type="email" placeholder="Enter your email" aria-label="Email" />
               <button type="submit" className="btn-secondary">Subscribe</button>
             </form>
           </div>

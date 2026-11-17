@@ -1832,7 +1832,7 @@ const CustomerMobileModal = ({ onClose, onSubmit }) => {
                             <Search size={18} />
                             <input
                                 type="tel"
-                                placeholder="07x xxxx xxx"
+                                placeholder="Enter customer phone number"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 autoFocus

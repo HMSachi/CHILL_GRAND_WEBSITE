@@ -122,7 +122,7 @@ const CategoriesPage = () => {
                     <FaSearch className="search-icon" />
                     <input
                         type="text"
-                        placeholder="Search for your favorite food..."
+                        placeholder="Search menu..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="smart-search-input"

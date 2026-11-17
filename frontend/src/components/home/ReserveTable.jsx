@@ -51,7 +51,7 @@ const ReserveTable = () => {
                             <div className="form-row">
                                 <div className="input-group-premium">
                                     <label>GUESTS</label>
-                                    <input type="number" placeholder="No of Guest" className="form-input-premium" />
+                                    <input type="number" placeholder="Number of guests" className="form-input-premium" />
                                 </div>
                                 <div className="input-group-premium">
                                     <label>DATE</label>
@@ -77,17 +77,17 @@ const ReserveTable = () => {
 
                             <div className="input-group-premium full-width">
                                 <label>FULL NAME</label>
-                                <input type="text" placeholder="Your Full Name" className="form-input-premium" />
+                                <input type="text" placeholder="Enter full name" className="form-input-premium" />
                             </div>
 
                             <div className="input-group-premium full-width">
                                 <label>PHONE NUMBER</label>
-                                <input type="tel" placeholder="+94 XX XXX XXXX" className="form-input-premium" />
+                                <input type="tel" placeholder="Enter phone number" className="form-input-premium" />
                             </div>
 
                             <div className="input-group-premium full-width">
                                 <label>SPECIAL REQUESTS</label>
-                                <textarea placeholder="Message (Allergies, special occasions...)" className="form-input-premium textarea"></textarea>
+                                <textarea placeholder="Special requests or preferences (optional)" className="form-input-premium textarea"></textarea>
                             </div>
 
                             <button type="submit" className="btn-submit-premium">

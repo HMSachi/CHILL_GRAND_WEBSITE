@@ -96,7 +96,7 @@ const MenuItemsPage = () => {
                     <FaSearch className="search-icon" />
                     <input
                         type="text"
-                        placeholder="Search for items..."
+                        placeholder="Search menu items..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
