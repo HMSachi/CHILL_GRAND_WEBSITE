@@ -7,8 +7,8 @@ const AboutStory = () => {
         <section className="about-story-section">
             <div className="about-story-grid">
                 {/* Row 1 */}
-                <div className="story-image-item">
-                    <img src={aboutStoryData.dining1} alt="Chill Grand Burger" />
+                <div className="story-image-item story-img-featured">
+                    <img src={aboutStoryData.dining1} alt="Chill Grand Gourmet Burger" />
                 </div>
 
                 <div className="story-content-item">

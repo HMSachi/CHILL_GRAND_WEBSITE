@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 import "../styles/pages/Contact.css";
 import glass from "../assets/glass.png";
@@ -114,9 +115,39 @@ const Contact = () => {
 
           {/* RIGHT INFO CARD */}
           <div className="contact-info-card">
-            <p><strong>Email:</strong> chillgrand@gmail.com</p>
-            <p><strong>Phone:</strong> 0761400071</p>
-            <p><strong>Address:</strong> Kaduwela Road,<br />Malabe, Sri Lanka</p>
+            <a href="mailto:chillgrand@gmail.com" className="contact-info-item">
+              <div className="info-icon-badge">
+                <Mail size={18} />
+              </div>
+              <div className="info-text-group">
+                <span className="info-label">Email</span>
+                <span className="info-value">chillgrand@gmail.com</span>
+              </div>
+            </a>
+
+            <div className="info-divider" />
+
+            <a href="tel:0761400071" className="contact-info-item">
+              <div className="info-icon-badge">
+                <Phone size={18} />
+              </div>
+              <div className="info-text-group">
+                <span className="info-label">Phone</span>
+                <span className="info-value">0761400071</span>
+              </div>
+            </a>
+
+            <div className="info-divider" />
+
+            <div className="contact-info-item">
+              <div className="info-icon-badge">
+                <MapPin size={18} />
+              </div>
+              <div className="info-text-group">
+                <span className="info-label">Address</span>
+                <span className="info-value">Kaduwela Road, Malabe, Sri Lanka</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1062,11 +1062,11 @@
 
 .story-label {
     display: block;
-    color: #ff0000;
+    color: var(--primary-yellow);
     font-weight: 800;
     letter-spacing: 3px;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
     text-transform: uppercase;
 }
 
@@ -1084,7 +1084,7 @@
     font-size: 0.95rem;
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     font-weight: 400;
 }
 
@@ -1120,44 +1120,93 @@
     }
 }
 
+/* MOBILE & TABLET: LUXURY 2-COLUMN MOSAIC COLLAGE */
 @media (max-width: 900px) {
+    .about-story-section {
+        padding: 96px 1rem 1.5rem;
+        min-height: auto;
+    }
+
     .about-story-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
+        gap: 10px;
     }
 
     .story-content-item {
-        order: -1;
+        grid-column: span 2;
+        order: -2;
+        border-radius: 14px;
+        padding: 1.6rem 1.1rem;
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
     .story-image-item {
-        height: 350px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        height: 130px;
+        position: relative;
+    }
+
+    /* Featured Culinary Hero Item */
+    .story-img-featured {
+        grid-column: span 2;
+        order: -1;
+        height: 160px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
     }
 }
 
 @media (max-width: 600px) {
     .about-story-section {
-        padding: 50px 1rem 1rem;
+        padding: 88px 10px 1rem;
+    }
+
+    .about-story-grid {
+        gap: 8px;
     }
 
     .story-content-item {
-        padding: 1.8rem 1rem;
+        padding: 1.2rem 0.9rem;
+        border-radius: 12px;
+    }
+
+    .story-label {
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
     }
 
     .story-title-bottom {
-        font-size: clamp(1.6rem, 6vw, 2.2rem);
+        font-size: 1.5rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .brand-tag {
+        font-size: 0.55rem;
+        letter-spacing: 4px;
     }
 
     .story-text {
-        font-size: 0.88rem;
-        margin-bottom: 1.5rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.8rem;
+        line-height: 1.5;
     }
 
     .story-image-item {
-        height: 240px;
+        height: 100px;
+        border-radius: 8px;
+    }
+
+    .story-img-featured {
+        height: 130px;
+        border-radius: 10px;
     }
 
     .section-title {
-        font-size: clamp(2rem, 8vw, 2.6rem);
+        font-size: clamp(1.8rem, 7vw, 2.3rem);
     }
 }

@@ -6,6 +6,7 @@ import { ReactPhotoSphereViewer } from 'react-photo-sphere-viewer';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
 import '@photo-sphere-viewer/core/index.css';
 import '@photo-sphere-viewer/markers-plugin/index.css';
+import { FaChevronDown, FaSearch } from 'react-icons/fa';
 import '../../styles/pages/TableBooking.css';
 import { PLACE_360_MAP, TABLE_POSITIONS } from '../../data/place360Config';
 
@@ -491,6 +492,14 @@ const BookingForm = () => {
 
     const handleViewerReady = (instance) => {
         viewerRef.current = instance;
+        // Auto-resize so Three.js renders 100% full width with zero blank area
+        setTimeout(() => {
+            try {
+                if (instance.autoSize) instance.autoSize();
+                window.dispatchEvent(new Event('resize'));
+            } catch (err) {}
+        }, 150);
+
         const markersPlugin = instance.getPlugin(MarkersPlugin);
 
         if (markersPlugin) {
@@ -658,7 +667,8 @@ const BookingForm = () => {
                 <div className="form-wrapper-v2 fade-up">
                     <div className="form-header-v2" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
                         <div>
-                            <h2 className="title" style={{ margin: 0 }}>Reservation Details</h2>
+                            <span className="subtitle" style={{ display: 'block', marginBottom: '4px', fontSize: '0.75rem', letterSpacing: '3px' }}>EXQUISITE DINING & PUB SEATS</span>
+                            <h2 className="title" style={{ margin: 0 }}>Table Reservation</h2>
                         </div>
                         <button
                             type="button"
@@ -670,6 +680,7 @@ const BookingForm = () => {
                             }}
                             className="btn-check-booking-status"
                         >
+                            <FaSearch style={{ fontSize: '0.75rem', marginRight: '6px' }} />
                             <span>Check Your Booking Status</span>
                         </button>
                         <div className="divider" style={{ width: '100%', marginTop: '10px' }}></div>
@@ -689,31 +700,37 @@ const BookingForm = () => {
                                 <label>Date</label>
                                 <input name="date" type="date" value={formData.date} onChange={handleChange} required />
                             </div>
-                            <div className="form-group-v2 full-width">
+                            <div className="form-group-v2">
                                 <label>Select Place / Section</label>
-                                <select
-                                    name="place"
-                                    value={formData.place}
-                                    onChange={(e) => {
-                                        const newPlace = e.target.value;
-                                        setFormData(prev => ({
-                                            ...prev,
-                                            place: newPlace,
-                                            seatingPreference: prev.place !== newPlace ? '' : prev.seatingPreference,
-                                            startTime: prev.place !== newPlace ? '' : prev.startTime,
-                                            endTime: prev.place !== newPlace ? '' : prev.endTime
-                                        }));
-                                        setCurrentSceneIndex(0);
-                                    }}
-                                    required
-                                >
-                                    <option value="">-- Select Place / Section --</option>
-                                    {places.map((p) => (
-                                        <option key={p.place_id || p.id} value={p.place_name || p.name}>
-                                            {p.place_name || p.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className="select-wrapper-v2">
+                                    <span className="selected-value-text-v2">
+                                        {formData.place ? formData.place : '-- Select Place / Section --'}
+                                    </span>
+                                    <FaChevronDown className="select-dropdown-arrow-v2" />
+                                    <select
+                                        name="place"
+                                        value={formData.place}
+                                        onChange={(e) => {
+                                            const newPlace = e.target.value;
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                place: newPlace,
+                                                seatingPreference: prev.place !== newPlace ? '' : prev.seatingPreference,
+                                                startTime: prev.place !== newPlace ? '' : prev.startTime,
+                                                endTime: prev.place !== newPlace ? '' : prev.endTime
+                                            }));
+                                            setCurrentSceneIndex(0);
+                                        }}
+                                        required
+                                    >
+                                        <option value="">-- Select Place / Section --</option>
+                                        {places.map((p) => (
+                                            <option key={p.place_id || p.id} value={p.place_name || p.name}>
+                                                {p.place_name || p.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
