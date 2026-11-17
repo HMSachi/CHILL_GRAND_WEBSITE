@@ -690,11 +690,11 @@ const BookingForm = () => {
                         <div className="form-grid">
                             <div className="form-group-v2">
                                 <label>Full Name</label>
-                                <input name="name" type="text" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
+                                <input name="name" type="text" placeholder="Enter full name" value={formData.name} onChange={handleChange} required />
                             </div>
                             <div className="form-group-v2">
                                 <label>Phone Number</label>
-                                <input name="phone" type="tel" placeholder="+94 XX XXX XXXX" value={formData.phone} onChange={handleChange} required />
+                                <input name="phone" type="tel" placeholder="Enter phone number" value={formData.phone} onChange={handleChange} required />
                             </div>
                             <div className="form-group-v2">
                                 <label>Date</label>
@@ -813,7 +813,7 @@ const BookingForm = () => {
                                         <input
                                             type="number"
                                             min="1"
-                                            placeholder="No. of Guests"
+                                            placeholder="Number of guests"
                                             value={filterData.guests}
                                             onChange={(e) => {
                                                 const val = e.target.value;
@@ -915,7 +915,7 @@ const BookingForm = () => {
 
                         <div className="form-group-v2 full-width">
                             <label>Any Special Requests?</label>
-                            <textarea name="specialInstructions" placeholder="Please mention any special requests or preferences here..." value={formData.specialInstructions} onChange={handleChange}></textarea>
+                            <textarea name="specialInstructions" placeholder="Special requests or preferences (optional)" value={formData.specialInstructions} onChange={handleChange}></textarea>
                         </div>
                         {status.message && (
                             <p style={{ color: status.type === 'success' ? '#4CAF50' : '#f44336', marginBottom: '1rem', textAlign: 'center', fontWeight: 'bold' }}>
@@ -950,15 +950,15 @@ const BookingForm = () => {
                             </h3>
                             <div className="modal-badges-row">
                                 <span className="modal-badge capacity">
-                                    🪑 {selectedTableModal.seats} Seats Capacity
+                                    {selectedTableModal.seats} Seats Capacity
                                 </span>
                                 {selectedTableModal.isBooked ? (
                                     <span className="modal-badge booked">
-                                        🔒 {selectedTableModal.lockReason || 'Already Booked'}
+                                        {selectedTableModal.lockReason || 'Already Booked'}
                                     </span>
                                 ) : (
                                     <span className="modal-badge available">
-                                        ✅ Available
+                                        Available
                                     </span>
                                 )}
                             </div>
@@ -968,13 +968,12 @@ const BookingForm = () => {
                             {/* EXISTING BOOKED TIME SLOTS LIST */}
                             <div className="booked-slots-section">
                                 <h4 className="slots-section-title">
-                                    📅 Existing Bookings for {filterData.date || 'Selected Date'}
+                                    Existing Bookings for {filterData.date || 'Selected Date'}
                                 </h4>
                                 {selectedTableModal.reservations && selectedTableModal.reservations.length > 0 ? (
                                     <div className="time-slots-list">
                                         {selectedTableModal.reservations.map((res, idx) => (
                                             <div key={idx} className="time-slot-item booked">
-                                                <span className="slot-icon">🔒</span>
                                                 <div className="slot-details">
                                                     <span className="slot-time">{res.booking_time || 'Booked Slot'}</span>
                                                     <span className="slot-status">Reserved ({res.guests || 2} Guests)</span>
@@ -984,14 +983,14 @@ const BookingForm = () => {
                                     </div>
                                 ) : (
                                     <div className="no-slots-box">
-                                        <span>✨ No existing bookings for this table on this date. Table is fully open!</span>
+                                        <span>No existing bookings for this table on this date. Table is fully open!</span>
                                     </div>
                                 )}
                             </div>
 
                             {/* BOOK THIS TABLE FORM */}
                             <div className="modal-booking-box">
-                                <h4 className="slots-section-title">⚡ Book Table {selectedTableModal.displayNum}</h4>
+                                <h4 className="slots-section-title">Book Table {selectedTableModal.displayNum}</h4>
                                 {(() => {
                                     const getModalValidationError = () => {
                                         const { startTime, endTime, guests } = modalBookingData;
@@ -1049,7 +1048,7 @@ const BookingForm = () => {
 
                                                 setStatus({
                                                     type: 'success',
-                                                    message: `🎉 Table ${selectedTableModal.displayNum} selected for ${bookingTimeStr}! Please enter your Name & Phone Number below, then click Confirm Reservation.`
+                                                    message: `Table ${selectedTableModal.displayNum} selected for ${bookingTimeStr}! Please enter your Name & Phone Number below, then click Confirm Reservation.`
                                                 });
 
                                                 // Close modal & exit 360 fullscreen mode back to normal screen view
@@ -1178,7 +1177,7 @@ const BookingForm = () => {
                                     <span className="detail-label">Guest Count</span>
                                     <span className="detail-value">🪑 {successBookingData.guests} Guests</span>
                                 </div>
-                                <div className="summary-detail-item" style={{ gridColumn: 'span 2' }}>
+                                <div className="summary-detail-item full-span">
                                     <span className="detail-label">Current Status</span>
                                     <span className="detail-value yellow" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ffcc00', display: 'inline-block' }}></span>
@@ -1240,24 +1239,23 @@ const BookingForm = () => {
 
                         <div className="modal-body-luxury">
                             {/* Search Bar Input Form */}
-                            <form onSubmit={handleLookupBooking} style={{ marginBottom: '20px' }}>
-                                <label style={{ fontSize: '0.8rem', fontWeight: '800', color: '#e5c158', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+                            <form onSubmit={handleLookupBooking} className="lookup-search-form">
+                                <label className="lookup-search-label">
                                     Enter Booking Reference ID or Registered Phone Number
                                 </label>
-                                <div style={{ display: 'flex', gap: '10px' }}>
+                                <div className="lookup-search-row">
                                     <input
                                         type="text"
                                         required
-                                        placeholder="e.g. #9 or 0778602218..."
+                                        placeholder="Enter reference ID or phone number"
                                         value={searchBookingInput}
                                         onChange={(e) => setSearchBookingInput(e.target.value)}
-                                        style={{ flex: 1, padding: '12px 16px', background: '#202020', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', color: '#fff', fontSize: '0.95rem', fontWeight: 'bold' }}
+                                        className="lookup-search-input"
                                     />
                                     <button
                                         type="submit"
                                         disabled={lookupLoading}
-                                        className="btn-luxury-primary"
-                                        style={{ padding: '12px 20px', whiteSpace: 'nowrap' }}
+                                        className="btn-luxury-primary lookup-search-btn"
                                     >
                                         {lookupLoading ? 'Searching...' : 'Track Status'}
                                     </button>
@@ -1320,7 +1318,7 @@ const BookingForm = () => {
                                                         <span className="detail-label">Time Slot</span>
                                                         <span className="detail-value yellow">⏰ {resItem.booking_time}</span>
                                                     </div>
-                                                    <div className="summary-detail-item" style={{ gridColumn: 'span 2' }}>
+                                                    <div className="summary-detail-item full-span">
                                                         <span className="detail-label">Reserved Table / Section</span>
                                                         <span className="detail-value yellow">{resItem.seating_preference || 'General Dining Table'}</span>
                                                     </div>

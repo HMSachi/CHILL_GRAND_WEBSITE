@@ -365,9 +365,9 @@ const EventInquiry = () => {
 
     return (
         <div className="inquiry-page">
-            <div className="inquiry-hero" style={{ backgroundImage: `url(${heroBg})`, paddingTop: '120px', minHeight: '340px' }}>
-                <div className="inquiry-hero-overlay" style={{ paddingTop: '80px' }}>
-                    <h1 style={{ marginTop: '20px' }}>Plan Your <span>Dream Event</span></h1>
+            <div className="inquiry-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+                <div className="inquiry-hero-overlay">
+                    <h1>Plan Your <span>Dream Event</span></h1>
                     <p>Tell us about your vision, and we'll craft an exceptional experience tailored just for you.</p>
                 </div>
             </div>
@@ -383,21 +383,21 @@ const EventInquiry = () => {
                                 <label>Full Name</label>
                                 <div className="input-wrapper">
                                     <FaUser className="input-icon" />
-                                    <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe" />
+                                    <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Enter full name" />
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label>Email Address</label>
                                 <div className="input-wrapper">
                                     <FaEnvelope className="input-icon" />
-                                    <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com" />
+                                    <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Enter email address" />
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label>Phone Number</label>
                                 <div className="input-wrapper">
                                     <FaPhone className="input-icon" />
-                                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+94 77 123 4567" />
+                                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="Enter phone number" />
                                 </div>
                             </div>
                         </div>
@@ -482,7 +482,7 @@ const EventInquiry = () => {
                                             <label style={{ color: '#ffcc00', fontWeight: '700' }}>Decorations Estimated Budget (Rs.)</label>
                                             <div className="input-wrapper">
                                                 <FaMoneyBillWave className="input-icon" />
-                                                <input type="text" name="decorBudget" value={formData.decorBudget} onChange={handleChange} placeholder="e.g. Rs. 50,000" />
+                                                <input type="text" name="decorBudget" value={formData.decorBudget} onChange={handleChange} placeholder="Estimated budget (Rs.)" />
                                             </div>
                                         </div>
                                     </div>
@@ -500,7 +500,7 @@ const EventInquiry = () => {
                                             <label style={{ color: '#ffcc00', fontWeight: '700' }}>Music / DJ Estimated Budget (Rs.)</label>
                                             <div className="input-wrapper">
                                                 <FaMoneyBillWave className="input-icon" />
-                                                <input type="text" name="musicBudget" value={formData.musicBudget} onChange={handleChange} placeholder="e.g. Rs. 40,000" />
+                                                <input type="text" name="musicBudget" value={formData.musicBudget} onChange={handleChange} placeholder="Estimated budget (Rs.)" />
                                             </div>
                                         </div>
                                     </div>
@@ -518,7 +518,7 @@ const EventInquiry = () => {
                                             <label style={{ color: '#ffcc00', fontWeight: '700' }}>Photography Estimated Budget (Rs.)</label>
                                             <div className="input-wrapper">
                                                 <FaMoneyBillWave className="input-icon" />
-                                                <input type="text" name="photographyBudget" value={formData.photographyBudget} onChange={handleChange} placeholder="e.g. Rs. 60,000" />
+                                                <input type="text" name="photographyBudget" value={formData.photographyBudget} onChange={handleChange} placeholder="Estimated budget (Rs.)" />
                                             </div>
                                         </div>
                                     </div>
@@ -536,14 +536,14 @@ const EventInquiry = () => {
                                             <label style={{ color: '#ffcc00', fontWeight: '700' }}>Menu / Food Estimated Budget (Rs.)</label>
                                             <div className="input-wrapper">
                                                 <FaMoneyBillWave className="input-icon" />
-                                                <input type="text" name="menuBudget" value={formData.menuBudget} onChange={handleChange} placeholder="e.g. Rs. 150,000" />
+                                                <input type="text" name="menuBudget" value={formData.menuBudget} onChange={handleChange} placeholder="Estimated budget (Rs.)" />
                                             </div>
                                         </div>
                                         <textarea
                                             name="menuDetails"
                                             value={formData.menuDetails}
                                             onChange={handleChange}
-                                            placeholder="Preferred cuisine, dietary requirements, or menu notes..."
+                                            placeholder="Dietary requirements or menu notes (optional)"
                                             className="service-textarea"
                                         />
                                     </div>
@@ -620,9 +620,6 @@ const EventInquiry = () => {
                         </button>
 
                         <div className="track-modal-header">
-                            <span className="track-modal-badge">
-                                Customer Self-Service Portal
-                            </span>
                             <h2 className="track-modal-title">
                                 Track & View Your <span>Booking Status</span>
                             </h2>
@@ -632,7 +629,7 @@ const EventInquiry = () => {
                         <div className="track-search-box">
                             <input
                                 type="text"
-                                placeholder="Enter Booking ID or Phone..."
+                                placeholder="Enter reference ID or phone number"
                                 value={trackInput}
                                 onChange={e => setTrackInput(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && handleTrackBooking()}

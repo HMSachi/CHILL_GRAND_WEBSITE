@@ -168,7 +168,7 @@ const OrderSidebar = ({ isOpen, onClose }) => {
                         <p>Please enter your phone number to start ordering.</p>
                         <input
                             type="tel"
-                            placeholder="07x xxxxxxx"
+                            placeholder="Enter phone number"
                             value={phoneInput}
                             onChange={(e) => setPhoneInput(e.target.value)}
                         />
