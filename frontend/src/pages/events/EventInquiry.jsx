@@ -608,46 +608,47 @@ const EventInquiry = () => {
             {/* 2. TRACK & VIEW BOOKING DETAILS MODAL                                      */}
             {/* ========================================================================= */}
             {showTrackModal && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
-                    <div style={{ background: '#161616', border: '1px solid #e5c158', borderRadius: '24px', padding: '32px', maxWidth: '780px', width: '100%', maxHeight: '90vh', overflowY: 'auto', color: '#fff', position: 'relative', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
+                <div className="track-modal-overlay" onClick={() => setShowTrackModal(false)}>
+                    <div className="track-modal-card" onClick={(e) => e.stopPropagation()}>
                         
                         <button
                             onClick={() => setShowTrackModal(false)}
-                            style={{ position: 'absolute', top: '20px', right: '20px', background: '#252525', border: 'none', color: '#fff', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            className="track-modal-close"
+                            aria-label="Close tracking modal"
                         >
                             <FaTimes />
                         </button>
 
-                        <div style={{ marginBottom: '24px' }}>
-                            <span style={{ color: '#e5c158', fontSize: '0.75rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                                ✨ Customer Self-Service Portal
+                        <div className="track-modal-header">
+                            <span className="track-modal-badge">
+                                Customer Self-Service Portal
                             </span>
-                            <h2 style={{ margin: '4px 0 0 0', fontSize: '1.6rem', fontWeight: '900', color: '#fff' }}>
-                                Track & View Your Booking Status
+                            <h2 className="track-modal-title">
+                                Track & View Your <span>Booking Status</span>
                             </h2>
                         </div>
 
                         {/* Search Input Box */}
-                        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+                        <div className="track-search-box">
                             <input
                                 type="text"
-                                placeholder="Enter Booking ID (e.g. 101 or #EVT-101) or Phone / Email..."
+                                placeholder="Enter Booking ID or Phone..."
                                 value={trackInput}
                                 onChange={e => setTrackInput(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && handleTrackBooking()}
-                                style={{ flex: 1, padding: '12px 18px', background: '#222', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', color: '#fff', fontSize: '0.95rem' }}
+                                className="track-search-input"
                             />
                             <button
                                 onClick={() => handleTrackBooking()}
                                 disabled={trackLoading}
-                                style={{ padding: '12px 24px', background: '#e5c158', border: 'none', borderRadius: '12px', color: '#000', fontWeight: '900', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                                className="track-search-btn"
                             >
                                 {trackLoading ? 'Searching...' : <><FaSearch /> Search</>}
                             </button>
                         </div>
 
                         {trackError && (
-                            <div style={{ background: 'rgba(255,77,77,0.15)', border: '1px solid #ff4d4d', color: '#ff4d4d', padding: '14px', borderRadius: '12px', marginBottom: '20px', fontSize: '0.9rem' }}>
+                            <div className="track-error-box">
                                 ⚠️ {trackError}
                             </div>
                         )}
