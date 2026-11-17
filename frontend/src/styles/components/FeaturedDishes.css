@@ -183,17 +183,56 @@
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .nav-btn {
-        width: 35px;
-        height: 35px;
+        width: 36px;
+        height: 36px;
         font-size: 1.2rem;
     }
 
     .dish-card {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
     .dish-img {
         width: 150px;
         height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-container {
+        gap: 0.25rem;
+    }
+
+    .dish-card-wrapper {
+        padding: 0 0.25rem;
+    }
+
+    .nav-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.95rem;
+    }
+
+    .dish-card {
+        padding: 1.2rem 0.75rem;
+        border-radius: 16px;
+    }
+
+    .dish-image-container {
+        height: 150px;
+        margin-bottom: 1rem;
+    }
+
+    .dish-img {
+        width: 130px;
+        height: 130px;
+    }
+
+    .dish-info h3 {
+        font-size: 1.05rem;
+    }
+
+    .price {
+        font-size: 1rem;
     }
 }

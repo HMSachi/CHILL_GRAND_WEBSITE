@@ -225,9 +225,13 @@
 }
 
 @media (max-width: 992px) {
+    .reserve-table {
+        padding: 5rem 0;
+    }
+
     .reserve-container-split {
         flex-direction: column;
-        gap: 4rem;
+        gap: 3.5rem;
     }
 
     .reserve-info-col,
@@ -237,16 +241,45 @@
 
     .reserve-description {
         max-width: 100%;
+        margin: 1.5rem 0 2rem;
     }
 }
 
 @media (max-width: 600px) {
+    .reserve-table {
+        padding: 3.5rem 0;
+    }
+
     .reserve-form-premium {
-        padding: 2rem;
+        padding: 1.5rem 1rem;
+        border-radius: 18px;
     }
 
     .form-row {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1.2rem;
+    }
+
+    .res-feature {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .feature-icon {
+        font-size: 1.4rem;
+    }
+
+    .feature-text strong {
+        font-size: 0.95rem;
+    }
+
+    .feature-text span {
+        font-size: 0.82rem;
+    }
+
+    .btn-submit-premium {
+        padding: 1rem;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
     }
 }

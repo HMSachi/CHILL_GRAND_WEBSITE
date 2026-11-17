@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa';
 import '../../styles/pages/PlanEvent.css';
 import { eventsHeroData } from '../../data/eventsData';
 
@@ -16,7 +15,7 @@ const EventHero = () => {
                             Fill The Form
                         </Link>
                         <Link to="/event-inquiry?track=true" className="btn-minimal-gold">
-                            <FaSearch /> Track / View Your Booking Status
+                            Track / View Your Booking Status
                         </Link>
                     </div>
                 </div>

@@ -148,8 +148,33 @@
 }
 
 @media (max-width: 576px) {
+    .gallery-branding {
+        padding: 3rem 1.25rem;
+        height: auto;
+        min-height: 240px;
+    }
+
+    .gallery-title {
+        font-size: clamp(1.8rem, 7vw, 2.4rem);
+        margin-bottom: 1rem;
+    }
+
+    .gallery-description {
+        font-size: 0.88rem;
+        line-height: 1.6;
+    }
+
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(8, 1fr);
+        height: 440px;
+    }
+}
+
+@media (max-width: 400px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(12, 1fr);
+        height: 480px;
     }
 }

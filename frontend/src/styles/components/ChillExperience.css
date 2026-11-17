@@ -26,14 +26,14 @@
 
 .section-header-warehouse .header-accent {
     font-family: 'Great Vibes', cursive;
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     color: var(--primary-yellow);
-    margin-bottom: -1rem;
+    margin-bottom: -0.5rem;
 }
 
 .section-header-warehouse .header-title {
     font-family: 'Playfair Display', serif;
-    font-size: 4rem;
+    font-size: clamp(2.2rem, 6vw, 4rem);
     font-weight: 950;
     color: #fff;
     letter-spacing: 2px;
@@ -46,9 +46,12 @@
     display: flex;
     gap: 2.5rem;
     width: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     padding-bottom: 4rem;
-    /* space for outside button */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 /* ===============================
@@ -62,6 +65,7 @@
     overflow: visible;
     position: relative;
     flex-shrink: 0;
+    scroll-snap-align: center;
 }
 
 /* IMAGE WRAPPER */
@@ -164,20 +168,93 @@
 /* ===============================
    RESPONSIVE
 ================================ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    .chill-experience {
+        padding: 80px 0;
+    }
+
+    .chill-experience::before {
+        font-size: 12rem;
+        left: 5%;
+    }
+
+    .menu-scroll-container {
+        gap: 1.8rem;
+    }
+
     .menu-card {
-        min-width: 85vw;
-        height: 300px;
+        min-width: 340px;
+        height: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chill-experience {
+        padding: 60px 0;
+    }
+
+    .chill-experience::before {
+        display: none;
+    }
+
+    .section-header-warehouse {
+        margin-bottom: 3rem;
+    }
+
+    .menu-scroll-container {
+        gap: 1.2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 3.5rem;
+    }
+
+    .menu-card {
+        min-width: 82vw;
+        max-width: 360px;
+        height: 240px;
+    }
+
+    .menu-content {
+        padding: 1.8rem;
     }
 
     .menu-content h3 {
-        font-size: 2.1rem;
+        font-size: 2rem;
     }
 
     .btn-see-menu {
-        width: 80px;
-        height: 80px;
-        bottom: -35px;
-        font-size: 0.9rem;
+        width: 68px;
+        height: 68px;
+        bottom: -25px;
+        right: 20px;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-card {
+        min-width: 88vw;
+        height: 220px;
+    }
+
+    .menu-content {
+        padding: 1.25rem;
+    }
+
+    .menu-content h3 {
+        font-size: 1.65rem;
+    }
+
+    .menu-content p {
+        font-size: 0.75rem;
+        letter-spacing: 2.5px;
+    }
+
+    .btn-see-menu {
+        width: 60px;
+        height: 60px;
+        bottom: -20px;
+        right: 15px;
+        font-size: 0.7rem;
     }
 }

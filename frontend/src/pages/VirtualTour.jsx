@@ -134,19 +134,19 @@ const VirtualTour = () => {
             {isPopupOpen && createPortal(
                 <div style={{
                     position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    background: '#141414', border: '1px solid #e5c158', padding: '28px', borderRadius: '16px', zIndex: 999999,
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.9)', textAlign: 'center', color: '#fff', minWidth: '320px'
+                    background: '#141414', border: '1px solid #e5c158', padding: '24px 16px', borderRadius: '16px', zIndex: 999999,
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.9)', textAlign: 'center', color: '#fff', width: 'calc(100vw - 32px)', maxWidth: '360px', boxSizing: 'border-box'
                 }}>
-                    <h3 style={{ color: '#e5c158', marginBottom: '12px', fontSize: '1.4rem' }}>Book Table {selectedTable}?</h3>
-                    <p style={{ color: '#ccc', marginBottom: '24px', fontSize: '0.9rem' }}>Would you like to proceed and book this table?</p>
-                    <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                    <h3 style={{ color: '#e5c158', marginBottom: '12px', fontSize: '1.25rem' }}>Book Table {selectedTable}?</h3>
+                    <p style={{ color: '#ccc', marginBottom: '20px', fontSize: '0.88rem' }}>Would you like to proceed and book this table?</p>
+                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <button onClick={handleCancelOptions} style={{
-                            padding: '10px 20px', border: '1px solid #666', background: 'transparent',
-                            borderRadius: '8px', cursor: 'pointer', color: '#ccc', fontWeight: 'bold'
+                            padding: '10px 18px', border: '1px solid #666', background: 'transparent',
+                            borderRadius: '8px', cursor: 'pointer', color: '#ccc', fontWeight: 'bold', fontSize: '0.85rem'
                         }}>Cancel</button>
                         <button onClick={handleConfirmBooking} style={{
-                            padding: '10px 24px', border: 'none', background: '#e5c158',
-                            borderRadius: '8px', cursor: 'pointer', color: '#000', fontWeight: '900'
+                            padding: '10px 20px', border: 'none', background: '#e5c158',
+                            borderRadius: '8px', cursor: 'pointer', color: '#000', fontWeight: '900', fontSize: '0.85rem'
                         }}>Confirm Booking</button>
                     </div>
                 </div>,

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/components/Hero.css';
 import { heroVideos } from '../../data/homeData';
 
@@ -60,13 +61,13 @@ const Hero = () => {
                 </div>
 
                 <div className="hero-actions fade-up-delay-4">
-                    <a href="/table-booking" className="btn-luxury">
-                        <span className="btn-glow"></span>
-                        <span className="btn-label">RESERVE YOUR TABLE</span>
-                    </a>
-                    <a href="/plan-event" className="btn-luxury-outline">
-                        <span className="btn-label">PLAN AN EVENT</span>
-                    </a>
+                    <Link to="/table-booking" className="btn-hero-primary">
+                        <span className="btn-hero-shine"></span>
+                        <span className="btn-hero-text">Reserve Your Table</span>
+                    </Link>
+                    <Link to="/plan-event" className="btn-hero-secondary">
+                        <span className="btn-hero-text">Plan An Event</span>
+                    </Link>
                 </div>
             </div>
 

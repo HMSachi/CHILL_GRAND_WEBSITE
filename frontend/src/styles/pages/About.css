@@ -216,9 +216,31 @@
 }
 
 @media (max-width: 768px) {
+    .about-hero {
+        min-height: 540px;
+        height: 85svh;
+    }
+
+    .hero-watermark {
+        display: none;
+    }
+
+    .hero-eyebrow {
+        letter-spacing: 6px;
+        font-size: 0.8rem;
+        margin-bottom: 1.2rem;
+    }
+
     .hero-elegant-title {
-        font-size: 4rem;
-        letter-spacing: 10px;
+        font-size: clamp(2.2rem, 8vw, 3.8rem);
+        letter-spacing: clamp(4px, 1.5vw, 8px);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-elegant-title {
+        font-size: clamp(1.8rem, 7vw, 2.5rem);
+        letter-spacing: 3px;
     }
 }
 
@@ -1110,5 +1132,32 @@
 
     .story-image-item {
         height: 350px;
+    }
+}
+
+@media (max-width: 600px) {
+    .about-story-section {
+        padding: 50px 1rem 1rem;
+    }
+
+    .story-content-item {
+        padding: 1.8rem 1rem;
+    }
+
+    .story-title-bottom {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+
+    .story-text {
+        font-size: 0.88rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .story-image-item {
+        height: 240px;
+    }
+
+    .section-title {
+        font-size: clamp(2rem, 8vw, 2.6rem);
     }
 }
