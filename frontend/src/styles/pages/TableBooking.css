@@ -580,6 +580,20 @@
     margin-bottom: 1.35rem;
 }
 
+.form-header-top-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.form-header-title-group {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
 .form-header-v2 .subtitle {
     display: block;
     color: var(--primary-yellow);
@@ -587,6 +601,7 @@
     letter-spacing: 3px;
     font-weight: 700;
     font-size: 0.72rem;
+    margin-bottom: 3px;
 }
 
 .form-header-v2 .title {
@@ -594,6 +609,94 @@
     color: #fff;
     font-weight: 700;
     font-family: 'Playfair Display', serif;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.header-status-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-bottom: 2px;
+}
+
+.header-status-hint {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.btn-check-status-compact {
+    background: linear-gradient(135deg, #e5c158 0%, #caa038 100%);
+    border: none;
+    color: #0b0b0b;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(229, 193, 88, 0.28);
+}
+
+.btn-check-status-compact:hover {
+    background: linear-gradient(135deg, #f3d47a 0%, #d8ad42 100%);
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(229, 193, 88, 0.45);
+    filter: brightness(1.05);
+}
+
+.btn-check-status-compact:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(229, 193, 88, 0.25);
+}
+
+@media (max-width: 580px) {
+    .form-header-top-row {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    .form-header-v2 .subtitle {
+        font-size: clamp(0.56rem, 2.4vw, 0.68rem);
+        letter-spacing: 1.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .form-header-v2 .title {
+        font-size: clamp(1.15rem, 4.3vw, 1.55rem);
+        white-space: nowrap;
+    }
+
+    .header-status-wrapper {
+        flex-shrink: 0;
+        margin-bottom: 2px;
+    }
+
+    .header-status-hint {
+        display: none;
+    }
+
+    .btn-check-status-compact {
+        padding: 5px 10px;
+        font-size: 0.67rem;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
 }
 
 .form-header-v2 .divider {
@@ -601,30 +704,6 @@
     height: 1px;
     background: linear-gradient(90deg, rgba(212, 175, 55, 0.4), transparent);
     margin: 12px 0 0 0;
-}
-
-.btn-check-booking-status {
-    background: rgba(212, 175, 55, 0.08);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    color: #D4AF37;
-    padding: 7px 16px;
-    border-radius: 50px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.btn-check-booking-status:hover {
-    background: rgba(212, 175, 55, 0.2);
-    border-color: #D4AF37;
-    color: #FFE259;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
 }
 
 .main-booking-form {
@@ -1687,31 +1766,7 @@
     }
 }
 
-/* CHECK BOOKING STATUS BUTTON */
-.btn-check-booking-status {
-    background: linear-gradient(135deg, rgba(229, 193, 88, 0.15) 0%, rgba(255, 204, 0, 0.05) 100%);
-    border: 1.5px solid #e5c158;
-    color: #e5c158;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(229, 193, 88, 0.15);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
 
-.btn-check-booking-status:hover {
-    background: #e5c158;
-    color: #111111;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(229, 193, 88, 0.4);
-}
 
 /* SUCCESS & LOOKUP MODALS */
 .success-booking-modal-overlay,

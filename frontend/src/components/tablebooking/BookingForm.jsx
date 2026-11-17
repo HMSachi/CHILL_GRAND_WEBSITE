@@ -6,7 +6,7 @@ import { ReactPhotoSphereViewer } from 'react-photo-sphere-viewer';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
 import '@photo-sphere-viewer/core/index.css';
 import '@photo-sphere-viewer/markers-plugin/index.css';
-import { FaChevronDown, FaSearch } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 import '../../styles/pages/TableBooking.css';
 import { PLACE_360_MAP, TABLE_POSITIONS } from '../../data/place360Config';
 
@@ -665,25 +665,30 @@ const BookingForm = () => {
         <section className="booking-form-section" id="reservation-form">
             <div className="container">
                 <div className="form-wrapper-v2 fade-up">
-                    <div className="form-header-v2" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
-                        <div>
-                            <span className="subtitle" style={{ display: 'block', marginBottom: '4px', fontSize: '0.75rem', letterSpacing: '3px' }}>EXQUISITE DINING & PUB SEATS</span>
-                            <h2 className="title" style={{ margin: 0 }}>Table Reservation</h2>
+                    <div className="form-header-v2">
+                        <div className="form-header-top-row">
+                            <div className="form-header-title-group">
+                                <span className="subtitle">EXQUISITE DINING & PUB SEATS</span>
+                                <h2 className="title">Table Reservation</h2>
+                            </div>
+                            <div className="header-status-wrapper">
+                                <span className="header-status-hint">Already booked?</span>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSearchBookingInput('');
+                                        setLookupResult(null);
+                                        setLookupError('');
+                                        setShowLookupModal(true);
+                                    }}
+                                    className="btn-check-status-compact"
+                                    title="Check Reservation Status"
+                                >
+                                    Check Status
+                                </button>
+                            </div>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setSearchBookingInput('');
-                                setLookupResult(null);
-                                setLookupError('');
-                                setShowLookupModal(true);
-                            }}
-                            className="btn-check-booking-status"
-                        >
-                            <FaSearch style={{ fontSize: '0.75rem', marginRight: '6px' }} />
-                            <span>Check Your Booking Status</span>
-                        </button>
-                        <div className="divider" style={{ width: '100%', marginTop: '10px' }}></div>
+                        <div className="divider"></div>
                     </div>
 
                     <form className="main-booking-form" onSubmit={handleSubmit}>
