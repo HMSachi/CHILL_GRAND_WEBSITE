@@ -9,7 +9,8 @@
 
 /* HERO */
 .inquiry-hero {
-    height: 50vh;
+    min-height: 420px;
+    height: 48vh;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -17,26 +18,29 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding-top: 80px;
+    box-sizing: border-box;
 }
 
 .inquiry-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 70%, var(--bg-dark) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.75) 60%, var(--bg-dark) 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--text-light);
-    padding: 0 20px;
+    padding: 80px 20px 50px;
+    box-sizing: border-box;
 }
 
 .inquiry-hero-overlay h1 {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.15em;
     filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
 }
 
@@ -50,13 +54,14 @@
 }
 
 .inquiry-hero-overlay p {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
     color: var(--text-gray);
-    max-width: 600px;
+    max-width: 620px;
     font-weight: 400;
-    line-height: 1.8;
-    margin-top: 0.5rem;
-    letter-spacing: 0.05em;
+    line-height: 1.6;
+    margin-top: 0.2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
     animation: fadeInUp 1s ease-out 0.3s both;
 }
 
@@ -75,7 +80,7 @@
 /* CONTAINER */
 .inquiry-container {
     max-width: 1000px;
-    margin: -120px auto 0;
+    margin: -35px auto 4rem;
     position: relative;
     z-index: 10;
     padding: 0 20px;
@@ -747,17 +752,29 @@ input[type="number"] {
 
 @media (max-width: 768px) {
     .inquiry-hero {
-        height: 35vh;
-        min-height: 240px;
+        height: auto;
+        min-height: 290px;
+        padding-top: 75px;
+    }
+
+    .inquiry-hero-overlay {
+        position: relative;
+        padding: 30px 14px 20px;
     }
 
     .inquiry-hero-overlay h1 {
         font-size: 1.9rem;
         letter-spacing: 0.12em;
+        margin-bottom: 0.6rem;
+    }
+
+    .inquiry-hero-overlay p {
+        font-size: 0.88rem;
+        margin-bottom: 1.2rem;
     }
 
     .inquiry-container {
-        margin-top: -50px;
+        margin-top: -15px;
         padding: 0 14px;
     }
 
@@ -934,23 +951,6 @@ input[type="number"] {
     padding-right: 40px; /* Leave space for close button */
 }
 
-.track-modal-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #d4af37;
-    padding: 4px 12px;
-    border-radius: 999px;
-    background: rgba(212, 175, 55, 0.08);
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    margin-bottom: 0.6rem;
-}
-
 .track-modal-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.4rem, 4vw, 1.85rem);
@@ -1000,7 +1000,7 @@ input[type="number"] {
 
 .track-search-input::placeholder {
     color: rgba(255, 255, 255, 0.45);
-    font-size: 0.88rem;
+    font-size: clamp(0.74rem, 2vw, 0.8rem);
 }
 
 .track-search-btn {
@@ -1056,11 +1056,6 @@ input[type="number"] {
     .track-modal-header {
         padding-right: 36px;
         margin-bottom: 1.2rem;
-    }
-
-    .track-modal-badge {
-        font-size: 0.65rem;
-        letter-spacing: 1.5px;
     }
 
     .track-modal-title {
